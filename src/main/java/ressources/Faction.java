@@ -6,6 +6,7 @@ public class Faction {
     private int satisfactionRate;
 
     public Faction(String name, int nbSupporters, int satisfactionRate) {
+        // TODO : conditions ???? satisfactionRate & nbSupporters cannot be negative
         this.name = name;
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
@@ -25,7 +26,7 @@ public class Faction {
 
     public void setSatisfactionRate(int newRate) {
         if(this.satisfactionRate == 0) {
-            System.out.println(String.format("The %s faction is against this republic, it is no longer possible to increase its satisfaction rate.", this.name));
+            System.out.println(String.format("%s faction is against this republic (satisfaction rate 0%), it is no longer possible to increase their satisfaction rate.", this.name));
         }
         else {
             if(newRate <= 0) {
@@ -42,11 +43,11 @@ public class Faction {
     }
     
     public void winsSupporters(int percentage) {
-        setNbSupporters(this.nbSupporters * 1 + percent/100);
+        setNbSupporters(this.nbSupporters * 1 + percentage/100);
     }
 
     public void losesSupporters(int percentage) {
-        setSatisfactionPercent(this.nbSupporters * 1 - percent/100);
+        setSatisfactionRate(this.nbSupporters * 1 - percentage/100);
     }
 
     public void increaseSatisfactionBy(int percentagePoint) {
