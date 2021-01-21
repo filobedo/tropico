@@ -1,11 +1,12 @@
-package ressources.factions;
+package ressources;
 
 public class Faction {
     private String name;
     private int nbSupporters;
     private int satisfactionRate;
 
-    public Faction(int nbSupporters, int satisfactionRate) {
+    public Faction(String name, int nbSupporters, int satisfactionRate) {
+        this.name = name;
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
     }
