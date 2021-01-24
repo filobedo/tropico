@@ -4,15 +4,31 @@ import ressources.publisher.EventManager;
 
 public class Republic {
     public EventManager events;
-    private Faction faction;
+    private int treasury; // TODO Where to place it ? see with other members
+//    private Faction faction;
 
-    public Republic() {
-        this.events = new EventManager("bribe", "save");
+    public Republic(int treasury) {
+        this.events = new EventManager("bribe");
+        this.treasury = treasury;
+    }
+
+    public int getTreasury() {
+        return this.treasury;
     }
 
     public void bribe(Faction faction) {
-        faction.bribe();
-        events.notify("bribe", faction);
+        if(faction.getBribePrice() <= this.treasury) {
+            faction.bribe();
+            useTreasury(faction.getBribePrice());
+            events.notify("bribe", faction);
+        }
+        else {
+            System.out.println("You don't have enough money to bribe " + faction.getName() + " faction!");
+        }
+    }
+
+    public void useTreasury(int amount) {
+        this.treasury -= amount;
     }
 //    public void openFile(String filePath) {
 //        this.file = new File(filePath);
