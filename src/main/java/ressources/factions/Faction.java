@@ -12,6 +12,10 @@ public class Faction {
         this.satisfactionRate = satisfactionRate;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public int getNbSupporters() {
         return this.nbSupporters;
     }
