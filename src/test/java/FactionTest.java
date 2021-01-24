@@ -1,5 +1,5 @@
 import junit.framework.TestCase;
-import ressources.Faction;
+import ressources.factions.Faction;
 
 public class FactionTest extends TestCase {
     private Faction loyalists;

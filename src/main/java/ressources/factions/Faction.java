@@ -1,4 +1,4 @@
-package ressources;
+package ressources.factions;
 
 public class Faction {
     private String name;
@@ -67,5 +67,6 @@ public class Faction {
     }
 
     // TODO : Ou faire la diminution de l'approbation des loyalistes ? lorsque bribe()
+    // Donc utiliser les observers
 
 }
