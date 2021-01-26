@@ -2,6 +2,7 @@ package ressources;
 import ressources.factions.Faction;
 import ressources.publisher.EventManager;
 
+// Cette classe est une proposition, j'en avais besoin pour mon premier tests du observer pattern
 public class Republic {
     public EventManager events;
     private int treasury; // TODO Where to place it ? see with other members

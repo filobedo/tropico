@@ -16,20 +16,20 @@ public class EventManager {
         }
     }
 
-    public void subscribe(String eventType, EventListener listener) {
-        List<EventListener> users = listeners.get(eventType);
+    public void subscribe(String eventName, EventListener listener) {
+        List<EventListener> users = listeners.get(eventName);
         users.add(listener);
     }
 
-    public void unsubscribe(String eventType, EventListener listener) {
-        List<EventListener> users = listeners.get(eventType);
+    public void unsubscribe(String eventName, EventListener listener) {
+        List<EventListener> users = listeners.get(eventName);
         users.remove(listener);
     }
 
-    public void notify(String eventType, Faction faction) {
-        List<EventListener> users = listeners.get(eventType);
-        for (EventListener listener : users) {
-            listener.update(eventType, faction);
+    public void notify(String eventName, Faction faction) {
+        List<EventListener> users = listeners.get(eventName);
+        for(EventListener listener : users) {
+            listener.update(eventName, faction);
         }
     }
 }

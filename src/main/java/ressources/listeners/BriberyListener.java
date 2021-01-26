@@ -3,16 +3,15 @@ package ressources.listeners;
 import ressources.factions.Faction;
 
 public class BriberyListener implements EventListener {
-    private String faction;
+    private Faction faction;
 
-    public BriberyListener(String faction) {
+    public BriberyListener(Faction faction) {
         this.faction = faction;
     }
 
     @Override
-    public void update(String eventType, Faction bribedFaction) {
-//        System.out.println("Email to " + email + ": Someone has performed " + eventType + " operation with the following file: " + file.getName());
-        System.out.println("Message to " + this.faction + ": Someone has performed " + eventType + " operation with the following faction: " + bribedFaction.getName());
-        // TODO : loyalists satisfaction -= bribe amount / 10
+    public void update(String eventName, Faction bribedFaction) {
+        System.out.println("Message to " + this.faction.getName() + ": El Presidente has performed " + eventName + " operation with the following faction: " + bribedFaction.getName());
+        this.faction.decreaseSatisfactionBy(bribedFaction.getBribePrice() / 10);
     }
 }

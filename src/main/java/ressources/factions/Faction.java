@@ -1,15 +1,19 @@
 package ressources.factions;
 
+import ressources.publisher.EventManager;
+
 public class Faction {
     private String name;
     private int nbSupporters;
     private int satisfactionRate;
+    public EventManager events;
 
     public Faction(String name, int nbSupporters, int satisfactionRate) {
         // TODO : conditions ???? satisfactionRate & nbSupporters cannot be negative
         this.name = name;
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
+        this.events = new EventManager("bribe");
     }
 
     public String getName() {
@@ -30,7 +34,7 @@ public class Faction {
 
     public void setSatisfactionRate(int newRate) {
         if(this.satisfactionRate == 0) {
-            System.out.println(String.format("%s faction is against this republic (satisfaction rate 0%), it is no longer possible to increase their satisfaction rate.", this.name));
+            System.out.println(String.format("%s faction is against this republic (unsatisfied), it is no longer possible to increase their satisfaction rate.", getName()));
         }
         else {
             if(newRate <= 0) {
@@ -43,7 +47,6 @@ public class Faction {
                 this.satisfactionRate = newRate;
             }
         }
-
     }
     
     public void winsSupporters(int percentage) {
@@ -55,22 +58,25 @@ public class Faction {
     }
 
     public void increaseSatisfactionBy(int percentagePoint) {
-        setSatisfactionRate(this.nbSupporters + percentagePoint);
+        setSatisfactionRate(this.satisfactionRate + percentagePoint);
     }
 
     public void decreaseSatisfactionBy(int percentagePoint) {
-        setSatisfactionRate(this.nbSupporters - percentagePoint);
+        setSatisfactionRate(this.satisfactionRate - percentagePoint);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Faction: %s\nSupporters: %s\nSatisfaction: %s\n", getName(), getNbSupporters(), getSatisfactionRate());
     }
 
     public int getBribePrice() {
         return getNbSupporters() * 15; // TODO '15' à mettre dans une constante qque part ?
     }
 
-    public void bribe() {
-        increaseSatisfactionBy(10); // TODO '10' pareil que getBribePrice()
+    public void bribe() { // TODO Decrease the treasury by bribePrice
+        increaseSatisfactionBy(10); // TODO '10' pareil que le TODO de getBribePrice()
+        events.notify("bribe", this);
+        // TODO System.out.println("You don't have enough money to bribe " + getName() + " faction!");
     }
-
-    // TODO : Ou faire la diminution de l'approbation des loyalistes ? lorsque bribe()
-    // Donc utiliser les observers
-
 }
