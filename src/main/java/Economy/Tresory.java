@@ -7,9 +7,6 @@ public class Tresory {
     public Tresory() {
         this.myIndustry = new Industry();
         this.myFarm = new Farm();
-
-
-        System.out.println();
     }
 
     public Boolean updateFarmMarker(int newFarmMarker) {
@@ -46,16 +43,57 @@ public class Tresory {
         return this.myIndustry.getMarker();
     }
 
-    public int getIncomeIndustry() {
+    //get ressources this year
+    private int getIncomeIndustry() {
         int res = 0;
         res = this.getIndustryMarker() * 10;
         return res;
     }
 
-    public int getIncomeFarm() {
+    //get ressources this year
+    private int getIncomeFarm() {
         int res = 0;
         res = this.getFarmMarker() * 40;
         return res;
     }
 
+    public int getFood() {
+        return this.myFarm.getRessource();
+    }
+
+    public int getMoney() {
+        return this.myIndustry.getRessource();
+    }
+
+    public Tresory updateFoodByYear() {
+        this.myFarm.setRessource(getIncomeFarm() + getFood());
+        return this;
+    }
+
+    public Tresory updateIndustryByYear() {
+        this.myIndustry.setRessource(getIncomeIndustry() + getMoney());
+        return this;
+    }
+
+    public Tresory addBonusFarm(int bonus) {
+        this.myFarm.setRessource(bonus + getFood());
+        return this;
+    }
+
+
+    public Tresory eat(int people) {
+        int res = this.getFood() - (people * 4);
+        this.myFarm.setRessource(res);
+        return this; // Quoi retourner en fonction de la consommation de la bouffe ?
+    }
+
+    public Tresory useMoney(int amount) {
+        this.myIndustry.setRessource(this.getMoney() - amount); //changer si on veut limiter à 0
+        return this;
+    }
+
+    public Tresory addMoney(int amount) {
+        this.myIndustry.setRessource(this.getMoney() + amount);
+        return this;
+    }
 }
