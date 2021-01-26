@@ -1,6 +1,6 @@
-package Economy;
+package ressources.economy;
 
-public class Industry implements Development {
+public class Farm implements Development {
     int marker = 0;
     int ressource = 0; // Food
 
@@ -13,10 +13,10 @@ public class Industry implements Development {
     }
 
     public int getMarker() {
-        return this.marker;
+        return marker;
     }
 
-    public void setMarker(int marker) {
+    protected void setMarker(int marker) {
         this.marker = marker;
     }
 }

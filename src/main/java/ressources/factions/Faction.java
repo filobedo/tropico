@@ -2,22 +2,20 @@ package ressources.factions;
 
 import ressources.publisher.EventManager;
 
-public class Faction {
-    private String name;
+public abstract class Faction {
     private int nbSupporters;
     private int satisfactionRate;
     public EventManager events;
 
-    public Faction(String name, int nbSupporters, int satisfactionRate) {
+    public Faction(int nbSupporters, int satisfactionRate) {
         // TODO : conditions ???? satisfactionRate & nbSupporters cannot be negative
-        this.name = name;
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
         this.events = new EventManager("bribe");
     }
 
     public String getName() {
-        return this.name;
+        return this.getClass().getSimpleName();
     }
 
     public int getNbSupporters() {
@@ -34,7 +32,7 @@ public class Faction {
 
     public void setSatisfactionRate(int newRate) {
         if(this.satisfactionRate == 0) {
-            System.out.println(String.format("%s faction is against this republic (unsatisfied), it is no longer possible to increase their satisfaction rate.", getName()));
+            System.out.printf("%s faction is against this republic (unsatisfied), it is no longer possible to increase their satisfaction rate.%n", getName());
         }
         else {
             if(newRate <= 0) {
@@ -48,35 +46,43 @@ public class Faction {
             }
         }
     }
-    
+
     public void winsSupporters(int percentage) {
-        setNbSupporters(this.nbSupporters * 1 + percentage/100);
+        if(percentage > 0) {
+            setNbSupporters(this.nbSupporters * (1 + percentage/100));
+        }
     }
 
     public void losesSupporters(int percentage) {
-        setSatisfactionRate(this.nbSupporters * 1 - percentage/100);
+        if(percentage > 0) {
+            setSatisfactionRate(this.nbSupporters * (1 - percentage / 100));
+        }
     }
 
     public void increaseSatisfactionBy(int percentagePoint) {
-        setSatisfactionRate(this.satisfactionRate + percentagePoint);
+        if(percentagePoint > 0) {
+            setSatisfactionRate(this.satisfactionRate + percentagePoint);
+        }
     }
 
     public void decreaseSatisfactionBy(int percentagePoint) {
-        setSatisfactionRate(this.satisfactionRate - percentagePoint);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Faction: %s\nSupporters: %s\nSatisfaction: %s\n", getName(), getNbSupporters(), getSatisfactionRate());
+        if(percentagePoint > 0) {
+            setSatisfactionRate(this.satisfactionRate - percentagePoint);
+        }
     }
 
     public int getBribePrice() {
         return getNbSupporters() * 15; // TODO '15' à mettre dans une constante qque part ?
     }
 
-    public void bribe() { // TODO Decrease the treasury by bribePrice
+    public void bribe() { // TODO Diminuer la trésorerie par getBribePrice()
         increaseSatisfactionBy(10); // TODO '10' pareil que le TODO de getBribePrice()
         events.notify("bribe", this);
         // TODO System.out.println("You don't have enough money to bribe " + getName() + " faction!");
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Faction: %s%nSupporters: %s%nSatisfaction: %s%n", getName(), getNbSupporters(), getSatisfactionRate());
     }
 }

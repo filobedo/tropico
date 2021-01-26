@@ -1,6 +1,6 @@
 package Main;
 
-import Economy.Tresory;
+import ressources.economy.Tresory;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,8 +1,8 @@
-import Economy.Tresory;
+import ressources.economy.Tresory;
 import org.junit.Test;
 import org.junit.Assert;
 
-public class testEconomy {
+public class EconomyTest {
     @Test
     public void test_update_farm() {
         Tresory tresory = new Tresory();
