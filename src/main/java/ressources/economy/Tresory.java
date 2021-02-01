@@ -9,24 +9,28 @@ public class Tresory {
         this.myFarm = new Farm();
     }
 
-    public Tresory(int startFarmRessource, int startIndustryRessource, int startMarkerFarm, int startMarkerIndustry) {
-        this.myIndustry = new Industry(startIndustryRessource, startMarkerIndustry);
-        this.myFarm = new Farm(startFarmRessource, startMarkerFarm);
+    public Tresory(int startFarmRessource, int startIndustryRessource, int startRateFarm, int startRateIndustry) throws IllegalArgumentException {
+        if(!checkMarker(startRateFarm, startRateIndustry)) {
+            throw new IllegalArgumentException("error rate");
+        }
+
+        this.myIndustry = new Industry(startIndustryRessource, startRateIndustry);
+        this.myFarm = new Farm(startFarmRessource, startRateFarm);
     }
 
     public Boolean updateFarmMarker(int newFarmMarker) {
-        if(!checkMarker(newFarmMarker, this.myIndustry.getMarker())) {
+        if(!checkMarker(newFarmMarker, this.myIndustry.getRate())) {
             return false;
         }
-        this.myFarm.setMarker(newFarmMarker);
+        this.myFarm.setRate(newFarmMarker);
         return true;
     }
 
     public Boolean updateIndustryMarker(int newIndustryMarker) {
-        if(!checkMarker(newIndustryMarker, this.myFarm.getMarker())) {
+        if(!checkMarker(newIndustryMarker, this.myFarm.getRate())) {
             return false;
         }
-        this.myIndustry.setMarker(newIndustryMarker);
+        this.myIndustry.setRate(newIndustryMarker);
         return true;
     }
 
@@ -40,25 +44,25 @@ public class Tresory {
         return true;
     }
 
-    public int getFarmMarker() {
-        return this.myFarm.getMarker();
+    public int getFarmRate() {
+        return this.myFarm.getRate();
     }
 
-    public int getIndustryMarker() {
-        return this.myIndustry.getMarker();
+    public int getIndustryRate() {
+        return this.myIndustry.getRate();
     }
 
     //get ressources this year
     private int getIncomeIndustry() {
         int res = 0;
-        res = this.getIndustryMarker() * 10;
+        res = this.getIndustryRate() * 10;
         return res;
     }
 
     //get ressources this year
     private int getIncomeFarm() {
         int res = 0;
-        res = this.getFarmMarker() * 40;
+        res = this.getFarmRate() * 40;
         return res;
     }
 
