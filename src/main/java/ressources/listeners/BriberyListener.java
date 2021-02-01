@@ -3,7 +3,7 @@ package ressources.listeners;
 import ressources.factions.Faction;
 
 public class BriberyListener implements EventListener {
-    private Faction faction;
+    private final Faction faction;
 
     public BriberyListener(Faction faction) {
         this.faction = faction;
