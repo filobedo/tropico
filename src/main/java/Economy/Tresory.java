@@ -9,6 +9,11 @@ public class Tresory {
         this.myFarm = new Farm();
     }
 
+    public Tresory(int startFarmRessource, int startIndustryRessource, int startMarkerFarm, int startMarkerIndustry) {
+        this.myIndustry = new Industry(startIndustryRessource, startMarkerIndustry);
+        this.myFarm = new Farm(startFarmRessource, startMarkerFarm);
+    }
+
     public Boolean updateFarmMarker(int newFarmMarker) {
         if(!checkMarker(newFarmMarker, this.myIndustry.getMarker())) {
             return false;
@@ -82,7 +87,7 @@ public class Tresory {
 
 
     public Tresory eat(int people) {
-        int res = this.getFood() - (people * 4);
+        int res = getFood() - (people * 4);
         this.myFarm.setRessource(res);
         return this; // Quoi retourner en fonction de la consommation de la bouffe ?
     }
@@ -94,6 +99,18 @@ public class Tresory {
 
     public Tresory addMoney(int amount) {
         this.myIndustry.setRessource(this.getMoney() + amount);
+        return this;
+    }
+
+    public int simulatePriceBuyingFood(int quantity) {
+        return quantity * 8;
+    }
+
+    // Au main de vérifier si on ne passe pas en dessous de 0 en bouffe
+    public Tresory buyFood(int quantity) {
+        int res = quantity * 8;
+        useMoney(res);
+        addBonusFarm(res);
         return this;
     }
 }

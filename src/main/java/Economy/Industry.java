@@ -4,6 +4,12 @@ public class Industry implements Development {
     int marker = 0;
     int ressource = 0; // Food
 
+    Industry() {}
+    Industry (int startIndustryRessource, int startMarker) {
+        this.marker = startMarker;
+        this.ressource = startIndustryRessource;
+    }
+
     protected int getRessource() {
         return ressource;
     }
