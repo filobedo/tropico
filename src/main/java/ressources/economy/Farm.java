@@ -4,6 +4,12 @@ public class Farm implements Development {
     int marker = 0;
     int ressource = 0; // Food
 
+    Farm() {}
+    Farm (int startFarmRessource, int startMarker) {
+        this.marker = startMarker;
+        this.ressource = startFarmRessource;
+    }
+
     protected int getRessource() {
         return ressource;
     }
