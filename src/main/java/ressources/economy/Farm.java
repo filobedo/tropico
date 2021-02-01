@@ -1,12 +1,12 @@
 package ressources.economy;
 
 public class Farm implements Development {
-    int marker = 0;
+    int rate = 0;
     int ressource = 0; // Food
 
     Farm() {}
-    Farm (int startFarmRessource, int startMarker) {
-        this.marker = startMarker;
+    Farm (int startFarmRessource, int startRate) {
+        this.rate = startRate;
         this.ressource = startFarmRessource;
     }
 
@@ -18,11 +18,11 @@ public class Farm implements Development {
         this.ressource = ressource;
     }
 
-    public int getMarker() {
-        return marker;
+    public int getRate() {
+        return rate;
     }
 
-    protected void setMarker(int marker) {
-        this.marker = marker;
+    protected void setRate(int rate) {
+        this.rate = rate;
     }
 }
