@@ -7,8 +7,13 @@ public abstract class Faction {
     private int satisfactionRate;
     public EventManager events;
 
-    public Faction(int nbSupporters, int satisfactionRate) {
-        // TODO : conditions ???? satisfactionRate & nbSupporters cannot be negative
+    public Faction(int nbSupporters, int satisfactionRate) throws IllegalArgumentException {
+        if(nbSupporters < 0) {
+            throw new IllegalArgumentException("Number of supporters can't be a negative value!");
+        }
+        if(satisfactionRate < 0 || satisfactionRate > 100) {
+            throw new IllegalArgumentException("The satisfaction rate must be between 0 and 100!");
+        }
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
         this.events = new EventManager("bribe");
@@ -27,7 +32,12 @@ public abstract class Faction {
     }
 
     public void setNbSupporters(int nbSupporters) {
-        this.nbSupporters = nbSupporters;
+        if(nbSupporters >= 0) {
+            this.nbSupporters = nbSupporters;
+        }
+        else {
+            this.nbSupporters = 0;
+        }
     }
 
     public void setSatisfactionRate(int newRate) {
@@ -47,36 +57,27 @@ public abstract class Faction {
         }
     }
 
-    public void winsSupporters(int percentage) {
-        if(percentage > 0) {
-            setNbSupporters(this.nbSupporters * (1 + percentage/100));
-        }
+    public void updateNbSupportersBy(int percentage) {
+        int newNbSupporters = (int)(this.nbSupporters * (1 + (double)percentage/100));
+        setNbSupporters(newNbSupporters);
     }
 
-    public void losesSupporters(int percentage) {
-        if(percentage > 0) {
-            setSatisfactionRate(this.nbSupporters * (1 - percentage / 100));
-        }
-    }
-
-    public void increaseSatisfactionBy(int percentagePoint) {
-        if(percentagePoint > 0) {
-            setSatisfactionRate(this.satisfactionRate + percentagePoint);
-        }
-    }
-
-    public void decreaseSatisfactionBy(int percentagePoint) {
-        if(percentagePoint > 0) {
-            setSatisfactionRate(this.satisfactionRate - percentagePoint);
-        }
+    public void updateSatisfactionRate(int percentagePoint) {
+        setSatisfactionRate(this.satisfactionRate + percentagePoint);
     }
 
     public int getBribePrice() {
-        return getNbSupporters() * 15; // TODO '15' à mettre dans une constante qque part ?
+        if(this.getClass() != Loyalists.class) {
+            return getNbSupporters() * 15; // TODO '15' à mettre dans une constante qque part ? + Changer selon la difficulté
+        }
+        else { // TODO Les println, faut-il faire des exceptions à la place ou les garder printer pour le joueur
+            System.out.println("Since Loyalists cannot be bribed, they don't have a bribe price");
+            return 0;
+        }
     }
 
-    public void bribe() { // TODO Diminuer la trésorerie par getBribePrice()
-        increaseSatisfactionBy(10); // TODO '10' pareil que le TODO de getBribePrice()
+    public void bribe() { // TODO Diminuer la trésorerie par getBribePrice() dans une autre classe
+        updateSatisfactionRate(10); // TODO '10' pareil que le TODO de getBribePrice()
         events.notify("bribe", this);
         // TODO System.out.println("You don't have enough money to bribe " + getName() + " faction!");
     }
