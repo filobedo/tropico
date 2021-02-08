@@ -1,9 +1,10 @@
 package ressources.factions;
 
 public class FactionFactory {
+
     public Faction createFaction(String name, int nbSupporters, int satisfactionRate) throws ClassNotFoundException{
+        if(name == null) { return null; }
         String factionName = name.toUpperCase();
-        if(factionName == null) { return null; }
         switch (factionName) {
             case "CAPITALISTS":
                 return new Capitalists(nbSupporters, satisfactionRate);
@@ -25,4 +26,5 @@ public class FactionFactory {
                 throw new ClassNotFoundException("Invalid class name!");
         }
     }
+
 }

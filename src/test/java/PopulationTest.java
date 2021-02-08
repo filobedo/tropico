@@ -13,6 +13,7 @@ import java.util.Properties;
 public class PopulationTest extends TestCase {
     private Population population;
     private static final String resourcesPath = "src/test/resources/";
+
     protected void setUp() {
         try {
             population = new Population(resourcesPath + "proper-population-infos.properties");
@@ -81,13 +82,9 @@ public class PopulationTest extends TestCase {
         assertTrue(createdFaction instanceof Faction);
     }
 
-    public void test_create_and_get_faction_throws_class_not_found_exception() {
-        try {
-            Faction createdFaction = population.createAndGetFaction("FakeFaction", 50, 100);
-            Assert.fail("ClassNotFoundException not thrown in " + this.getName());
-        } catch (Exception ex) {
-            assertEquals(ClassNotFoundException.class, ex.getClass());
-        }
+    public void test_create_and_get_faction_can_return_null() {
+        Faction createdFaction = population.createAndGetFaction("FakeFaction", 50, 100);
+        assertEquals(null, createdFaction);
     }
 
     public void test_factions_subscribe_to_bribe_event() {

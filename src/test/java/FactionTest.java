@@ -141,5 +141,10 @@ public class FactionTest extends TestCase {
         assertEquals(100, liberals.getSatisfactionRate());
     }
 
-    // TODO test         - eliminateASupporter();
+    public void test_eliminate_a_supporter() {
+        int nbSupporters = liberals.getNbSupporters();
+        liberals.eliminateASupporter();
+        int expectedNbSupporters = nbSupporters - 1;
+        assertEquals(expectedNbSupporters, liberals.getNbSupporters());
+    }
 }
