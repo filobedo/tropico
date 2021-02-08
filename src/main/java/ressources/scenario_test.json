@@ -1,0 +1,102 @@
+{
+  "name": "Partie classique",
+  "scenario": [
+    {
+      "season": "Été",
+      "events": [
+        {
+          "name": "Catastrophe ! Une météorite est tombée !",
+          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son impact !",
+          "irreversible": {
+            "population": -15,
+            "farm": -2,
+            "industry": -5
+          },
+          "choices": [
+            {
+              "name": "Déblayer",
+              "description": "Vous gagnerez de la thunas",
+              "impact":
+                {
+                  "money": 150,
+                  "factions": [
+                    {
+                      "name": "Capitalistes",
+                      "satisfaction": 10,
+                      "supporters": 5
+                    },
+                    {
+                      "name": "Environmentalistes",
+                      "satisfaction": -10
+                    }
+                  ]
+                }
+            },
+            {
+              "name": "Laisser",
+              "description": "vous gagnerez de la fertilité",
+              "impact":
+                {
+                  "farm": 15
+                }
+            }
+          ]
+        },
+        {
+          "name": "Une sécheresse s'est déclaré !",
+          "description": "Notre population crie famine, vous devez faire quelques choses !",
+          "irreversible": {
+            "population": -5,
+            "farm": -10
+          },
+          "choices": [
+            {
+              "name": "Vider les réserve d'eau",
+              "description": "Empêchera la dimiinution de la population",
+              "impact":
+                {
+                  "money": -100
+                }
+            },
+            {
+              "name": "Ne rien faire",
+              "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
+              "impact":
+                {
+                  "population": -15
+                }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "season": "Hiver",
+      "events": [
+        {
+          "name": "Catastrophe ! Une tempête de neige !",
+          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+          "choices": [
+            {
+              "name": "Déblayer",
+              "description": "Vous résoudrez les problèmes de transit.",
+              "impact":
+                {
+                  "money": -200
+                }
+            },
+            {
+              "name": "S'en fiche",
+              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+              "impact":
+                {
+                  "farm": -15,
+                  "industry": -15
+                }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
