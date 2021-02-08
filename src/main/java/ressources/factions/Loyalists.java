@@ -6,7 +6,7 @@ public class Loyalists extends Faction{
     }
 
     @Override
-    public void bribe() { // TODO Decrease the treasury by bribePrice
+    public void bribe() {
         System.out.printf("You cannot bribe %s!%n", getName());
     }
 }
