@@ -1,0 +1,7 @@
+.DS_Store
+.idea/*
+Tropico.iml
+pom.xml
+target/*
+src/main/java/.DS_Store
+src/.DS_Store
