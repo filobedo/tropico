@@ -16,7 +16,12 @@ public abstract class Faction {
         }
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
-        this.events = new EventManager("bribe");
+        if(this.getClass() != Loyalists.class) {
+            this.events = new EventManager("bribe");
+        }
+        else {
+            this.events = null;
+        }
     }
 
     public String getName() {
@@ -64,6 +69,10 @@ public abstract class Faction {
 
     public void updateSatisfactionRate(int percentagePoint) {
         setSatisfactionRate(this.satisfactionRate + percentagePoint);
+    }
+
+    public void eliminateASupporter() {
+        setNbSupporters(getNbSupporters() - 1);
     }
 
     public int getBribePrice() {

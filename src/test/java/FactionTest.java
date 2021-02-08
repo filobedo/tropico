@@ -1,6 +1,5 @@
 import junit.framework.TestCase;
 import org.junit.Assert;
-import org.junit.Test;
 import ressources.factions.*;
 import ressources.listeners.BriberyListener;
 
@@ -11,7 +10,6 @@ public class FactionTest extends TestCase {
         liberals = new Liberals(40, 100);
     }
 
-    @Test(expected = IllegalArgumentException.class)
     public void test_faction_constructor_can_throw_exception_when_negative_nb_supporters() {
         try {
             Faction faction = new Communists(-1, 100);
@@ -142,4 +140,6 @@ public class FactionTest extends TestCase {
         liberals.bribe();
         assertEquals(100, liberals.getSatisfactionRate());
     }
+
+    // TODO test         - eliminateASupporter();
 }
