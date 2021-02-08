@@ -10,7 +10,7 @@ public class Tresory {
     }
 
     public Tresory(int startFarmRessource, int startIndustryRessource, int startRateFarm, int startRateIndustry) throws IllegalArgumentException {
-        if(!checkMarker(startRateFarm, startRateIndustry)) {
+        if(!checkRateStart(startRateFarm, startRateIndustry)) {
             throw new IllegalArgumentException("error rate");
         }
 
@@ -18,27 +18,38 @@ public class Tresory {
         this.myFarm = new Farm(startFarmRessource, startRateFarm);
     }
 
-    public Boolean updateFarmMarker(int newFarmMarker) {
-        if(!checkMarker(newFarmMarker, this.myIndustry.getRate())) {
-            return false;
+    public Boolean updateFarmRate(int newFarmRate) {
+        int updateValue = checkRate(newFarmRate, this.myIndustry.getRate());
+        if(updateValue != newFarmRate) {
+            this.myFarm.setRate(updateValue);
+        } else {
+            this.myFarm.setRate(updateValue);
         }
-        this.myFarm.setRate(newFarmMarker);
         return true;
     }
 
-    public Boolean updateIndustryMarker(int newIndustryMarker) {
-        if(!checkMarker(newIndustryMarker, this.myFarm.getRate())) {
-            return false;
+    public Boolean updateIndustryRate(int newIndustryRate) {
+        int updateValue = checkRate(newIndustryRate, this.myFarm.getRate());
+        if(updateValue != newIndustryRate) {
+            this.myIndustry.setRate(updateValue);
+        } else {
+            this.myIndustry.setRate(updateValue);
         }
-        this.myIndustry.setRate(newIndustryMarker);
         return true;
     }
 
-    private Boolean checkMarker(int newMarker, int otherOneMarker) {
+    private int checkRate(int newMarker, int otherOneMarker) {
         if (newMarker + otherOneMarker > 100) {
-            return false;
+            return 100 - otherOneMarker;
         }
         if (newMarker + otherOneMarker < 0) {
+            return 0;
+        }
+        return newMarker;
+    }
+
+    private Boolean checkRateStart(int newMarker, int otherOneMarker) {
+        if (newMarker + otherOneMarker > 100 || newMarker + otherOneMarker < 0) {
             return false;
         }
         return true;
