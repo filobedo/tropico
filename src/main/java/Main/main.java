@@ -9,12 +9,12 @@ public class main {
 
         //update des markers
         Boolean res;
-        res = tresory.updateFarmMarker(10);
-        System.out.println(res + " - farm : " + tresory.getFarmMarker() + " industry : " + tresory.getIndustryMarker());
-        res = tresory.updateFarmMarker(-80);
-        System.out.println(res + " - farm : " + tresory.getFarmMarker() + " industry : " + tresory.getIndustryMarker());
-        res = tresory.updateFarmMarker(10);
-        System.out.println(res + " - farm : " + tresory.getFarmMarker() + " industry : " + tresory.getIndustryMarker());
+        res = tresory.updateFarmRate(10);
+        System.out.println(res + " - farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
+        res = tresory.updateFarmRate(-80);
+        System.out.println(res + " - farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
+        res = tresory.updateFarmRate(10);
+        System.out.println(res + " - farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
 
     }
 }
