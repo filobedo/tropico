@@ -1,5 +1,6 @@
 package ressources.factions;
 
+import ressources.game.GameRules;
 import ressources.publisher.EventManager;
 
 public abstract class Faction {
@@ -77,18 +78,17 @@ public abstract class Faction {
 
     public int getBribePrice() {
         if(this.getClass() != Loyalists.class) {
-            return getNbSupporters() * 15; // TODO '15' à mettre dans une constante qque part ? + Changer selon la difficulté
+            return getNbSupporters() * GameRules.BRIBE_PRICE_BY_SUPPORTER;
         }
         else { // TODO Les println, faut-il faire des exceptions à la place ou les garder printer pour le joueur
-            System.out.println("Since Loyalists cannot be bribed, they don't have a bribe price");
+            System.out.println("Il n'est pas possible de verser un pot de vin aux loyalists !");
             return 0;
         }
     }
 
-    public void bribe() { // TODO Diminuer la trésorerie par getBribePrice() dans une autre classe
-        updateSatisfactionRate(10); // TODO '10' pareil que le TODO de getBribePrice()
+    public void bribe() {
+        updateSatisfactionRate(GameRules.BRIBE_SATISFACTION_RATE);
         events.notify("bribe", this);
-        // TODO System.out.println("You don't have enough money to bribe " + getName() + " faction!");
     }
 
     @Override

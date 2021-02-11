@@ -14,7 +14,7 @@ public class Population {
 
     public Population(String configFilePath) {
         setFactionNamesInFactionByName();
-        setFactionByNameWithConfigProperties(configFilePath);
+        setFactionValuesWithConfigProperties(configFilePath);
     }
 
     public void setFactionNamesInFactionByName() {
@@ -28,7 +28,7 @@ public class Population {
         factionByName.put(Religious.class.getSimpleName(), null);
     }
 
-    public void setFactionByNameWithConfigProperties(String configFilePath) {
+    public void setFactionValuesWithConfigProperties(String configFilePath) {
         try (FileReader reader = new FileReader(configFilePath)) {
             Properties properties = new Properties();
             properties.load(reader);
@@ -52,9 +52,6 @@ public class Population {
                 Faction currentFaction = createAndGetFaction(currentFactionName, nbSupporters, satisfactionRate);
                 factionsSet.setValue(currentFaction);
             }
-            // TODO Demander à Fred et Mehdi :
-            //  Si dans le fichier de properties il y a une faction qui n'existe pas dans l'app, on s'en fou
-
             else {
                 String exceptionMessage = String.format("%s faction doesn't exist in config properties!", currentFactionName);
                 throw new ConfigurationException(exceptionMessage);

@@ -1,43 +1,35 @@
 package Main;
 
-import ressources.game.Game;
-import ressources.game.GameParameters;
-import ressources.game.SandboxMode;
-import ressources.game.ScenarioMode;
+import ressources.game.*;
 
-import java.util.Scanner;
+import java.io.File;
 
 public class main {
     public static void main(String[] args) {
-        Scanner playerInput = new Scanner(System.in);
+        Game game = null;
+        game.displayIntroduction();
         GameParameters gameParameters = new GameParameters();
-        Game.introduction();
+        gameParameters.askPlayerGameDifficultyAndMode();
 
-        gameParameters.displayGameModeInstructions();
-        int gameModeChosen = gameParameters.chooseGameMode();
-        gameParameters.setGameMode(gameModeChosen);
-
-        gameParameters.displayGameDifficultyInstructions();
-        int gameDifficultyChosen = gameParameters.chooseGameDifficulty();
-        gameParameters.setGameDifficulty(gameDifficultyChosen);
-
-        // TODO all comments
-
-        // SANDBOX
-        if(gameModeChosen == 1) {
-            Game game = new Game(gameParameters, "SandboxEventFileName", gameDifficultyChosen);
-            // LET'S GO
-            game.play(); // polymorphism
+        String gamePropertiesFilePath = "";
+        if(gameParameters.isGameModeSandbox()) {
+            game = new SandboxGame(gameParameters.getGameDifficulty());
+            gamePropertiesFilePath = gameParameters.sandboxFilePath;
         }
-        // SCENARIO
+        else if(gameParameters.isGameModeScenario()) {
+            game = new ScenarioGame(gameParameters.getGameDifficulty(), "");
+            File[] scenarioList = gameParameters.getScenarioList();
+            gameParameters.displayScenarioListInstructions(scenarioList);
+            gamePropertiesFilePath = gameParameters.chooseScenario(scenarioList);
+        }
         else {
-            // Choose scenario
-            String scenarioFile = "getTheCorrespondingScenario";
-            Game game = new Game(gameParameters, scenarioFile, gameDifficultyChosen);
-
-            // LET'S GO
-            game.play(); // polymorphism
+            System.exit(0);
         }
+        System.out.println(gamePropertiesFilePath);
 
+        game.loadGameProperties(gamePropertiesFilePath);
+
+        // LET'S GO
+        game.play();
     }
 }

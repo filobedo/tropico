@@ -1,33 +1,46 @@
 package ressources.game;
 import ressources.economy.Tresory;
 import ressources.event.Event;
+import ressources.factions.Faction;
 import ressources.factions.Population;
 
-public class Game {
+public abstract class Game {
+    private double score;
     private Tresory treasury;
     private Population population;
-    private Event event;
-    private GameParameters gameParameters;
+    private Event event; // EventS ?
+    private final GameDifficulty gameDifficulty;
 
-    public Game(GameParameters gameParameters, String file, int difficulty) {
-        this.treasury = new Tresory();
-        this.gameParameters = gameParameters;
-        try {
-//            this.population = new Population("");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public Game(GameDifficulty gameDifficulty) {
+        this.gameDifficulty = gameDifficulty;
     }
 
-    public void setTreasury(Tresory treasury) {
-        this.treasury = treasury;
+    public double getScore() {
+        return score;
     }
 
-    public void setPopulation(Population population) {
-        this.population = population;
+    public Tresory getTreasury() {
+        return treasury;
     }
 
-    public static void introduction() {
+    public Population getPopulation() {
+        return population;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public GameDifficulty getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public void setScore(double score) {
+        // TODO score négatif possible ?
+        this.score = score;
+    }
+
+    public static void displayIntroduction() {
         String welcome = "\"Bonjour et bienvenue dans un jeu vidéo à la croisée entre Tropico et Reigns !\"";
         String gameRole = "\"Vous incarnerez un jeune dictateur en herbe sur une île tropicale, fraîchement élu comme Président.";
         String gameGoal = "Vous aurez la lourde tâche de faire prospérer cette nouvelle mini-république.\"";
@@ -37,21 +50,41 @@ public class Game {
         System.out.println("===================");
     }
 
-    public void play() {
-        System.out.printf("\nVous avez lancé une partie en mode \"%s\" ", gameParameters.getGameMode().toString());
-        System.out.printf("en difficulté \"%s\".\n", gameParameters.getGameDifficulty());
-        System.out.println("\nLancement du jeu...");
-        gameParameters.getGameMode().play();
+    public void loadGameProperties(String file) {
+
     }
 
-    /*public void bribe(Faction faction) {
-        if(faction.getBribePrice() <= this.treasury) {
-            faction.bribe();
-            useTreasury(faction.getBribePrice());
-            events.notify("bribe", faction);
+    public void play() throws NullPointerException{
+        if(getPopulation() != null && getTreasury() != null) {
+            System.out.printf("\nVous avez lancé une partie en mode \"%s\" ", this.toString());
+            System.out.printf("en difficulté \"%s\".\n", getGameDifficulty());
+            System.out.println("\nLancement du jeu...");
         }
         else {
-            System.out.println("You don't have enough money to bribe " + faction.getName() + " faction!");
+            System.out.println("Arrêt du jeu...");
+            throw new NullPointerException("Game properties are not set.");
         }
-    }*/
+    }
+
+    public boolean hasPlayerLost() {
+        if(getPopulation().getTotalPopulation() > 0) {
+            return getPopulation().getGlobalSatisfactionRate() < 50.0;
+        }
+        return false;
+    }
+
+    public void bribe(String factionName) {
+        Faction faction = this.population.getFaction(factionName);
+        if(faction.getBribePrice() <= this.treasury.getMoney()) {
+            faction.bribe();
+            treasury.useMoney(faction.getBribePrice());
+        }
+        else {
+            System.out.println("Vous n'avez pas assez d'argent pour faire un pot de vin aux " + faction.getName() + " !");
+        }
+    }
+
+    public void addScore(double points) {
+        setScore(getScore() + points);
+    }
 }

@@ -1,0 +1,394 @@
+{
+  "name": "Cold War: The USSR version",
+  "story": "1947: Dans un monde bipolaire, la tension fait rage... Deux blocs mènent une guerre indirecte et systématique dans tous les domaines. D'une part, le bloc bleu des États Unis et ses alliés et d'autre part le bloc rouge mené par l'URSS. Saurez-vous gérer la tension et éviter un affrontement direct entre ces deux superpuissances?",
+  "gameStartParameters": {
+    "NORMAL": {
+      "agricultureRate": 45,
+      "industryRate": 25,
+      "treasury": 800,
+      "foodUnits": 1000,
+      "factions": {
+        "CAPITALISTS": {
+          "name": "Capitalists",
+          "satisfactionRate": 40,
+          "nbSupporters": 15
+        },
+        "COMMUNISTS": {
+          "name": "Communists",
+          "satisfactionRate": 60,
+          "nbSupporters": 30
+        },
+        "LIBERALS": {
+          "name": "Liberals",
+          "satisfactionRate": 40,
+          "nbSupporters": 18
+        },
+        "RELIGIOUS": {
+          "name": "Religious",
+          "satisfactionRate": 50,
+          "nbSupporters": 17
+        },
+        "MILITARISTS": {
+          "name": "Militarists",
+          "satisfactionRate": 60,
+          "nbSupporters": 28
+        },
+        "ECOLOGISTS": {
+          "name": "Ecologists",
+          "satisfactionRate": 40,
+          "nbSupporters": 15
+        },
+        "LOYALISTS": {
+          "name": "Loyalists",
+          "satisfactionRate": 100,
+          "nbSupporters": 13
+        },
+        "NATIONALISTS": {
+          "name": "Nationalists",
+          "satisfactionRate": 60,
+          "nbSupporters": 16
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "name": "Les attaques indirectes américaines sont font de plus en plus nombreuses",
+      "choices": [
+        {
+          "choice": "Je mets en place une doctrine les désignant comme coupables",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "COMMUNISTS": 20,
+                "NATIONALISTS": -10,
+                "CAPITALISTS": -20
+              }
+            }
+          ],
+          "relatedEvents": [
+            {
+              "name": "Ils ripostent en créeant le mythe de l'American dream pour montrer au monde entier qu'ils sont meilleurs",
+              "choices": [
+                {
+                  "choice": "Je riposte plus fort en alliant plus de pays à ma cause",
+                  "effects": [
+                    {
+                      "actionOnFaction": {
+                        "CAPITALISTS": -10,
+                        "RELIGIOUS": -5,
+                        "MILITARISTS": 10,
+                        "NATIONALISTS": -5,
+                        "COMMUNISTS": 23,
+                        "LIBERALS": -15
+                      }
+                    },
+                    {
+                      "actionOnFactor": {
+                        "TREASURY": -150
+                      }
+                    }
+                  ]
+                },
+                {
+                  "choice": "J'aurais l'occasion de montrer que c'est faux",
+                  "effects": [
+                    {
+                      "actionOnFaction": {
+                        "COMMUNISTS": -12,
+                        "NATIONALISTS": -15
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "choice": "Je ne fais rien j'attends que ça passe",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "COMMUNISTS": -10,
+                "NATIONALISTS": -17,
+                "CAPITALISTS": 5
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Vous devez créer une alliance militaire",
+      "choices": [
+        {
+          "choice": "Je crée une alliance pour que tous mes alliés me protègent",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": 15,
+                "COMMUNISTS": 15,
+                "RELIGIOUS": -10
+              }
+            },
+            {
+              "actionOnFactor": {
+                "TREASURY": -200,
+                "INDUSTRY": 10
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Les Américains menacent mes alliés ",
+      "choices": [
+        {
+          "choice": "J'essaie de négocier avec eux pour arrêter",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": -10,
+                "NATIONALISTS": -10,
+                "COMMUNISTS": -20
+              }
+            }
+          ],
+          "relatedEvents": [
+            {
+              "name": "Les Américains ne veulent pas négocier",
+              "choices": [
+                {
+                  "choice": "Je perd cet affrontement",
+                  "effects": [
+                    {
+                      "actionOnFaction": {
+                        "COMMUNISTS": -12,
+                        "MILITARISTS": -12,
+                        "NATIONALISTS": -15,
+                        "CAPITALISTS": 10
+                      }
+                    },
+                    {
+                      "actionOnFactor": {
+                        "TREASURY": -150
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "choice": "J'envoie un convoi militaire en leur direction'",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": 20,
+                "LOYALISTS": 10,
+                "NATIONALISTS": 10,
+                "COMMUNISTS": 10
+              }
+            },
+            {
+              "actionOnFactor": {
+                "INDUSTRY": 10,
+                "TREASURY": -250
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Les Américains entament une course à l'espace",
+      "choices": [
+        {
+          "choice": "Je leur montre que nous pouvons mieux faire",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": 20,
+                "NATIONALISTS": 10,
+                "ECOLOGISTS": -10
+              },
+              "actionOnFactor": {
+                "TREASURY": -150,
+                "INDUSTRY": 13
+              }
+            }
+          ]
+        },
+        {
+          "choice": "Je les laisse dépenser leur ressources",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": -10,
+                "NATIONALISTS": -10,
+                "CAPITALISTS": 5,
+                "ECOLOGISTS": 11
+              }
+            },
+            {
+              "actionOnFactor": {
+                "TREASURY": 200
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Il temps d'équilibrer les forces entre votre alliance et le camps adverse",
+      "choices": [
+        {
+          "choice": "Je développe mon armement",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "COMMUNISTS": 10,
+                "ECOLOGISTS": -10,
+                "MILITARISTS": 20
+              }
+            },
+            {
+              "actionOnFactor": {
+                "TREASURY": -150,
+                "INDUSTRY": 15
+              }
+            }
+          ],
+          "relatedEvents": [
+            {
+              "name": "Vous avez développé des armes de dissuasion",
+              "choices": [
+                {
+                  "choice": "Vous gagnez de l'influence",
+                  "effects": [
+                    {
+                      "actionOnFaction": {
+                        "CAPITALISTS": 5,
+                        "MILITARISTS": 18,
+                        "LIBERALS": 3,
+                        "COMMUNISTS": 19
+                      }
+                    },
+                    {
+                      "actionOnFactor": {
+                        "TREASURY": 80
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "choice": "Je laisse mes adverses prendre le dessus le temps d'économiser",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": -22
+              }
+            },
+            {
+              "actionOnFactor": {
+                "TREASURY": 500
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Les Américains sont à deux doigts de dissoudre mon alliance",
+      "choices": [
+        {
+          "choice": "Je fais un discours où j'engage des négociations'",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "MILITARISTS": 13,
+                "COMMUNISTS": 15,
+                "RELIGIOUS": 7
+              }
+            }
+          ],
+          "relatedEvents": [
+            {
+              "name": "Les Américains acceptent les négociations",
+              "choices": [
+                {
+                  "choice": "Je les paie",
+                  "effects": [
+                    {
+                      "actionOnFaction": {
+                        "RELIGIOUS": 6,
+                        "MILITARISTS": -10,
+                        "NATIONALISTS": -5,
+                        "COMMUNISTS": -10
+                      }
+                    },
+                    {
+                      "actionOnFactor": {
+                        "TREASURY": -150,
+                        "INDUSTRY": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "choice": "J'envoie une bombe nucléaire en direction de Washington",
+          "effects": [
+            {
+              "actionOnFaction": {
+                "ECOLOGISTS": -20,
+                "COMMUNISTS": 10,
+                "NATIONALISTS": -8,
+                "RELIGIOUS": -35
+              }
+            },
+            {
+              "actionOnFactor": {
+                "TREASURY": -350
+              }
+            }
+          ],
+          "relatedEvents": [
+            {
+              "name": "Les Américains ripostent et tout le monde meurt dans une guerre nucléaire",
+              "choices": [
+                {
+                  "choice": "Fin du monde.",
+                  "effects": [
+                    {
+                      "actionOnFaction": {
+                        "ECOLOGISTS": -100,
+                        "CAPITALISTS": -100,
+                        "LOYALISTS": -100,
+                        "LIBERALS": -100,
+                        "RELIGIOUS": -100,
+                        "MILITARISTS": -100,
+                        "NATIONALISTS": -100,
+                        "COMMUNISTS": -100
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
