@@ -12,20 +12,9 @@ public class Population {
     private final HashMap<String, Faction> factionByName = new HashMap<>();
     FactionFactory factionFactory = new FactionFactory();
 
-    public Population(String configFilePath) throws IOException, ConfigurationException {
+    public Population(String configFilePath) {
         setFactionNamesInFactionByName();
-        try (FileReader reader = new FileReader(configFilePath)) {
-            Properties properties = new Properties();
-            properties.load(reader);
-            setFactionValuesInFactionByName(properties);
-            factionsSubscribeToBribeEventExceptLoyalists();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw ex;
-        } catch (ConfigurationException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        setFactionByNameWithConfigProperties(configFilePath);
     }
 
     public void setFactionNamesInFactionByName() {
@@ -37,6 +26,17 @@ public class Population {
         factionByName.put(Militarists.class.getSimpleName(), null);
         factionByName.put(Nationalists.class.getSimpleName(), null);
         factionByName.put(Religious.class.getSimpleName(), null);
+    }
+
+    public void setFactionByNameWithConfigProperties(String configFilePath) {
+        try (FileReader reader = new FileReader(configFilePath)) {
+            Properties properties = new Properties();
+            properties.load(reader);
+            setFactionValuesInFactionByName(properties);
+            factionsSubscribeToBribeEventExceptLoyalists();
+        } catch (IOException | ConfigurationException ex) {
+            ex.printStackTrace();
+        }
     }
 
     // TODO to see -> AbsentInformationException not working
@@ -176,7 +176,7 @@ public class Population {
     }
 
     public int parseInt(String toBeParsed) {
-        if(toBeParsed != "") {
+        if(!toBeParsed.equals("")) {
             return Integer.parseInt(toBeParsed);
         }
         return 0;

@@ -22,24 +22,6 @@ public class PopulationTest extends TestCase {
         }
     }
 
-    public void test_constructor_can_throw_io_exception() {
-        try {
-            Population population1 = new Population(resourcesPath + "wrong_file_name.properties");
-            Assert.fail("IOException not thrown in " + this.getName());
-        } catch (Exception exception){
-            assertEquals(FileNotFoundException.class, exception.getClass());
-        }
-    }
-
-    public void test_constructor_can_throw_configuration_exception_because_missing_faction_infos() {
-        try {
-            Population population = new Population(resourcesPath + "missing-faction-infos.properties");
-            Assert.fail("ConfigurationException not thrown in " + this.getName());
-        } catch (Exception exception){
-            assertEquals(ConfigurationException.class, exception.getClass());
-        }
-    }
-
     public void test_population_factions_values_are_of_type_faction() {
         for(Map.Entry<String, Faction> factionsSet : population.getFactionByName().entrySet()) {
             assertTrue(factionsSet.getValue() instanceof Faction);
@@ -52,7 +34,6 @@ public class PopulationTest extends TestCase {
         }
     }
 
-    // TODO Tous les tests bidon qui assert true
     public void test_loyalists_info_dont_exist_in_config_properties() {
         try (FileReader reader = new FileReader(resourcesPath + "missing-loyalists-infos.properties")) {
             Properties properties = new Properties();
@@ -84,7 +65,7 @@ public class PopulationTest extends TestCase {
 
     public void test_create_and_get_faction_can_return_null() {
         Faction createdFaction = population.createAndGetFaction("FakeFaction", 50, 100);
-        assertEquals(null, createdFaction);
+        assertNull(createdFaction);
     }
 
     public void test_factions_subscribe_to_bribe_event() {
@@ -99,7 +80,7 @@ public class PopulationTest extends TestCase {
 
     public void test_get_faction() {
         Faction noExist = population.getFaction("Fakefaction");
-        assertEquals(null, noExist);
+        assertNull(noExist);
     }
 
     public void test_get_total_population() {
