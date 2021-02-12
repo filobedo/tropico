@@ -2,7 +2,7 @@ package ressources.economy;
 
 public class Industry implements Development {
     int rate = 0;
-    int ressource = 0; // Food
+    int ressource = 0; // money
 
     Industry() {}
     Industry (int startIndustryRessource, int startRate) {

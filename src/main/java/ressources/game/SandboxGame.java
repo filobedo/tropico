@@ -1,5 +1,7 @@
 package ressources.game;
 
+import org.json.JSONObject;
+
 public class SandboxGame extends Game {
 
     public SandboxGame(GameDifficulty gameDifficulty) {
@@ -7,8 +9,8 @@ public class SandboxGame extends Game {
     }
 
     @Override
-    public void play() {
-        super.play();
+    public void play(JSONObject scenario) {
+        super.play(scenario);
         /*TODO
         *  Chaque année
         *  => 4 tours <=> 4 évènements aléatoires respectant les saisons

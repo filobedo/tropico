@@ -178,4 +178,18 @@ public class GameParameters {
         return this.gameMode == ScenarioGame.class.getSimpleName();
     }
 
+
+    public JSONObject openScenario(String fileName) {
+        File file = new File(fileName);
+        try (InputStream is = new FileInputStream(file)) {
+            JSONTokener token = new JSONTokener(is);
+            JSONObject scenario = new JSONObject(token);
+            return scenario;
+
+//            this.scenario = scenario.getJSONObject("scenario");
+//            this.currentEvent = this.scenario.getJSONObject(0).getJSONArray("events").getJSONObject(0);
+        } catch (IOException e){
+            throw new NullPointerException("Cannot find resource file " + fileName);
+        }
+    }
 }

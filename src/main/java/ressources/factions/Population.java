@@ -1,5 +1,6 @@
 package ressources.factions;
 
+import org.json.JSONObject;
 import ressources.listeners.BriberyListener;
 
 import javax.naming.ConfigurationException;
@@ -11,6 +12,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Population {
     private final HashMap<String, Faction> factionByName = new HashMap<>();
     FactionFactory factionFactory = new FactionFactory();
+
+    public Population() {
+        setFactionNamesInFactionByName();
+    }
 
     public Population(String configFilePath) {
         setFactionNamesInFactionByName();
@@ -38,6 +43,34 @@ public class Population {
             ex.printStackTrace();
         }
     }
+
+
+    private Boolean checkfaction(JSONObject faction) {
+        if(faction.has("satisfactionPercentage") && faction.has("partisans"))
+            return true;
+        return false;
+    }
+
+    public Boolean loadGameProperties(JSONObject faction) {
+
+        for(Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
+            if(!checkGameProperties(faction, factionsSet.getKey()))
+                return false;
+
+            Faction currentFaction = createAndGetFaction(factionsSet.getKey(), faction.getJSONObject(factionsSet.getKey()).getInt("partisans"), faction.getJSONObject(factionsSet.getKey()).getInt("satisfactionPercentage"));
+            factionsSet.setValue(currentFaction);
+        }
+        return true;
+    }
+
+    private Boolean checkGameProperties(JSONObject faction, String factionName) {
+        if(!faction.has(factionName))
+            return false;
+        if(!checkfaction(faction.getJSONObject(factionName)))
+            return false;
+        return true;
+    }
+
 
     // TODO to see -> AbsentInformationException not working
     //  java: package com.sun.jdi does not exist

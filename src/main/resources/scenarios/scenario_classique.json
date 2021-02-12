@@ -3,57 +3,57 @@
   "story": "Une partie démarrant en 2022 ou rien n'a changé par rapport à l'époque actuelle",
   "gameStartParameters": {
     "NORMAL": {
-      "agriculturePercentage": 25,
-      "industryPercentage": 35,
-      "treasury": 1000,
+      "agricultureRate": 45,
+      "industryRate": 25,
+      "treasury": 800,
       "foodUnits": 1000,
       "factions": {
         "CAPITALISTS": {
           "name": "Capitalists",
-          "satisfactionPercentage": 60,
-          "partisans": 30
+          "satisfactionRate": 40,
+          "nbSupporters": 15
         },
         "COMMUNISTS": {
           "name": "Communists",
-          "satisfactionPercentage": 40,
-          "partisans": 15
+          "satisfactionRate": 60,
+          "nbSupporters": 30
         },
         "LIBERALS": {
           "name": "Liberals",
-          "satisfactionPercentage": 60,
-          "partisans": 26
+          "satisfactionRate": 40,
+          "nbSupporters": 18
         },
         "RELIGIOUS": {
           "name": "Religious",
-          "satisfactionPercentage": 50,
-          "partisans": 17
+          "satisfactionRate": 50,
+          "nbSupporters": 17
         },
         "MILITARISTS": {
           "name": "Militarists",
-          "satisfactionPercentage": 50,
-          "partisans": 28
+          "satisfactionRate": 60,
+          "nbSupporters": 28
         },
         "ECOLOGISTS": {
           "name": "Ecologists",
-          "satisfactionPercentage": 40,
-          "partisans": 15
+          "satisfactionRate": 40,
+          "nbSupporters": 15
         },
         "LOYALISTS": {
           "name": "Loyalists",
-          "satisfactionPercentage": 100,
-          "partisans": 13
+          "satisfactionRate": 100,
+          "nbSupporters": 13
         },
         "NATIONALISTS": {
           "name": "Nationalists",
-          "satisfactionPercentage": 60,
-          "partisans": 16
+          "satisfactionRate": 60,
+          "nbSupporters": 16
         }
       }
     }
   },
-  "events": [
+  "season": "Autonme",
+  "scenario": [
     {
-      "season": "Autonme",
       "event": [
         {
           "name": "Catastrophe ! Une météorite est tombée !",
@@ -266,7 +266,6 @@
       ]
     },
     {
-      "name": "printemps",
       "event": [
         {
           "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",

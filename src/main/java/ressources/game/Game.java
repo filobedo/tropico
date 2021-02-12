@@ -1,8 +1,16 @@
 package ressources.game;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import ressources.economy.Tresory;
 import ressources.event.Event;
 import ressources.factions.Faction;
+import ressources.factions.FactionFactory;
 import ressources.factions.Population;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public abstract class Game {
     private double score;
@@ -50,11 +58,18 @@ public abstract class Game {
         System.out.println("===================");
     }
 
-    public void loadGameProperties(String file) {
+    public Boolean loadProperties(JSONObject scenario) {
+        //TODO a refacto
+        this.population = new Population();
+        this.population.loadGameProperties(scenario.getJSONObject("gameStartParameters").getJSONObject("NORMAL").getJSONObject("factions"));
 
+        this.treasury = new Tresory();
+        this.treasury.loadGameProperties(scenario);
+
+        return true;
     }
 
-    public void play() throws NullPointerException{
+    public void play(JSONObject scenario) throws NullPointerException{
         if(getPopulation() != null && getTreasury() != null) {
             System.out.printf("\nVous avez lancé une partie en mode \"%s\" ", this.toString());
             System.out.printf("en difficulté \"%s\".\n", getGameDifficulty());
@@ -83,6 +98,10 @@ public abstract class Game {
             System.out.println("Vous n'avez pas assez d'argent pour faire un pot de vin aux " + faction.getName() + " !");
         }
     }
+
+
+
+
 
     public void addScore(double points) {
         setScore(getScore() + points);

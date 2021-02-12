@@ -1,10 +1,16 @@
 package Main;
 
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import ressources.game.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class main {
+
     public static void main(String[] args) {
         Game game = null;
         game.displayIntroduction();
@@ -27,9 +33,10 @@ public class main {
         }
         System.out.println(gamePropertiesFilePath);
 
-        game.loadGameProperties(gamePropertiesFilePath);
 
         // LET'S GO
-        game.play();
+        JSONObject scenario = gameParameters.openScenario(gamePropertiesFilePath);
+        game.loadProperties(scenario);
+        game.play(scenario);
     }
 }

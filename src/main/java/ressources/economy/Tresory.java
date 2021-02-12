@@ -1,5 +1,10 @@
 package ressources.economy;
 
+import org.json.JSONObject;
+import ressources.factions.Faction;
+
+import java.util.Map;
+
 public class Tresory {
     Industry myIndustry;
     Farm myFarm;
@@ -16,6 +21,26 @@ public class Tresory {
 
         this.myIndustry = new Industry(startIndustryRessource, startRateIndustry);
         this.myFarm = new Farm(startFarmRessource, startRateFarm);
+    }
+
+    public Boolean loadGameProperties(JSONObject parameter) {
+        JSONObject gameNormal = parameter.getJSONObject("gameStartParameters").getJSONObject("NORMAL");
+        if(!checkGameProperties(gameNormal))
+            return false;
+        this.myFarm.setRate(gameNormal.getInt("agricultureRate"));
+        this.myFarm.setRessource(gameNormal.getInt("foodUnits"));
+        this.myIndustry.setRate(gameNormal.getInt("treasury"));
+        this.myIndustry.setRessource(gameNormal.getInt("industryRate"));
+        return true;
+    }
+
+    public Boolean checkGameProperties(JSONObject parameter) {
+            if(!parameter.has("agricultureRate") ||
+                    !parameter.has("industryRate") ||
+                    !parameter.has("treasury") ||
+                    !parameter.has("foodUnits"))
+                return false;
+        return true;
     }
 
     public Boolean updateFarmRate(int newFarmRate) {
