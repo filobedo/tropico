@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class GameParameters {
     private GameDifficulty gameDifficulty;
-    private String gameMode;
+    private String gameModeClass;
 
     private final String or = "ou";
     private final String chooseSandboxGame = "Tapez '1' pour le mode bac à sable";
@@ -28,15 +28,11 @@ public class GameParameters {
         return gameDifficulty;
     }
 
-    public String getGameMode() {
-        return gameMode;
-    }
-
     public void askPlayerGameDifficultyAndMode() {
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();
         String gameModeChosen = getGameModeClass(gameModeIndex);
-        setGameMode(gameModeChosen);
+        setGameModeClass(gameModeChosen);
 
         displayGameDifficultyInstructions();
         int gameDifficultyIndex = chooseGameDifficulty();
@@ -44,8 +40,8 @@ public class GameParameters {
         setGameDifficulty(gameDifficultyChosen);
     }
 
-    public void setGameMode(String gameMode) {
-        this.gameMode = gameMode;
+    public void setGameModeClass(String gameModeClass) {
+        this.gameModeClass = gameModeClass;
     }
 
     public void setGameDifficulty(GameDifficulty gameDifficulty) {
@@ -171,11 +167,11 @@ public class GameParameters {
     }
 
     public boolean isGameModeSandbox() {
-        return this.gameMode == SandboxGame.class.getSimpleName();
+        return this.gameModeClass == SandboxGame.class.getSimpleName();
     }
 
     public boolean isGameModeScenario() {
-        return this.gameMode == ScenarioGame.class.getSimpleName();
+        return this.gameModeClass == ScenarioGame.class.getSimpleName();
     }
 
 
