@@ -28,7 +28,7 @@ public class ScenarioGame extends Game {
          */;
         System.out.println(this.getScenario().getName());
         System.out.println(this.getScenario().getStory());
-        System.out.printf("Nous sommes en %s.\n\n", this.getScenario().getFirstSeason().capitalize());
+        System.out.printf("Nous sommes en %s.%n%n", this.getScenario().getFirstSeason().capitalize());
 
         int year = 1;
         int seasonCount = 0;
@@ -36,23 +36,31 @@ public class ScenarioGame extends Game {
         getScenario().nextEvent(seasonCount);
         while(!hasPlayerLost()) {
             if(!isScenarioFinished()) {
-                System.out.printf("\n- Année %d -\n", year);
+                System.out.printf("%n- Année %d -%n", year);
                 displayCurrentEvent(eventCount);
                 int playerSolutionChoice = getPlayerChoice(getCurrentEvent().getNbChoices());
+                irreversibleEventImpacts();
                 playerChoiceImpacts(playerSolutionChoice);
                 seasonCount += 1;
                 eventCount += 1;
                 getScenario().nextEvent(seasonCount);
                 if(isTimeToYearEndSummary(seasonCount)) {
+                    // Industry and Farm generate money and food
+                    this.getTreasury().generateFarmIncome();
+                    this.getTreasury().generateIndustryIncome();
                     // Year End Summary
-                    //             displayYearEndSummary();
-                    //             displayPlayerYearEndChoices();
-                    //             int playerSaveRepublicChoice = getPlayerChoice();
-                    //             yearEndChoiceImpacts();
-                    //             displayYearEndSummary();
-                    //             foodImpactOnPopulation(checkEnoughFood());
-                    //             addScore(calculateYearEndScore());
+                    displayYearEndSummary(year);
+                    handlePlayerYearEndChoices();
+                    UserInput.pressAnyKeyToContinue();
+                    displayYearEndSummary(year);
+                    // TODO Vérifier le calcul de "eliminateSupportersUntilEnoughFood()" dans population
+                    boolean hasEliminatedSupporters = this.getPopulation().eliminateSupportersUntilEnoughFood(getFoodUnits());
+                    if(!hasEliminatedSupporters) {
+                        // TODO Augmenter la population de 1 à 10% -> manque une fonction dans population -> WILLIAM
+                    }
+                    // TODO addScore(calculateYearEndScore());
                     year += 1;
+
                 }
             }
             else {

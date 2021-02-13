@@ -33,23 +33,23 @@ public class Event {
                 if (year < this.scenario.getJSONObject(season).getJSONArray("events").length()){
                     this.currentEvent = this.scenario.getJSONObject(season).getJSONArray("events").getJSONObject(year);
                 } else {
-                    System.out.println("Error in setCurrEvent method : invalid year value : " + year + "\n");
+                    System.out.println("Error in setCurrEvent method : invalid year value : " + year + "%n");
                 }
             } else {
-                System.out.println("Error in setCurrEvent method : no events in season : " + season + "\n");
+                System.out.println("Error in setCurrEvent method : no events in season : " + season + "%n");
             }
         } else {
-            System.out.println("Error in setCurrEvent method : invalid season value : " + season + "\n");
+            System.out.println("Error in setCurrEvent method : invalid season value : " + season + "%n");
         }
     }
 
     public String getCurrentEvent(){
-        return String.format(this.getEventName() + "\n" + this.getEventDescription() + "\n" + getCurrentEventIrreverssible());
+        return String.format(this.getEventName() + "%n" + this.getEventDescription() + "%n" + getCurrentEventIrreverssible());
     }
 
     private String getCurrentEventIrreverssible() {
         if (this.currentEvent.has("irreversible")){
-            return String.format("Impact direct :\n%s",  this.getImpact(this.currentEvent, "irreversible"));
+            return String.format("Impact direct :%n%s",  this.getImpact(this.currentEvent, "irreversible"));
         }
         return "";
     }
@@ -61,11 +61,11 @@ public class Event {
         JSONObject choice;
         while (i < choicesArray.length()){
             choice = choicesArray.getJSONObject(i);
-            choices += String.format("--- Choix %d ---\n", (i + 1));
-            choices += String.format("%s\n%s\n", choice.getString("name"),  choice.getString("description"));
-            choices += "Effet :\n";
+            choices += String.format("--- Choix %d ---%n", (i + 1));
+            choices += String.format("%s%n%s%n", choice.getString("name"),  choice.getString("description"));
+            choices += "Effet :%n";
             choices += getImpact(choice, "impact");
-            choices += ("\n\n");
+            choices += ("%n%n");
             i += 1;
         }
         return choices;
@@ -75,16 +75,16 @@ public class Event {
         String res = "";
         JSONObject impactJSON = choice.getJSONObject(key);
         if (impactJSON.has("money")){
-            res += String.format("\tArgent : %d\n", impactJSON.getInt("money"));
+            res += String.format("\tArgent : %d%n", impactJSON.getInt("money"));
         }
         if (impactJSON.has("farm")){
-            res += String.format("\tAgriculture : %d\n", impactJSON.getInt("farm"));
+            res += String.format("\tAgriculture : %d%n", impactJSON.getInt("farm"));
         }
         if (impactJSON.has("industry")){
-            res += String.format("\tIndustrie : %d\n", impactJSON.getInt("industry"));
+            res += String.format("\tIndustrie : %d%n", impactJSON.getInt("industry"));
         }
         if (impactJSON.has("population")){
-            res += String.format("\tPopulation : %d\n", impactJSON.getInt("population"));
+            res += String.format("\tPopulation : %d%n", impactJSON.getInt("population"));
         }
         if (impactJSON.has("factions")){
             res += getFactionsImpact(impactJSON.getJSONArray("factions"));
@@ -98,12 +98,12 @@ public class Event {
         JSONObject faction;
         while (i < factions.length()){
             faction = factions.getJSONObject(i);
-            factionImpact += String.format("\t" + faction.getString("name") + " :\n");
+            factionImpact += String.format("\t" + faction.getString("name") + " :%n");
             if (faction.has("supporters")){
-                factionImpact += String.format("\t\tPartisans : " + faction.getInt("supporters") + "\n");
+                factionImpact += String.format("\t\tPartisans : " + faction.getInt("supporters") + "%n");
             }
             if (faction.has("satisfaction")){
-                factionImpact += String.format("\t\tTaux de satisfaction : " + faction.getInt("satisfaction") + "\n");
+                factionImpact += String.format("\t\tTaux de satisfaction : " + faction.getInt("satisfaction") + "%n");
             }
             i += 1;
         }

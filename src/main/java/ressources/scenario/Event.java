@@ -24,10 +24,10 @@ public class Event {
     }
 
     public void display(int nbEvent) {
-        System.out.printf("\nÉvénement %d : %s\n", nbEvent, this.name);
-        System.out.printf("Description : %s\n", this.description);
+        System.out.printf("%nÉvénement %d : %s%n", nbEvent, this.name);
+        System.out.printf("Description : %s%n", this.description);
         if(hasIrreversibleEffects()) {
-            System.out.println("\nImpact(s) direct(s) :");
+            System.out.println("%nImpact(s) direct(s) :");
             this.irreversibleEffects.displayFactionEffects();
             this.irreversibleEffects.displayFactorEffects();
         }
@@ -46,6 +46,10 @@ public class Event {
             choice.display();
             nbChoix += 1;
         }
+    }
+
+    public Effect getIrreversibleEffects() {
+        return irreversibleEffects;
     }
 
     public int getNbChoices() {

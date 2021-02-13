@@ -7,6 +7,6 @@ public class Loyalists extends Faction{
 
     @Override
     public void bribe() {
-        System.out.printf("You cannot bribe %s!%n", getName());
+        System.out.printf("Vous ne pouvez pas verser un pot de vin aux %s!%n", getName());
     }
 }

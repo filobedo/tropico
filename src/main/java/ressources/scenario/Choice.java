@@ -23,7 +23,7 @@ public class Choice {
     }
 
     public void display() {
-        System.out.printf("%s : %s\n", this.name, this.description);
+        System.out.printf("%s : %s%n", this.name, this.description);
         effects.displayFactionEffects();
         effects.displayFactorEffects();
     }

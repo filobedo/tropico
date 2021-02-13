@@ -41,6 +41,9 @@ public class Tresory {
         return true;
     }
 
+    // TODO Valeur negative acceptée
+    // TODO les ifs peuvent être simplifiés regarder l'onglet "Problems"
+    //  de Intellij en bas à gauche de la fenêtre
     public Boolean updateIndustryRate(int newIndustryRate) {
         int updateValue = checkRate(newIndustryRate, this.myFarm.getRate());
         if(updateValue != newIndustryRate) {
@@ -78,16 +81,20 @@ public class Tresory {
 
     //get ressources this year
     private int getIncomeIndustry() {
-        int res = 0;
-        res = this.getIndustryRate() * 10;
-        return res;
+        return this.getIndustryRate() * 10;
     }
 
     //get ressources this year
     private int getIncomeFarm() {
-        int res = 0;
-        res = this.getFarmRate() * 40;
-        return res;
+        return this.getFarmRate() * 40;
+    }
+
+    public void generateIndustryIncome() {
+        addMoney(getIncomeIndustry());
+    }
+
+    public void generateFarmIncome() {
+        addBonusFarm(getIncomeFarm());
     }
 
     public int getFood() {
@@ -140,5 +147,20 @@ public class Tresory {
         useMoney(res);
         addBonusFarm(res);
         return this;
+    }
+
+    public void displaySummary() {
+        StringBuilder treasurySummary = new StringBuilder();
+        treasurySummary.append("Ressources :%n");
+        // Argent
+        treasurySummary.append(String.format("Argent : %d$%n", getMoney()));
+        // IndustryRate
+        treasurySummary.append(String.format("Industrie : %d%%%n",getIndustryRate()));
+        // FarmRate
+        treasurySummary.append(String.format("Agriculture : %d%%%n", getFarmRate()));
+        // Food
+        treasurySummary.append(String.format("Nourriture : %d%n", getFood()));
+
+        System.out.println(treasurySummary);
     }
 }

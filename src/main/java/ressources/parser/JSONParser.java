@@ -163,7 +163,7 @@ public class JSONParser implements IParser{
             }
             return scenario;
         }
-//        System.out.println("\n--- 1ere année --- \n");
+//        System.out.println("%n--- 1ere année --- %n");
 //        return null;
     }
 

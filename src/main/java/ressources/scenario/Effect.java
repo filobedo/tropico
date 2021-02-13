@@ -30,7 +30,7 @@ public class Effect {
                     }
                     factionEffects = deleteLastHyphen(factionEffects);
                 }
-                factionEffects += "\n\t";
+                factionEffects += "%n\t";
             }
             System.out.println(deleteLastHyphen(factionEffects));
         }
@@ -52,7 +52,7 @@ public class Effect {
                     factorEffects += getEffectNameAndValue("Nourriture", factorEffect, false);
                 }
                 if(factorName.equals("treasury")) {
-                    factorEffects += getEffectNameAndValue("Trésor", factorEffect, false);
+                    factorEffects += getEffectNameAndValue("Argent", factorEffect, false);
                 }
                 if(factorName.equals("population")) {
                     factorEffects += getEffectNameAndValue("Population", factorEffect, true);
@@ -66,6 +66,9 @@ public class Effect {
     }
 
     private String getEffectNameAndValue(String effectName, int value, boolean isRate) {
+        if(effectName == "Argent") {
+            return String.format("%s : %s%d$ - ", effectName, intSign(value), Math.abs(value));
+        }
         if(isRate) {
             return String.format("%s : %s%d%% - ", effectName, intSign(value), Math.abs(value));
         }
