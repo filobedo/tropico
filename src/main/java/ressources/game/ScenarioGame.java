@@ -1,6 +1,7 @@
 package ressources.game;
 
 import org.json.JSONObject;
+import ressources.scenario.Event;
 
 public class ScenarioGame extends Game {
     private String name;
@@ -24,47 +25,46 @@ public class ScenarioGame extends Game {
          *  => 4 tours <=> 4 évènements suivant l'ordre du scénario
          *  hasNotLost and scenario not finished
          *  + voir si le joueur peut arrêter le jeu à la fin du bilan
-         */
-        int year = 0;
-        int seasonCount = 0;
+         */;
         System.out.println(this.getScenario().getName());
-//        for(int i = 0; i < scenario.getJSONArray("scenario").length(); i++) {
-//            if (i % 4 == 0 && i != 0) {
-//                year++;
-//                System.out.println("\n--- année suivante ! " + year + " ---\n");
-//            }
-//
-//            System.out.println(scenario.getJSONArray("scenario")
-//                    .getJSONObject(i)
-//                    .getJSONArray("event")
-//                    .getJSONObject(0).getString("name"));
-//        }
-//
-//        System.out.println("\n--- 1ere année --- \n");
+        System.out.println(this.getScenario().getStory());
+        System.out.printf("Nous sommes en %s.\n\n", this.getScenario().getFirstSeason().capitalize());
 
-
-
-//        while(!isScenarioFinished() && !hasPlayerLost()) {
-//            year += 1;
-//            while(seasonCount < 4) {
-//                 Event event = getEvent();
-//                // displayEvent(event);
-//                // int playerSolutionChoice = getPlayerChoice();
-//                // eventImpacts(playerSolutionChoice);
-//                seasonCount += 1;
-//            }
-//            // displayYearEndSummary();
-//            // displayPlayerYearEndChoices();
-//            // int playerSaveRepublicChoice = getPlayerChoice();
-//            // yearEndChoiceImpacts();
-//            // displayYearEndSummary();
-//            // foodImpactOnPopulation(checkEnoughFood());
-//            // addScore(calculateYearEndScore());
-//        }
+        int year = 1;
+        int seasonCount = 0;
+        int eventCount = 1;
+        getScenario().nextEvent(seasonCount);
+        while(!hasPlayerLost()) {
+            if(!isScenarioFinished()) {
+                System.out.printf("\n- Année %d -\n", year);
+                displayCurrentEvent(eventCount);
+                int playerSolutionChoice = getPlayerChoice(getCurrentEvent().getNbChoices());
+                playerChoiceImpacts(playerSolutionChoice);
+                seasonCount += 1;
+                eventCount += 1;
+                getScenario().nextEvent(seasonCount);
+                if(isTimeToYearEndSummary(seasonCount)) {
+                    // Year End Summary
+                    //             displayYearEndSummary();
+                    //             displayPlayerYearEndChoices();
+                    //             int playerSaveRepublicChoice = getPlayerChoice();
+                    //             yearEndChoiceImpacts();
+                    //             displayYearEndSummary();
+                    //             foodImpactOnPopulation(checkEnoughFood());
+                    //             addScore(calculateYearEndScore());
+                    year += 1;
+                }
+            }
+            else {
+                System.out.println("Le scénario est fini. Vous avez gagné la partie.");
+                System.out.println("Voulez-vous continuer en mode bac à sable, ou arrêter de jouer ?");
+                break;
+            }
+        }
     }
 
     public boolean isScenarioFinished() {
-        return getEvent() == null;
+        return getScenario().isScenarioFinished();
     }
 
     @Override

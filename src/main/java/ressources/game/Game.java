@@ -1,18 +1,22 @@
 package ressources.game;
 import org.json.JSONObject;
 import ressources.economy.Tresory;
-import ressources.event.Event;
 import ressources.factions.Faction;
 import ressources.factions.Population;
 import ressources.parser.IParser;
 import ressources.parser.JSONParser;
+import ressources.scenario.Choice;
+import ressources.scenario.Effect;
+import ressources.scenario.Event;
 import ressources.scenario.Scenario;
+
+import java.util.Map;
+import java.util.Scanner;
 
 public abstract class Game {
     private double score;
     private Tresory treasury;
     private Population population;
-    private Event event; // EventS ?
     private final GameDifficulty gameDifficulty;
     private Scenario scenario;
     private IParser parser;
@@ -35,10 +39,6 @@ public abstract class Game {
 
     public Population getPopulation() {
         return population;
-    }
-
-    public Event getEvent() {
-        return event;
     }
 
     public GameDifficulty getGameDifficulty() {
@@ -119,9 +119,96 @@ public abstract class Game {
 
     public boolean hasPlayerLost() {
         if(getPopulation().getTotalPopulation() > 0) {
-            return getPopulation().getGlobalSatisfactionRate() < 50.0;
+            return getPopulation().getGlobalSatisfactionRate() < 25; // TODO Placer ça ailleur
         }
-        return false;
+        return true;
+    }
+
+    public boolean isTimeToYearEndSummary(int seasonCount) {
+        return seasonCount % 4 == 0 && seasonCount != 0;
+    }
+
+    public void displayCurrentEvent(int eventCount) {
+        getScenario().displayCurrentEvent(eventCount);
+    }
+
+    public Event getCurrentEvent() {
+        return getScenario().getCurrentEvent();
+    }
+
+    public int getPlayerChoice(int nbChoice) {
+        Scanner playerInput = new Scanner(System.in);
+        String warning = String.format("\nAttention ! Votre choix est incorrect");
+        try {
+            int playerChoice = playerInput.nextInt();
+            if(playerChoice >= 1 && playerChoice <= nbChoice) {
+                return playerChoice;
+            }
+            else {
+                System.out.println(warning);
+                return getPlayerChoice(nbChoice);
+            }
+        } catch (Exception ex) {
+            System.out.println(warning);
+            return getPlayerChoice(nbChoice);
+        }
+    }
+
+    public void playerChoiceImpacts(int choice) {
+        Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
+        Effect choiceEffects = playerChoice.getEffects();
+        factionImpacts(choiceEffects);
+        factorImpacts(choiceEffects);
+    }
+
+    public void factionImpacts(Effect effect) {
+        Map<String, Map<String, Integer>> factionImpacts = effect.getEffectsByFaction();
+        // Each faction
+        for(Map.Entry<String, Map<String, Integer>> factionEffectsSet: factionImpacts.entrySet()) {
+            String factionName = factionEffectsSet.getKey();
+            Map<String, Integer> effectsOnFaction = factionEffectsSet.getValue();
+            // Each effect on the faction
+            for(Map.Entry<String, Integer> factionEffects: effectsOnFaction.entrySet()) {
+                String factorName = factionEffects.getKey();
+                int factorEffect = factionEffects.getValue();
+                if(factorName.equals("nbSupporters")) {
+                    this.population.updateNbSupportersByFaction(factorEffect, factionName);
+                }
+                if(factorName.equals("satisfactionRate")) {
+                    this.population.updateSatisfactionRateByFaction(factorEffect, factionName);
+                }
+            }
+        }
+    }
+    public void factorImpacts(Effect effect) {
+        Map<String, Integer> factorImpacts = effect.getEffectsByFactor();
+        // Each factor
+        for(Map.Entry<String,Integer> factorEffectsSet: factorImpacts.entrySet()) {
+            String factorName = factorEffectsSet.getKey();
+            int factorEffect = factorEffectsSet.getValue();
+            if(factorName.equals("industryRate")) {
+                this.treasury.updateIndustryRate(factorEffect);
+            }
+            if(factorName.equals("farmRate")) {
+                this.treasury.updateFarmRate(factorEffect);
+            }
+            if(factorName.equals("foodUnits")) {
+                this.treasury.addBonusFarm(factorEffect);
+            }
+            if(factorName.equals("treasury")) {
+                this.treasury.addMoney(factorEffect);
+            }
+            if(factorName.equals("population")) {
+                this.population.updateNbSupportersOnAllFactions(factorEffect);
+            }
+            if(factorName.equals("satisfactionRate")) {
+                this.population.updateNbSupportersOnAllFactions(factorEffect);
+            }
+        }
+    }
+
+    public void displayYearEndSummary() {
+
     }
 
     public void bribe(String factionName) {

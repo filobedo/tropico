@@ -82,6 +82,7 @@ public class Population {
         factionByName.get(factionName).updateNbSupportersBy(percentage);
     }
 
+    // delete
     public void updateNbSupportersOnMultipleFactions(int percentagePoint, String[] factionsToUpdate) {
         for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
             String currentFactionName = factionsSet.getKey();
@@ -91,6 +92,7 @@ public class Population {
         }
     }
 
+    // delete
     public void updateSatisfactionRateOnMultipleFactions(int percentagePoint, String[] factionsToUpdate) {
         for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
             String currentFactionName = factionsSet.getKey();

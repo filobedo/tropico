@@ -18,7 +18,7 @@ import java.util.*;
 
 public class JSONParser implements IParser{
     private JSONObject gameParameterFile;
-    private String gameDifficulty;
+    private String gameDifficulty; // TODO pas besoin ?
 
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
@@ -116,12 +116,12 @@ public class JSONParser implements IParser{
     public Tresory parseResources() throws ConfigurationException {
         JSONObject gameStartParameters = this.gameParameterFile.getJSONObject("gameStartParameters").getJSONObject(this.gameDifficulty);
         if(canParseRepublicResources(gameStartParameters)) {
-            int agricultureRate = gameStartParameters.getInt("agricultureRate");
+            int farmRate = gameStartParameters.getInt("farmRate");
             int foodUnits = gameStartParameters.getInt("foodUnits");
-            int money = gameStartParameters.getInt("treasury");
+            int treasury = gameStartParameters.getInt("treasury");
             int industryRate = gameStartParameters.getInt("industryRate");
             try {
-                return new Tresory(foodUnits, money, agricultureRate, industryRate);
+                return new Tresory(foodUnits, treasury, farmRate, industryRate);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -130,7 +130,7 @@ public class JSONParser implements IParser{
     }
 
     public boolean canParseRepublicResources(JSONObject gameStartParameters) {
-        if(gameStartParameters.has("agricultureRate")) {
+        if(gameStartParameters.has("farmRate")) {
             if(gameStartParameters.has("industryRate")) {
                 if(gameStartParameters.has("treasury")) {
                     if(gameStartParameters.has("foodUnits")) {
@@ -155,45 +155,66 @@ public class JSONParser implements IParser{
             Scenario scenario = new Scenario(name, story, firstSeason);
 
             // Parcourir chaque saison (1 saison = 1 event)
-            List<Event> events = parseEvents(jsonScenario);
-            scenario.setEvents(events);
+            try {
+                List<Event> events = parseEvents(jsonScenario);
+                scenario.setEvents(events);
+            } catch (Exception ex) {
+                throw ex;
+            }
             return scenario;
         }
 //        System.out.println("\n--- 1ere année --- \n");
 //        return null;
     }
 
-    public List<Event> parseEvents(JSONArray scenario) {
+    public List<Event> parseEvents(JSONArray scenario) throws ConfigurationException {
         List<Event> scenarioEvents = new ArrayList<>();
         int seasonCount;
         for(seasonCount = 0; seasonCount < scenario.length(); seasonCount += 1 ) {
             JSONObject season = scenario.getJSONObject(seasonCount);
             JSONArray events = season.getJSONArray("events");
             JSONObject event = events.getJSONObject(0);
-            JSONArray choices = event.getJSONArray("choices");
 
-            String name = event.getString("name");
-            String description = event.getString("description");
-            Event currentEvent = new Event(name, description);
-
-            List<Choice> eventChoices = parseChoices(choices);
-            currentEvent.setChoices(eventChoices);
-            if(hasIrreversibleEffects(event)) {
-                parseEffects(event.getJSONObject("irreversible"));
+            try {
+                Event currentEvent = parseEvent(event);
+                scenarioEvents.add(currentEvent);
             }
-
-            scenarioEvents.add(currentEvent);
+            catch (Exception ex) {
+                throw ex;
+            }
         }
 
         return scenarioEvents;
+    }
+
+    public Event parseEvent(JSONObject event) throws ConfigurationException {
+        JSONArray choices = event.getJSONArray("choices");
+
+        String name = event.getString("name");
+        String description = event.getString("description");
+        Event currentEvent = new Event(name, description);
+        if(hasIrreversibleEffects(event)) {
+            currentEvent.setIrreversibleEffects(parseEffects(event.getJSONObject("irreversible")));
+        }
+        try {
+            List<Choice> eventChoices = parseChoices(choices);
+            currentEvent.setChoices(eventChoices);
+        } catch (Exception ex) {
+            throw ex;
+        }
+        return currentEvent;
     }
 
     public boolean hasIrreversibleEffects(JSONObject event) {
         return event.has("irreversible");
     }
 
-    public List<Choice> parseChoices(JSONArray choices) {
+    public List<Choice> parseChoices(JSONArray choices) throws ConfigurationException {
         List<Choice> eventChoices = new ArrayList<>();
+        // We can't have 0 choices nor more than 4, we can have 1 to 4 choices
+        if(choices.length() < 1 || choices.length() > 4) {
+            throw new ConfigurationException("There isn't enough choice, or too many choices");
+        }
         for(int indexChoice = 0; indexChoice < choices.length(); indexChoice += 1 ) {
             JSONObject choice = choices.getJSONObject(indexChoice);
 
@@ -201,6 +222,9 @@ public class JSONParser implements IParser{
             String description = choice.getString("description");
             Choice currentChoice = new Choice(name, description);
             currentChoice.setEffects(parseEffects(choice.getJSONObject("effects")));
+            if(choice.has("relatedEvents")) {
+                currentChoice.setRelatedEvent(parseEvent(choice.getJSONObject("relatedEvents")));
+            }
             eventChoices.add(currentChoice);
         }
 
@@ -239,22 +263,21 @@ public class JSONParser implements IParser{
 
     public Map<String, Integer> parseFactorEffects(JSONObject effects) {
         Map<String, Integer> effectByFactor = new HashMap<>();
-
         if(effects.has("industryRate")) {
             int industryEffect = effects.getInt("industryRate");
             effectByFactor.put("industryRate", industryEffect);
         }
-        if(effects.has("agricultureRate")) {
-            int agricultureEffect = effects.getInt("agricultureRate");
-            effectByFactor.put("agricultureRate", agricultureEffect);
+        if(effects.has("farmRate")) {
+            int agricultureEffect = effects.getInt("farmRate");
+            effectByFactor.put("farmRate", agricultureEffect);
         }
         if(effects.has("foodUnits")) {
             int foodUnitsEffect = effects.getInt("foodUnits");
             effectByFactor.put("foodUnits", foodUnitsEffect);
         }
-        if(effects.has("money")) {
-            int moneyEffect = effects.getInt("money");
-            effectByFactor.put("money", moneyEffect);
+        if(effects.has("treasury")) {
+            int treasuryEffect = effects.getInt("treasury");
+            effectByFactor.put("treasury", treasuryEffect);
         }
         if(effects.has("population")) {
             int populationEffect = effects.getInt("population");
@@ -276,6 +299,4 @@ public class JSONParser implements IParser{
         Season randomSeason = Season.getRandom();
         return randomSeason;
     }
-
-
 }

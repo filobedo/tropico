@@ -6,30 +6,30 @@ public enum Season { // TODO Gestion de la difficulté -> dans la gestion des im
     WINTER {
         @Override
         public String toString() {
-            return name().toLowerCase();
+            return "hiver";
         }
     },
     SPRING{
         @Override
         public String toString() {
-            return name().toLowerCase();
+            return "printemps";
         }
     },
     SUMMER{
         @Override
         public String toString() {
-            return name().toLowerCase();
+            return "été";
         }
     },
     AUTUMN{
         @Override
         public String toString() {
-            return name().toLowerCase();
+            return "automne";
         }
     };
 
     public String capitalize() {
-        String season = this.name();
+        String season = this.toString();
         return season.substring(0, 1).toUpperCase() + season.substring(1).toLowerCase();
      }
 

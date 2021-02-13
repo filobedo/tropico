@@ -3,7 +3,7 @@
   "story": "Une partie démarrant en 2022 ou rien n'a changé par rapport à l'époque actuelle",
   "gameStartParameters": {
     "NORMAL": {
-      "agricultureRate": 45,
+      "farmRate": 45,
       "industryRate": 25,
       "treasury": 800,
       "foodUnits": 1000,
@@ -62,7 +62,7 @@
             "population": -15,
             "farmRate": -2,
             "industryRate": -5,
-            "money": 150,
+            "treasury": 150,
             "factions": [
               {
                 "name": "Capitalists",
@@ -80,7 +80,7 @@
               "name": "Déblayer",
               "description": "Vous gagnerez de la thunas",
               "effects": {
-                "money": 150,
+                "treasury": 150,
                 "factions": [
                   {
                     "name": "Capitalists",
@@ -119,7 +119,7 @@
               "name": "Vider les réserve d'eau",
               "description": "Empêchera la diminution de la population",
               "effects": {
-                "money": -100
+                "treasury": -100
               }
             },
             {
@@ -154,7 +154,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "money": -50
+                "treasury": -50
               }
             },
             {
@@ -199,7 +199,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "money": -200
+                "treasury": -200
               }
             }
           ]
@@ -260,7 +260,7 @@
               "name": "Déblayer",
               "description": "Vous résoudrez les problèmes de transit.",
               "effects": {
-                "money": -200
+                "treasury": -200
               }
             },
             {
@@ -323,7 +323,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "money": 150,
+                "treasury": 150,
                 "industryRate": 3
               }
             }
@@ -341,7 +341,7 @@
               "name": "Déblayer",
               "description": "Vous résoudrez les problèmes de transit.",
               "effects": {
-                "money": -200
+                "treasury": -200
               }
             },
             {
@@ -377,6 +377,28 @@
                     "satisfactionRate": -10
                   }
                 ]
+              },
+              "relatedEvents":
+              {
+                "name": "ZZZZCatastrophe ! Une tempête de neige !",
+                "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+                "choices": [
+                  {
+                    "name": "Déblayer",
+                    "description": "Vous résoudrez les problèmes de transit.",
+                    "effects": {
+                      "treasury": -200
+                    }
+                  },
+                  {
+                    "name": "S'en fiche",
+                    "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+                    "effects": {
+                      "farmRate": -15,
+                      "industryRate": -15
+                    }
+                  }
+                ]
               }
             }
           ]
@@ -404,7 +426,64 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "money": 150,
+                "treasury": 150,
+                "industryRate": 3
+              }
+            },
+            {
+              "name": "Je gagne cet affrontement en envoyant une armée",
+              "description": "Blalallballblalbal",
+              "effects": {
+                "factions": [
+                  {
+                    "name": "Capitalists",
+                    "satisfactionRate": 10,
+                    "nbSupporters": 5
+                  },
+                  {
+                    "name": "Environmentalists",
+                    "satisfactionRate": -10
+                  }
+                ],
+                "treasury": 150,
+                "industryRate": 3
+              }
+            },
+            {
+              "name": "Je gagne cet affrontement en envoyant une armée",
+              "description": "Blalallballblalbal",
+              "effects": {
+                "factions": [
+                  {
+                    "name": "Capitalists",
+                    "satisfactionRate": 10,
+                    "nbSupporters": 5
+                  },
+                  {
+                    "name": "Environmentalists",
+                    "satisfactionRate": -10
+                  }
+                ],
+                "treasury": 150,
+                "industryRate": 3
+              }
+            },
+            {
+              "name": "Je gagne cet affrontement en envoyant une armée",
+              "description": "Blalallballblalbal",
+              "effects": {
+                "factions": [
+                  {
+                    "name": "Capitalists",
+                    "satisfactionRate": 10,
+                    "nbSupporters": 5
+                  },
+                  {
+                    "name": "Environmentalists",
+                    "satisfactionRate": -10
+                  }
+                ],
+                "treasury": 150,
                 "industryRate": 3
               }
             }
