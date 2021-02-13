@@ -31,13 +31,13 @@ public class GameParameters {
     public void askPlayerGameDifficultyAndMode() {
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();
-        String gameModeChosen = getGameModeClass(gameModeIndex);
-        setGameModeClass(gameModeChosen);
+        String chosenGameMode = getGameModeClass(gameModeIndex);
+        setGameModeClass(chosenGameMode);
 
         displayGameDifficultyInstructions();
         int gameDifficultyIndex = chooseGameDifficulty();
-        GameDifficulty gameDifficultyChosen = GameDifficulty.values()[gameDifficultyIndex - 1];
-        setGameDifficulty(gameDifficultyChosen);
+        GameDifficulty chosenGameDifficulty = GameDifficulty.values()[gameDifficultyIndex - 1];
+        setGameDifficulty(chosenGameDifficulty);
     }
 
     public void setGameModeClass(String gameModeClass) {

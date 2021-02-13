@@ -33,8 +33,8 @@
           "satisfactionRate": 60,
           "nbSupporters": 28
         },
-        "ECOLOGISTS": {
-          "name": "Ecologists",
+        "ENVIRONMENTALISTS": {
+          "name": "Environmentalists",
           "satisfactionRate": 40,
           "nbSupporters": 15
         },
@@ -51,17 +51,17 @@
       }
     }
   },
-  "season": "Autonme",
+  "firstSeason": "Autumn",
   "scenario": [
     {
-      "event": [
+      "events": [
         {
           "name": "Catastrophe ! Une météorite est tombée !",
           "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
           "irreversible": {
             "population": -15,
-            "farm": -2,
-            "industry": -5
+            "farmRate": -2,
+            "industryRate": -5
           },
           "choices": [
             {
@@ -86,17 +86,21 @@
               "name": "Laisser",
               "description": "vous gagnerez de la fertilité",
               "effects": {
-                "farm": 15
+                "farmRate": 15
               }
             }
           ]
         },
+      ]
+    },
+    {
+      "events": [
         {
           "name": "un sécheresse s'est déclaré !",
           "description": "Notre population crie famine, vous devez faire quelques choses !",
           "irreversible": {
             "population": -5,
-            "farm": -10
+            "farmRate": -10
           },
           "choices": [
             {
@@ -115,6 +119,10 @@
             }
           ]
         },
+      ]
+    },
+    {
+      "events": [
         {
           "name": "Une guerre civile démarre en Chine, les Soviétiques envoient leurs alliés",
           "description": "Vous devez prendre une décision",
@@ -154,6 +162,10 @@
             }
           ]
         },
+      ]
+    },
+    {
+      "events": [
         {
           "name": "Une dictature pro-communnistes s'installe dans un de vos pays alliés",
           "description": "Vous devez prendre une décision",
@@ -177,6 +189,10 @@
             }
           ]
         },
+      ]
+    },
+    {
+      "events": [
         {
           "name": "Les communistes vous battent et emprisonnent vos militaires",
           "description": "Vous devez prendre une décision",
@@ -218,8 +234,7 @@
       ]
     },
     {
-      "name": "Hiver",
-      "event": [
+      "events": [
         {
           "name": "Catastrophe ! Une tempête de neige !",
           "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
@@ -235,12 +250,16 @@
               "name": "S'en fiche",
               "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
               "effects": {
-                "farm": -15,
-                "industry": -15
+                "farmRate": -15,
+                "industryRate": -15
               }
             }
           ]
         },
+      ]
+    },
+    {
+      "events": [
         {
           "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
           "description": "Vous devez prendre une décision",
@@ -266,7 +285,7 @@
       ]
     },
     {
-      "event": [
+      "events": [
         {
           "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",
           "choices": {
@@ -284,11 +303,88 @@
                 }
               ],
               "money": 150,
-              "industry": 3
+              "industryRate": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "events": [
+        {
+          "name": "Catastrophe ! Une tempête de neige !",
+          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+          "choices": [
+            {
+              "name": "Déblayer",
+              "description": "Vous résoudrez les problèmes de transit.",
+              "effects": {
+                "money": -200
+              }
+            },
+            {
+              "name": "S'en fiche",
+              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+              "effects": {
+                "farmRate": -15,
+                "industryRate": -15
+              }
+            }
+          ]
+        },
+      ]
+    },
+    {
+      "events": [
+        {
+          "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
+          "description": "Vous devez prendre une décision",
+          "choices": [
+            {
+              "choice": "Je fais un discours où je les menace d'une riposte",
+              "effects": {
+                "factions": [
+                  {
+                    "name": "Capitalists",
+                    "satisfactionRate": 10,
+                    "nbSupporters": 5
+                  },
+                  {
+                    "name": "Environmentalists",
+                    "satisfactionRate": -10
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "events": [
+        {
+          "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",
+          "choices": {
+            "choice": "Je gagne cet affrontement en envoyant une armée",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Environmentalists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": 150,
+              "industryRate": 3
             }
           }
         }
       ]
     }
+
   ]
 }

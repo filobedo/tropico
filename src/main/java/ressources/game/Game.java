@@ -1,16 +1,12 @@
 package ressources.game;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import ressources.economy.Tresory;
 import ressources.event.Event;
 import ressources.factions.Faction;
-import ressources.factions.FactionFactory;
 import ressources.factions.Population;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import ressources.parser.IParser;
+import ressources.parser.JSONParser;
+import ressources.scenario.Scenario;
 
 public abstract class Game {
     private double score;
@@ -18,9 +14,15 @@ public abstract class Game {
     private Population population;
     private Event event; // EventS ?
     private final GameDifficulty gameDifficulty;
+    private Scenario scenario;
+    private IParser parser;
 
     public Game(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
+    }
+
+    public Scenario getScenario() {
+        return scenario;
     }
 
     public double getScore() {
@@ -59,17 +61,51 @@ public abstract class Game {
     }
 
     public Boolean loadProperties(JSONObject scenario) {
-        //TODO a refacto
-        this.population = new Population();
-        this.population.loadGameProperties(scenario.getJSONObject("gameStartParameters").getJSONObject("NORMAL").getJSONObject("factions"));
-
-        this.treasury = new Tresory();
-        this.treasury.loadGameProperties(scenario);
+//        this.treasury.loadGameProperties(scenario);
 
         return true;
     }
 
-    public void play(JSONObject scenario) throws NullPointerException{
+    public void load(String filePath) {
+        try {
+            setParserType(filePath);
+            parser.openFile(filePath);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            gameShutDown();
+        }
+        if(canLoadGame()) {
+            try {
+                this.population = parser.parsePopulation();
+                this.treasury = parser.parseResources();
+                this.scenario = parser.parseScenario();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                gameShutDown();
+            }
+        }
+        else {
+            System.out.println("Cannot load game");
+            gameShutDown();
+        }
+    }
+
+    public boolean canLoadGame() {
+        if(parser.canParseFile()) {
+            if(parser.isGameStartParameterDifficultyInJson(this.gameDifficulty)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setParserType(String filePath) {
+        if(filePath.toLowerCase().endsWith(".json")) {
+            this.parser = new JSONParser();
+        }
+    }
+
+    public void play() throws NullPointerException{
         if(getPopulation() != null && getTreasury() != null) {
             System.out.printf("\nVous avez lancé une partie en mode \"%s\" ", this.toString());
             System.out.printf("en difficulté \"%s\".\n", getGameDifficulty());
@@ -99,11 +135,12 @@ public abstract class Game {
         }
     }
 
-
-
-
-
     public void addScore(double points) {
         setScore(getScore() + points);
+    }
+
+    public void gameShutDown() {
+        System.out.println("Le jeu est terminé.");
+        System.exit(0);
     }
 }

@@ -9,8 +9,8 @@ public class SandboxGame extends Game {
     }
 
     @Override
-    public void play(JSONObject scenario) {
-        super.play(scenario);
+    public void play() {
+        super.play();
         /*TODO
         *  Chaque année
         *  => 4 tours <=> 4 évènements aléatoires respectant les saisons

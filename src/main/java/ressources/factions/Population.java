@@ -1,25 +1,19 @@
 package ressources.factions;
 
-import org.json.JSONObject;
 import ressources.listeners.BriberyListener;
+import ressources.parser.IParser;
 
 import javax.naming.ConfigurationException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Population {
-    private final HashMap<String, Faction> factionByName = new HashMap<>();
-    FactionFactory factionFactory = new FactionFactory();
+    private final Map<String, Faction> factionByName = new HashMap<>();
+    private FactionFactory factionFactory = new FactionFactory();
+    private IParser parser;
 
     public Population() {
         setFactionNamesInFactionByName();
-    }
-
-    public Population(String configFilePath) {
-        setFactionNamesInFactionByName();
-        setFactionValuesWithConfigProperties(configFilePath);
     }
 
     public void setFactionNamesInFactionByName() {
@@ -31,71 +25,6 @@ public class Population {
         factionByName.put(Militarists.class.getSimpleName(), null);
         factionByName.put(Nationalists.class.getSimpleName(), null);
         factionByName.put(Religious.class.getSimpleName(), null);
-    }
-
-    public void setFactionValuesWithConfigProperties(String configFilePath) {
-        try (FileReader reader = new FileReader(configFilePath)) {
-            Properties properties = new Properties();
-            properties.load(reader);
-            setFactionValuesInFactionByName(properties);
-            factionsSubscribeToBribeEventExceptLoyalists();
-        } catch (IOException | ConfigurationException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-
-    private Boolean checkfaction(JSONObject faction) {
-        if(faction.has("satisfactionPercentage") && faction.has("partisans"))
-            return true;
-        return false;
-    }
-
-    public Boolean loadGameProperties(JSONObject faction) {
-
-        for(Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
-            if(!checkGameProperties(faction, factionsSet.getKey()))
-                return false;
-
-            Faction currentFaction = createAndGetFaction(factionsSet.getKey(), faction.getJSONObject(factionsSet.getKey()).getInt("partisans"), faction.getJSONObject(factionsSet.getKey()).getInt("satisfactionPercentage"));
-            factionsSet.setValue(currentFaction);
-        }
-        return true;
-    }
-
-    private Boolean checkGameProperties(JSONObject faction, String factionName) {
-        if(!faction.has(factionName))
-            return false;
-        if(!checkfaction(faction.getJSONObject(factionName)))
-            return false;
-        return true;
-    }
-
-
-    // TODO to see -> AbsentInformationException not working
-    //  java: package com.sun.jdi does not exist
-    public void setFactionValuesInFactionByName(Properties properties) throws ConfigurationException {
-        for(Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
-            String currentFactionName = factionsSet.getKey();
-
-            if(doesFactionExistInConfigProperties(currentFactionName, properties)) {
-                int satisfactionRate = parseInt(properties.getProperty(currentFactionName.toLowerCase() + ".satisfaction"));
-                int nbSupporters = parseInt(properties.getProperty(currentFactionName.toLowerCase() + ".supporters"));
-
-                Faction currentFaction = createAndGetFaction(currentFactionName, nbSupporters, satisfactionRate);
-                factionsSet.setValue(currentFaction);
-            }
-            else {
-                String exceptionMessage = String.format("%s faction doesn't exist in config properties!", currentFactionName);
-                throw new ConfigurationException(exceptionMessage);
-            }
-        }
-    }
-
-    public boolean doesFactionExistInConfigProperties(String factionName, Properties properties) {
-        String factionSatisfactionRate = factionName.toLowerCase() + ".satisfaction";
-        String factionNbSupporters = factionName.toLowerCase() + ".supporters";
-        return properties.containsKey(factionSatisfactionRate) && properties.containsKey(factionNbSupporters);
     }
 
     public Faction createAndGetFaction(String factionName, int nbSupporters, int satisfactionRate) {
@@ -117,7 +46,7 @@ public class Population {
         }
     }
 
-    public HashMap<String, Faction> getFactionByName() {
+    public Map<String, Faction> getFactionByName() {
         return factionByName;
     }
 
