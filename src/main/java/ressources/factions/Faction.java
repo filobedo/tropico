@@ -76,14 +76,15 @@ public abstract class Faction {
         setNbSupporters(getNbSupporters() - 1);
     }
 
+    public boolean canBeBribed() {
+        if(this.getClass().getSimpleName() == Loyalists.class.getSimpleName()) {
+            return false;
+        }
+        return true;
+    }
+
     public int getBribePrice() {
-        if(this.getClass() != Loyalists.class) {
-            return getNbSupporters() * GameRules.BRIBE_PRICE_BY_SUPPORTER;
-        }
-        else { // TODO Les println, faut-il faire des exceptions à la place ou les garder printer pour le joueur
-            System.out.println("Il n'est pas possible de verser un pot de vin aux loyalists !");
-            return 0;
-        }
+        return getNbSupporters() * GameRules.BRIBE_PRICE_BY_SUPPORTER;
     }
 
     public void bribe() {

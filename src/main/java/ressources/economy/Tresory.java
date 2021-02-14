@@ -23,24 +23,12 @@ public class Tresory {
         this.myFarm = new Farm(startFarmRessource, startRateFarm);
     }
 
-    public Boolean loadGameProperties(JSONObject parameter) {
-        JSONObject gameNormal = parameter.getJSONObject("gameStartParameters").getJSONObject("NORMAL");
-        if(!checkGameProperties(gameNormal))
-            return false;
-        this.myFarm.setRate(gameNormal.getInt("agricultureRate"));
-        this.myFarm.setRessource(gameNormal.getInt("foodUnits"));
-        this.myIndustry.setRate(gameNormal.getInt("treasury"));
-        this.myIndustry.setRessource(gameNormal.getInt("industryRate"));
-        return true;
+    public Industry getMyIndustry() {
+        return myIndustry;
     }
 
-    public Boolean checkGameProperties(JSONObject parameter) {
-            if(!parameter.has("agricultureRate") ||
-                    !parameter.has("industryRate") ||
-                    !parameter.has("treasury") ||
-                    !parameter.has("foodUnits"))
-                return false;
-        return true;
+    public Farm getMyFarm() {
+        return myFarm;
     }
 
     public Boolean updateFarmRate(int newFarmRate) {
@@ -53,6 +41,9 @@ public class Tresory {
         return true;
     }
 
+    // TODO Valeur negative acceptée
+    // TODO les ifs peuvent être simplifiés regarder l'onglet "Problems"
+    //  de Intellij en bas à gauche de la fenêtre
     public Boolean updateIndustryRate(int newIndustryRate) {
         int updateValue = checkRate(newIndustryRate, this.myFarm.getRate());
         if(updateValue != newIndustryRate) {
@@ -90,16 +81,20 @@ public class Tresory {
 
     //get ressources this year
     private int getIncomeIndustry() {
-        int res = 0;
-        res = this.getIndustryRate() * 10;
-        return res;
+        return this.getIndustryRate() * 10;
     }
 
     //get ressources this year
     private int getIncomeFarm() {
-        int res = 0;
-        res = this.getFarmRate() * 40;
-        return res;
+        return this.getFarmRate() * 40;
+    }
+
+    public void generateIndustryIncome() {
+        addMoney(getIncomeIndustry());
+    }
+
+    public void generateFarmIncome() {
+        addBonusFarm(getIncomeFarm());
     }
 
     public int getFood() {
@@ -152,5 +147,20 @@ public class Tresory {
         useMoney(res);
         addBonusFarm(res);
         return this;
+    }
+
+    public void displaySummary() {
+        StringBuilder treasurySummary = new StringBuilder();
+        treasurySummary.append("Ressources :%n");
+        // Argent
+        treasurySummary.append(String.format("Argent : %d$%n", getMoney()));
+        // IndustryRate
+        treasurySummary.append(String.format("Industrie : %d%%%n",getIndustryRate()));
+        // FarmRate
+        treasurySummary.append(String.format("Agriculture : %d%%%n", getFarmRate()));
+        // Food
+        treasurySummary.append(String.format("Nourriture : %d%n", getFood()));
+
+        System.out.println(treasurySummary);
     }
 }

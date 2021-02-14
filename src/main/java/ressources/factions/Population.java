@@ -1,106 +1,32 @@
 package ressources.factions;
 
-import org.json.JSONObject;
 import ressources.listeners.BriberyListener;
 
-import javax.naming.ConfigurationException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Population {
-    private final HashMap<String, Faction> factionByName = new HashMap<>();
-    FactionFactory factionFactory = new FactionFactory();
+    private final LinkedHashMap<String, Faction> factionByName = new LinkedHashMap<>();
+    private FactionFactory factionFactory = new FactionFactory();
 
     public Population() {
         setFactionNamesInFactionByName();
     }
 
-    public Population(String configFilePath) {
-        setFactionNamesInFactionByName();
-        setFactionValuesWithConfigProperties(configFilePath);
-    }
-
     public void setFactionNamesInFactionByName() {
-        factionByName.put(Capitalists.class.getSimpleName(), null);
-        factionByName.put(Communists.class.getSimpleName(), null);
-        factionByName.put(Environmentalists.class.getSimpleName(), null);
-        factionByName.put(Liberals.class.getSimpleName(), null);
-        factionByName.put(Loyalists.class.getSimpleName(), null);
-        factionByName.put(Militarists.class.getSimpleName(), null);
-        factionByName.put(Nationalists.class.getSimpleName(), null);
-        factionByName.put(Religious.class.getSimpleName(), null);
-    }
-
-    public void setFactionValuesWithConfigProperties(String configFilePath) {
-        try (FileReader reader = new FileReader(configFilePath)) {
-            Properties properties = new Properties();
-            properties.load(reader);
-            setFactionValuesInFactionByName(properties);
-            factionsSubscribeToBribeEventExceptLoyalists();
-        } catch (IOException | ConfigurationException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-
-    private Boolean checkfaction(JSONObject faction) {
-        if(faction.has("satisfactionPercentage") && faction.has("partisans"))
-            return true;
-        return false;
-    }
-
-    public Boolean loadGameProperties(JSONObject faction) {
-
-        for(Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
-            if(!checkGameProperties(faction, factionsSet.getKey()))
-                return false;
-
-            Faction currentFaction = createAndGetFaction(factionsSet.getKey(), faction.getJSONObject(factionsSet.getKey()).getInt("partisans"), faction.getJSONObject(factionsSet.getKey()).getInt("satisfactionPercentage"));
-            factionsSet.setValue(currentFaction);
-        }
-        return true;
-    }
-
-    private Boolean checkGameProperties(JSONObject faction, String factionName) {
-        if(!faction.has(factionName))
-            return false;
-        if(!checkfaction(faction.getJSONObject(factionName)))
-            return false;
-        return true;
-    }
-
-
-    // TODO to see -> AbsentInformationException not working
-    //  java: package com.sun.jdi does not exist
-    public void setFactionValuesInFactionByName(Properties properties) throws ConfigurationException {
-        for(Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
-            String currentFactionName = factionsSet.getKey();
-
-            if(doesFactionExistInConfigProperties(currentFactionName, properties)) {
-                int satisfactionRate = parseInt(properties.getProperty(currentFactionName.toLowerCase() + ".satisfaction"));
-                int nbSupporters = parseInt(properties.getProperty(currentFactionName.toLowerCase() + ".supporters"));
-
-                Faction currentFaction = createAndGetFaction(currentFactionName, nbSupporters, satisfactionRate);
-                factionsSet.setValue(currentFaction);
-            }
-            else {
-                String exceptionMessage = String.format("%s faction doesn't exist in config properties!", currentFactionName);
-                throw new ConfigurationException(exceptionMessage);
-            }
-        }
-    }
-
-    public boolean doesFactionExistInConfigProperties(String factionName, Properties properties) {
-        String factionSatisfactionRate = factionName.toLowerCase() + ".satisfaction";
-        String factionNbSupporters = factionName.toLowerCase() + ".supporters";
-        return properties.containsKey(factionSatisfactionRate) && properties.containsKey(factionNbSupporters);
+        this.factionByName.put(Capitalists.class.getSimpleName(), null);
+        this.factionByName.put(Communists.class.getSimpleName(), null);
+        this.factionByName.put(Environmentalists.class.getSimpleName(), null);
+        this.factionByName.put(Liberals.class.getSimpleName(), null);
+        this.factionByName.put(Loyalists.class.getSimpleName(), null);
+        this.factionByName.put(Militarists.class.getSimpleName(), null);
+        this.factionByName.put(Nationalists.class.getSimpleName(), null);
+        this.factionByName.put(Religious.class.getSimpleName(), null);
     }
 
     public Faction createAndGetFaction(String factionName, int nbSupporters, int satisfactionRate) {
         try {
-            return factionFactory.createFaction(factionName, nbSupporters, satisfactionRate);
+            return this.factionFactory.createFaction(factionName, nbSupporters, satisfactionRate);
         } catch (ClassNotFoundException e) { // TODO Faut-il throw; ? Bonnes pratiques ? Quelles exception faut il throw
             e.printStackTrace();
         }
@@ -108,8 +34,8 @@ public class Population {
     }
 
     public void factionsSubscribeToBribeEventExceptLoyalists() {
-        Faction loyalists = factionByName.get(Loyalists.class.getSimpleName());
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        Faction loyalists = this.factionByName.get(Loyalists.class.getSimpleName());
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             Faction faction = factionsSet.getValue();
             if (faction.getClass() != Loyalists.class) {
                 faction.events.subscribe("bribe", new BriberyListener(loyalists));
@@ -117,17 +43,17 @@ public class Population {
         }
     }
 
-    public HashMap<String, Faction> getFactionByName() {
-        return factionByName;
+    public Map<String, Faction> getFactionByName() {
+        return this.factionByName;
     }
 
     public Faction getFaction(String name) {
-        return factionByName.get(name);
+        return this.factionByName.get(name);
     }
 
     public int getTotalPopulation() {
         AtomicInteger population = new AtomicInteger();
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             int currentFactionPopulation = factionsSet.getValue().getNbSupporters();
             population.addAndGet(currentFactionPopulation);
         }
@@ -136,7 +62,7 @@ public class Population {
 
     public double getGlobalSatisfactionRate() {
         double totalSatisfactionRate = 0;
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             Faction currentFaction = factionsSet.getValue();
             double satisfactionRate = currentFaction.getSatisfactionRate();
             double nbSupporters = currentFaction.getNbSupporters();
@@ -145,16 +71,21 @@ public class Population {
         return totalSatisfactionRate / getTotalPopulation();
     }
 
+    public int getNbFactions() {
+        return this.factionByName.size();
+    }
+
     public void updateSatisfactionRateByFaction(int percentagePoint, String factionName) {
-        factionByName.get(factionName).updateSatisfactionRate(percentagePoint);
+        this. factionByName.get(factionName).updateSatisfactionRate(percentagePoint);
     }
 
     public void updateNbSupportersByFaction(int percentage, String factionName) {
-        factionByName.get(factionName).updateNbSupportersBy(percentage);
+        this.factionByName.get(factionName).updateNbSupportersBy(percentage);
     }
 
+    // delete
     public void updateNbSupportersOnMultipleFactions(int percentagePoint, String[] factionsToUpdate) {
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             String currentFactionName = factionsSet.getKey();
             if (isArrayContainingString(factionsToUpdate, currentFactionName)) {
                 factionsSet.getValue().updateNbSupportersBy(percentagePoint);
@@ -162,8 +93,9 @@ public class Population {
         }
     }
 
+    // delete
     public void updateSatisfactionRateOnMultipleFactions(int percentagePoint, String[] factionsToUpdate) {
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             String currentFactionName = factionsSet.getKey();
             if (isArrayContainingString(factionsToUpdate, currentFactionName)) {
                 factionsSet.getValue().updateSatisfactionRate(percentagePoint);
@@ -172,43 +104,86 @@ public class Population {
     }
 
     public void updateSatisfactionRateOnAllFactions(int percentagePoint) {
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             factionsSet.getValue().updateSatisfactionRate(percentagePoint);
         }
     }
 
     public void updateNbSupportersOnAllFactions(int percentage) {
-        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             factionsSet.getValue().updateNbSupportersBy(percentage);
         }
     }
 
 
     // TODO nombre d'unité de nourriture ou nombre de partisans à éliminer selon l'implémentation de la classe au desssus
-    public void eliminateSupportersUntilEnoughFood(int foodUnits) {
+    // renvoie si la fonction a eliminé des gens
+    public boolean eliminateSupportersUntilEnoughFood(int foodUnits) {
+        boolean hasElimnatedSupporters = false;
         double neededFood = getTotalPopulation() * 4;
         double difference = neededFood - foodUnits;
         AtomicInteger nbSupportersToEliminate = new AtomicInteger((int)Math.ceil(difference / 4));
         Random randomGenerator = new Random();
-        List<String> factionNames = new ArrayList<>(factionByName.keySet());
+        List<String> factionNames = new ArrayList<>(this.factionByName.keySet());
 
-        while(nbSupportersToEliminate.get() != 0) {
+        while(nbSupportersToEliminate.get() > 0) {
             int randomIndex = randomGenerator.nextInt(factionNames.size());
             String randomFactionName = factionNames.get(randomIndex);
             this.factionByName.get(randomFactionName).eliminateASupporter();
             nbSupportersToEliminate.decrementAndGet();
+            hasElimnatedSupporters = true;
         }
-        updateSatisfactionRateOnAllFactions(-2);
+        if(hasElimnatedSupporters) {
+            updateSatisfactionRateOnAllFactions(-2);
+        }
+        return hasElimnatedSupporters;
     }
 
     public boolean isArrayContainingString(String[] searchList, String searched) {
         return Arrays.asList(searchList).contains(searched);
     }
 
+    // DELETE
     public int parseInt(String toBeParsed) {
         if(!toBeParsed.equals("")) {
             return Integer.parseInt(toBeParsed);
         }
         return 0;
+    }
+
+    public void displaySummary() {
+        StringBuilder populationSummary = new StringBuilder();
+        populationSummary.append("Population :%n");
+        for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
+            String name = factionsSet.getKey();
+            Faction faction = factionsSet.getValue();
+            String factionSummary = String.format("%s :%n", name);
+            factionSummary += String.format("\tPartisans : %d - Satisfaction : %d%%%n", faction.getNbSupporters(), faction.getSatisfactionRate());
+            populationSummary.append(factionSummary);
+        }
+        populationSummary.append(String.format("=> Population totale : %d", getTotalPopulation()));
+        populationSummary.append(String.format(" - Satisfaction globale : %.2f", getGlobalSatisfactionRate()));
+        System.out.println(populationSummary);
+    }
+
+    public void displayAvailableFactions() {
+        int nbCountFaction = 1;
+        System.out.println("Choisissez dans cette liste des factions :");
+        for (String factionName : this.factionByName.keySet()) {
+            System.out.printf("\t%d. %s%n", nbCountFaction, factionName);
+            nbCountFaction += 1;
+        }
+    }
+
+    public String getFactionNameByIndex(int playerChoice) {
+        int nbCountFaction = 0;
+        int playerChoiceIndex = playerChoice - 1;
+        for (String factionName : this.factionByName.keySet()) {
+            if(playerChoiceIndex == nbCountFaction) {
+                return factionName;
+            }
+            nbCountFaction += 1;
+        }
+        return null;
     }
 }

@@ -7,7 +7,7 @@ public enum GameDifficulty { // TODO Gestion de la difficulté -> dans la gestio
             return "facile";
         }
     },
-    MEDIUM(1){
+    NORMAL(1){
         @Override
         public String toString() {
             return "normal";

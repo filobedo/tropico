@@ -35,8 +35,8 @@ public class main {
 
 
         // LET'S GO
-        JSONObject scenario = gameParameters.openScenario(gamePropertiesFilePath);
-        game.loadProperties(scenario);
-        game.play(scenario);
+//        JSONObject scenario = gameParameters.openScenario(gamePropertiesFilePath);
+        game.load(gamePropertiesFilePath);
+        game.play();
     }
 }

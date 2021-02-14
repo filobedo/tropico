@@ -31,13 +31,13 @@ public class GameParameters {
     public void askPlayerGameDifficultyAndMode() {
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();
-        String gameModeChosen = getGameModeClass(gameModeIndex);
-        setGameModeClass(gameModeChosen);
+        String chosenGameMode = getGameModeClass(gameModeIndex);
+        setGameModeClass(chosenGameMode);
 
         displayGameDifficultyInstructions();
         int gameDifficultyIndex = chooseGameDifficulty();
-        GameDifficulty gameDifficultyChosen = GameDifficulty.values()[gameDifficultyIndex - 1];
-        setGameDifficulty(gameDifficultyChosen);
+        GameDifficulty chosenGameDifficulty = GameDifficulty.values()[gameDifficultyIndex - 1];
+        setGameDifficulty(chosenGameDifficulty);
     }
 
     public void setGameModeClass(String gameModeClass) {
@@ -49,13 +49,13 @@ public class GameParameters {
     }
 
     public void displayGameModeInstructions() {
-        String instructions = String.format("\nChoisissez votre mode de jeu :\n%s\n%s\n%s", chooseSandboxGame, or, chooseScenarioGame);
+        String instructions = String.format("%nChoisissez votre mode de jeu :%n%s%n%s%n%s", chooseSandboxGame, or, chooseScenarioGame);
         System.out.println(instructions);
     }
 
     public int chooseGameMode() {
         Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("\nAttention ! Ce mode de jeu n'existe pas :\n%s\n%s\n%s", chooseSandboxGame, or, chooseScenarioGame);
+        String warning = String.format("%nAttention ! Ce mode de jeu n'existe pas :%n%s%n%s%n%s", chooseSandboxGame, or, chooseScenarioGame);
         try {
             int playerChoice = playerInput.nextInt();
             if(isPlayerGameModeChoiceCorrect(playerChoice)) {
@@ -86,13 +86,13 @@ public class GameParameters {
     }
 
     public void displayGameDifficultyInstructions() {
-        String instructions = String.format("\nChoisissez votre difficulté de jeu :\n%s\n%s\n%s\n%s", chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
+        String instructions = String.format("%nChoisissez votre difficulté de jeu :%n%s%n%s%n%s%n%s", chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
         System.out.println(instructions);
     }
 
     public int chooseGameDifficulty() {
         Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("\nAttention ! Cette difficulté n'existe pas :\n%s\n%s\n%s\n%s", chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
+        String warning = String.format("%nAttention ! Cette difficulté n'existe pas :%n%s%n%s%n%s%n%s", chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
         try {
             int playerChoice = playerInput.nextInt();
             if(isPlayerGameDifficultyChoiceCorrect(playerChoice)) {
@@ -121,9 +121,9 @@ public class GameParameters {
     public String getScenarioListInstructions(File[] scenarios) {
         int nbScenario = scenarios.length;
         int countScenario = 1;
-        String instructions = String.format("\nVeuillez choisir parmis ces %d scénarios :\n", nbScenario);
+        String instructions = String.format("%nVeuillez choisir parmis ces %d scénarios :%n", nbScenario);
         for (File scenario: scenarios) {
-            String currentScenario = String.format("%d. %s\n",countScenario, getScenarioName(scenario));
+            String currentScenario = String.format("%d. %s%n",countScenario, getScenarioName(scenario));
             instructions += currentScenario;
             countScenario += 1;
         }
@@ -146,7 +146,7 @@ public class GameParameters {
     public String chooseScenario(File[] scenarios) {
         int nbScenario = scenarios.length;
         Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("\nAttention ! Ce scénario n'existe pas !%s", getScenarioListInstructions(scenarios));
+        String warning = String.format("%nAttention ! Ce scénario n'existe pas !%s", getScenarioListInstructions(scenarios));
         try {
             int playerChoice = playerInput.nextInt();
             if(isPlayerScenarioChoiceCorrect(playerChoice, nbScenario)) {

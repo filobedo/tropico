@@ -11,7 +11,7 @@ public class BriberyListener implements EventListener {
 
     @Override
     public void update(String eventName, Faction bribedFaction) {
-        System.out.println("Message to " + this.faction.getName() + ": El Presidente has performed " + eventName + " operation with the following faction: " + bribedFaction.getName());
+        System.out.println("\"Message aux " + this.faction.getName() + ": El Presidente a versé un pot-de-vin aux : " + bribedFaction.getName() + "\"");
         this.faction.updateSatisfactionRate(-(bribedFaction.getBribePrice() / 10)); // TODO 10 constante ?
     }
 }
