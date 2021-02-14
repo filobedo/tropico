@@ -23,6 +23,6 @@ public class Industry implements Development {
     }
 
     public void setRate(int rate) {
-        this.rate = rate;
+        this.rate = this.rate + rate;
     }
 }

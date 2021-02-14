@@ -23,6 +23,6 @@ public class Farm implements Development {
     }
 
     protected void setRate(int rate) {
-        this.rate = rate;
+        this.rate = this.rate + rate;
     }
 }
