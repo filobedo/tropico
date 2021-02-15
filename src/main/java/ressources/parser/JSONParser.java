@@ -49,6 +49,9 @@ public class JSONParser implements IParser{
             return true;
         }
         else if (this.gameParameterFile.getJSONObject("gameStartParameters").has(GameDifficulty.NORMAL.name())) {
+            // TODO est-ce que le "NORMAL" du json c'est la difficulté ?
+            System.out.printf("%nLa difficulté \"%s\" n'existe pas dans ce scénario, c'est-à-dire que les ressources de base (population, agriculture, argent...) sont de difficulté %s.", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
+            System.out.printf("%nCependant, la difficulté des évènements est appliqué selon votre choix, c'est-à-dire que si un évènement en mode normal diminue la population de 10%%,%nalors avec la difficulté que vous avez choisi, la population diminuera de %d%%.%n", (int)(10 * chosenGameDifficulty.getDifficultyCoefficient()));
             this.gameDifficulty = GameDifficulty.NORMAL.name();
             return true;
         }

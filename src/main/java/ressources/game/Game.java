@@ -107,7 +107,9 @@ public abstract class Game {
         if(getPopulation() != null && getTreasury() != null) {
             System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
             System.out.printf("en difficulté \"%s\".%n", getGameDifficulty());
-            System.out.println("%nLancement du jeu...");
+            System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
+            UserInput.pressAnyKeyToContinue();
+            System.out.printf("%nLancement du jeu...%n");
         }
         else {
             System.out.println("Arrêt du jeu...");
@@ -117,7 +119,7 @@ public abstract class Game {
 
     public boolean hasPlayerLost() {
         if(getPopulation().getTotalPopulation() > 0) {
-            return getPopulation().getGlobalSatisfactionRate() < 25; // TODO Placer ça ailleur
+            return getPopulation().getGlobalSatisfactionRate() < 25;
         }
         return true;
     }
@@ -214,7 +216,7 @@ public abstract class Game {
     }
 
     public void displayYearEndSummary(int year) {
-        System.out.printf("%n%n- Bilan de cette année %d -%n", year);
+        System.out.printf("%n%n- Bilan de cette %de année -%n", year);
         // Population
         this.population.displaySummary();
         System.out.println();
@@ -230,7 +232,7 @@ public abstract class Game {
     }
 
     public void displayPlayerYearEndChoices() {
-        System.out.println("%nEn cette fin d'année, vous avez plusieurs options qui se présente à vous pour tenter de sauver votre république de l'insurrection.");
+        System.out.printf("%n%nEn cette fin d'année, vous avez plusieurs options qui se présente à vous pour tenter de sauver votre république de l'insurrection.");
         System.out.println("Option 1 : Ne rien faire");
         System.out.println("Option 2 : Pot-de-vin à une faction (coût par partisan : 15$)");
         System.out.println("\t=> Possible sur toute faction sauf les Loyalistes");
@@ -238,6 +240,7 @@ public abstract class Game {
         System.out.println("\t=> Diminution de la satisfaction des Loyalistes à hauteur du prix du pot-de-vin");
         System.out.println("Option 3 : Marché alimentaire (coût par unité : 8$)");
         System.out.println("\t=> Rappel : 4 unités de nourriture par citoyen sont nécessaires");
+        System.out.println("Entrez votre choix :");
     }
 
     public int chooseEndYearOption() {

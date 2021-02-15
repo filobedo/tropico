@@ -27,12 +27,13 @@ public class Event {
         System.out.printf("%nÉvénement %d : %s%n", nbEvent, this.name);
         System.out.printf("Description : %s%n", this.description);
         if(hasIrreversibleEffects()) {
-            System.out.println("%nImpact(s) direct(s) :");
+            System.out.printf("%nImpact(s) direct(s) :%n");
             this.irreversibleEffects.displayFactionEffects();
             this.irreversibleEffects.displayFactorEffects();
         }
-        System.out.println("Choix possible(s) :");
+        System.out.printf("%nChoix possible(s) :%n");
         displayChoices();
+        System.out.printf("%nEntrez votre choix :%n");
     }
 
     public boolean hasIrreversibleEffects() {

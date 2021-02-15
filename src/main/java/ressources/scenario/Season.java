@@ -36,4 +36,10 @@ public enum Season { // TODO Gestion de la difficulté -> dans la gestion des im
     public static Season getRandom() {
         return values()[(int) (Math.random() * values().length)];
     }
+
+    public static Season getNextSeason(Season currentSeason) {
+        int currentSeasonIndex = Season.valueOf(currentSeason.name()).ordinal();
+        Season nextSeason = Season.values()[(currentSeasonIndex + 1)%4];
+        return nextSeason;
+    }
 }

@@ -63,6 +63,10 @@ public abstract class Faction {
         }
     }
 
+    public void addSupporters(int nbSupporters) {
+        setNbSupporters(this.nbSupporters + nbSupporters);
+    }
+
     public void updateNbSupportersBy(int percentage) {
         int newNbSupporters = (int)(this.nbSupporters * (1 + (double)percentage/100));
         setNbSupporters(newNbSupporters);
@@ -77,10 +81,7 @@ public abstract class Faction {
     }
 
     public boolean canBeBribed() {
-        if(this.getClass().getSimpleName() == Loyalists.class.getSimpleName()) {
-            return false;
-        }
-        return true;
+        return !this.getClass().getSimpleName().equals(Loyalists.class.getSimpleName());
     }
 
     public int getBribePrice() {

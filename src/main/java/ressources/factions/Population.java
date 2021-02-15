@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Population {
     private final LinkedHashMap<String, Faction> factionByName = new LinkedHashMap<>();
-    private FactionFactory factionFactory = new FactionFactory();
+    private final FactionFactory factionFactory = new FactionFactory();
 
     public Population() {
         setFactionNamesInFactionByName();
@@ -102,6 +102,10 @@ public class Population {
             }
         }
     }
+    // delete
+    public boolean isArrayContainingString(String[] searchList, String searched) {
+        return Arrays.asList(searchList).contains(searched);
+    }
 
     public void updateSatisfactionRateOnAllFactions(int percentagePoint) {
         for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
@@ -119,28 +123,41 @@ public class Population {
     // TODO nombre d'unité de nourriture ou nombre de partisans à éliminer selon l'implémentation de la classe au desssus
     // renvoie si la fonction a eliminé des gens
     public boolean eliminateSupportersUntilEnoughFood(int foodUnits) {
-        boolean hasElimnatedSupporters = false;
+        boolean hasEliminatedSupporters = false;
         double neededFood = getTotalPopulation() * 4;
         double difference = neededFood - foodUnits;
         AtomicInteger nbSupportersToEliminate = new AtomicInteger((int)Math.ceil(difference / 4));
-        Random randomGenerator = new Random();
-        List<String> factionNames = new ArrayList<>(this.factionByName.keySet());
 
         while(nbSupportersToEliminate.get() > 0) {
-            int randomIndex = randomGenerator.nextInt(factionNames.size());
-            String randomFactionName = factionNames.get(randomIndex);
-            this.factionByName.get(randomFactionName).eliminateASupporter();
+            Faction randomFaction = getRandomFaction();
+            randomFaction.eliminateASupporter();
             nbSupportersToEliminate.decrementAndGet();
-            hasElimnatedSupporters = true;
+            hasEliminatedSupporters = true;
         }
-        if(hasElimnatedSupporters) {
+        if(hasEliminatedSupporters) {
             updateSatisfactionRateOnAllFactions(-2);
         }
-        return hasElimnatedSupporters;
+        return hasEliminatedSupporters;
+    }
+    public void increasePopulationRandomly() {
+        int increasePopulationPercentage = generateRandomNumber(1, 10);
+        int nbSupportersToGenerate = getTotalPopulation() * (1 + (increasePopulationPercentage / 100));
+        while(nbSupportersToGenerate > 0) {
+            Faction randomFaction = getRandomFaction();
+            randomFaction.addSupporters(1);
+            nbSupportersToGenerate -= 1;
+        }
     }
 
-    public boolean isArrayContainingString(String[] searchList, String searched) {
-        return Arrays.asList(searchList).contains(searched);
+    public int generateRandomNumber(int min, int max) {
+        Random randomGenerator = new Random();
+        return randomGenerator.nextInt(max - min + 1 ) + min;
+    }
+
+    public Faction getRandomFaction() {
+        List<Faction> factionNames = new ArrayList<>(this.factionByName.values());
+        int randomIndex = generateRandomNumber(0, factionNames.size());
+        return factionNames.get(randomIndex);
     }
 
     // DELETE
@@ -153,16 +170,16 @@ public class Population {
 
     public void displaySummary() {
         StringBuilder populationSummary = new StringBuilder();
-        populationSummary.append("Population :%n");
+        System.out.printf("Population :%n");
         for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
             String name = factionsSet.getKey();
             Faction faction = factionsSet.getValue();
-            String factionSummary = String.format("%s :%n", name);
-            factionSummary += String.format("\tPartisans : %d - Satisfaction : %d%%%n", faction.getNbSupporters(), faction.getSatisfactionRate());
+            String factionSummary = String.format("\t%s : %n", name);
+            factionSummary += String.format("\t\tPartisans : %d | Satisfaction : %d%%%n", faction.getNbSupporters(), faction.getSatisfactionRate());
             populationSummary.append(factionSummary);
         }
         populationSummary.append(String.format("=> Population totale : %d", getTotalPopulation()));
-        populationSummary.append(String.format(" - Satisfaction globale : %.2f", getGlobalSatisfactionRate()));
+        populationSummary.append(String.format(" - Satisfaction globale : %.2f%%", getGlobalSatisfactionRate()));
         System.out.println(populationSummary);
     }
 

@@ -25,10 +25,9 @@ public class ScenarioGame extends Game {
          *  => 4 tours <=> 4 évènements suivant l'ordre du scénario
          *  hasNotLost and scenario not finished
          *  + voir si le joueur peut arrêter le jeu à la fin du bilan
-         */;
-        System.out.println(this.getScenario().getName());
+         */
+        System.out.printf("%nNom du scénario : %s%n", this.getScenario().getName());
         System.out.println(this.getScenario().getStory());
-        System.out.printf("Nous sommes en %s.%n%n", this.getScenario().getFirstSeason().capitalize());
 
         int year = 1;
         int seasonCount = 0;
@@ -36,14 +35,18 @@ public class ScenarioGame extends Game {
         getScenario().nextEvent(seasonCount);
         while(!hasPlayerLost()) {
             if(!isScenarioFinished()) {
-                System.out.printf("%n- Année %d -%n", year);
+                System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.getScenario().getCurrentSeason().capitalize(), year);
+
                 displayCurrentEvent(eventCount);
-                int playerSolutionChoice = getPlayerChoice(getCurrentEvent().getNbChoices());
                 irreversibleEventImpacts();
+                int playerSolutionChoice = getPlayerChoice(getCurrentEvent().getNbChoices());
                 playerChoiceImpacts(playerSolutionChoice);
+
                 seasonCount += 1;
                 eventCount += 1;
                 getScenario().nextEvent(seasonCount);
+                getScenario().nextSeason();
+
                 if(isTimeToYearEndSummary(seasonCount)) {
                     // Industry and Farm generate money and food
                     this.getTreasury().generateFarmIncome();
@@ -55,8 +58,12 @@ public class ScenarioGame extends Game {
                     displayYearEndSummary(year);
                     // TODO Vérifier le calcul de "eliminateSupportersUntilEnoughFood()" dans population
                     boolean hasEliminatedSupporters = this.getPopulation().eliminateSupportersUntilEnoughFood(getFoodUnits());
-                    if(!hasEliminatedSupporters) {
-                        // TODO Augmenter la population de 1 à 10% -> manque une fonction dans population -> WILLIAM
+                    if(hasEliminatedSupporters) {
+                        // TODO retour à l'utilisateur que sa population a diminué
+                    }
+                    else {
+                        // TODO retour à l'utilisateur que sa population a grandit
+                        this.getPopulation().increasePopulationRandomly();
                     }
                     // TODO addScore(calculateYearEndScore());
                     year += 1;

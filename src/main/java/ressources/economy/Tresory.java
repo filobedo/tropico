@@ -41,7 +41,6 @@ public class Tresory {
         return true;
     }
 
-    // TODO Valeur negative acceptée
     // TODO les ifs peuvent être simplifiés regarder l'onglet "Problems"
     //  de Intellij en bas à gauche de la fenêtre
     public Boolean updateIndustryRate(int newIndustryRate) {
@@ -151,15 +150,15 @@ public class Tresory {
 
     public void displaySummary() {
         StringBuilder treasurySummary = new StringBuilder();
-        treasurySummary.append("Ressources :%n");
+        treasurySummary.append(String.format("Ressources :%n"));
         // Argent
-        treasurySummary.append(String.format("Argent : %d$%n", getMoney()));
+        treasurySummary.append(String.format("\tArgent : %d$%n", getMoney()));
         // IndustryRate
-        treasurySummary.append(String.format("Industrie : %d%%%n",getIndustryRate()));
+        treasurySummary.append(String.format("\tIndustrie : %d%%%n",getIndustryRate()));
         // FarmRate
-        treasurySummary.append(String.format("Agriculture : %d%%%n", getFarmRate()));
+        treasurySummary.append(String.format("\tAgriculture : %d%%%n", getFarmRate()));
         // Food
-        treasurySummary.append(String.format("Nourriture : %d%n", getFood()));
+        treasurySummary.append(String.format("\tNourriture : %d%n", getFood()));
 
         System.out.println(treasurySummary);
     }

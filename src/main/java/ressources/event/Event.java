@@ -44,10 +44,10 @@ public class Event {
     }
 
     public String getCurrentEvent(){
-        return String.format(this.getEventName() + "%n" + this.getEventDescription() + "%n" + getCurrentEventIrreverssible());
+        return String.format(this.getEventName() + "%n" + this.getEventDescription() + "%n" + getCurrentEventIrreversible());
     }
 
-    private String getCurrentEventIrreverssible() {
+    private String getCurrentEventIrreversible() {
         if (this.currentEvent.has("irreversible")){
             return String.format("Impact direct :%n%s",  this.getImpact(this.currentEvent, "irreversible"));
         }
@@ -72,24 +72,24 @@ public class Event {
     }
 
     private String getImpact(JSONObject choice, String key){
-        String res = "";
+        StringBuilder res = new StringBuilder();
         JSONObject impactJSON = choice.getJSONObject(key);
         if (impactJSON.has("money")){
-            res += String.format("\tArgent : %d%n", impactJSON.getInt("money"));
+            res.append(String.format("\tArgent : %d%n", impactJSON.getInt("money")));
         }
         if (impactJSON.has("farm")){
-            res += String.format("\tAgriculture : %d%n", impactJSON.getInt("farm"));
+            res.append(String.format("\tAgriculture : %d%n", impactJSON.getInt("farm")));
         }
         if (impactJSON.has("industry")){
-            res += String.format("\tIndustrie : %d%n", impactJSON.getInt("industry"));
+            res.append(String.format("\tIndustrie : %d%n", impactJSON.getInt("industry")));
         }
         if (impactJSON.has("population")){
-            res += String.format("\tPopulation : %d%n", impactJSON.getInt("population"));
+            res.append(String.format("\tPopulation : %d%n", impactJSON.getInt("population)")));
         }
         if (impactJSON.has("factions")){
-            res += getFactionsImpact(impactJSON.getJSONArray("factions"));
+            res.append(getFactionsImpact(impactJSON.getJSONArray("factions")));
         }
-        return res;
+        return res.toString();
     }
 
     private String getFactionsImpact(JSONArray factions) {
