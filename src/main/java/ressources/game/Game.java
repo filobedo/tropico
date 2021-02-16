@@ -78,7 +78,7 @@ public abstract class Game {
             }
         }
         else {
-            System.out.println("Cannot load game");
+            System.out.println("Cannot load game. Something is missing in the JSON file.");
             gameShutDown();
         }
     }

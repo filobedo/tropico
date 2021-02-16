@@ -1,12 +1,14 @@
 package ressources.scenario;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Scenario {
     private final String name;
     private final String story;
-    private List<Event> events = new ArrayList<>();
+//    private List<Event> events = new ArrayList<>();
+    private Map<Season, List<Event>> eventsBySeason = new HashMap<>();
     private Event currentEvent;
     private Season currentSeason;
 
@@ -14,6 +16,7 @@ public class Scenario {
         this.name = name;
         this.story = story;
         this.currentSeason = currentSeason;
+        setSeasonsInEventsBySeason();
     }
 
     public String getName() {
@@ -28,17 +31,18 @@ public class Scenario {
         return this.currentSeason;
     }
 
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void setSeasonsInEventsBySeason() {
+        for(Season season : Season.values()) {
+            this.eventsBySeason.put(season, null);
+        }
     }
 
-    public void nextEvent(int index) {
-        if(index != events.size()) {
-            this.currentEvent = this.events.get(index);
-        }
-        else {
-            this.currentEvent = null;
-        }
+    public void addEventsToSeason(Season season, List<Event> events) {
+        this.eventsBySeason.put(season, events);
+    }
+
+    public void nextEvent(int year) {
+        this.currentEvent = this.eventsBySeason.get(Season.SPRING).get(year);
     }
 
     public void nextSeason() {

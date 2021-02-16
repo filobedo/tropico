@@ -34,13 +34,23 @@ public class JSONParser implements IParser{
         if(this.gameParameterFile.has("name")) {
             if(this.gameParameterFile.has("story")) {
                 if(this.gameParameterFile.has("gameStartParameters")) {
-                    if(this.gameParameterFile.has("scenario") || this.gameParameterFile.has("events")) {
-                        return true;
+                    if(this.gameParameterFile.has("scenario")) {
+                        JSONObject scenario = this.gameParameterFile.getJSONObject("scenario");
+                        return scenario.length() == 4 && hasAllSeasons(scenario);
                     }
                 }
             }
         }
         return false;
+    }
+
+    public boolean hasAllSeasons(JSONObject scenario) {
+        for(Season season : Season.values()) {
+            if(!scenario.has(season.name())) {
+               return false;
+            }
+        }
+        return true;
     }
 
     public boolean isGameStartParameterDifficultyInJson(GameDifficulty chosenGameDifficulty) {
@@ -49,13 +59,12 @@ public class JSONParser implements IParser{
             return true;
         }
         else if (this.gameParameterFile.getJSONObject("gameStartParameters").has(GameDifficulty.NORMAL.name())) {
-            // TODO est-ce que le "NORMAL" du json c'est la difficulté ?
             System.out.printf("%nLa difficulté \"%s\" n'existe pas dans ce scénario, c'est-à-dire que les ressources de base (population, agriculture, argent...) sont de difficulté %s.", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
             System.out.printf("%nCependant, la difficulté des évènements est appliqué selon votre choix, c'est-à-dire que si un évènement en mode normal diminue la population de 10%%,%nalors avec la difficulté que vous avez choisi, la population diminuera de %d%%.%n", (int)(10 * chosenGameDifficulty.getDifficultyCoefficient()));
             this.gameDifficulty = GameDifficulty.NORMAL.name();
             return true;
         }
-        System.out.println("Cette difficulté n'existe pas dans ce scénario");
+        System.out.printf("%nLes difficultés %s et %s n'existent pas dans ce scénario.%n", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
         return false;
     }
 
@@ -146,9 +155,9 @@ public class JSONParser implements IParser{
     }
 
     public Scenario parseScenario() throws ConfigurationException {
-        JSONArray jsonScenario = this.gameParameterFile.getJSONArray("scenario");
+        JSONObject scenarioToParse = this.gameParameterFile.getJSONObject("scenario");
 
-        if(jsonScenario.length() == 0) {
+        if(scenarioToParse.length() == 0) {
             throw new ConfigurationException("Missing events.");
         }
         else {
@@ -156,23 +165,24 @@ public class JSONParser implements IParser{
             String story = gameParameterFile.getString("story");
             Season firstSeason = getFirstSeason();
             Scenario scenario = new Scenario(name, story, firstSeason);
-            try {
-                List<Event> events = parseEvents(jsonScenario);
-                scenario.setEvents(events);
-            } catch (Exception ex) {
-                throw ex;
+            for(Season season : Season.values()) {
+                JSONArray seasonToParse = scenarioToParse.getJSONArray(season.name());
+                try {
+                    scenario.addEventsToSeason(season, parseEvents(seasonToParse));
+                } catch (Exception ex) {
+                    throw ex;
+                }
             }
             return scenario;
         }
     }
 
-    public List<Event> parseEvents(JSONArray scenario) throws ConfigurationException {
+    public List<Event> parseEvents(JSONArray seasonToParse) throws ConfigurationException {
         List<Event> scenarioEvents = new ArrayList<>();
-        int seasonCount;
-        for(seasonCount = 0; seasonCount < scenario.length(); seasonCount += 1 ) {
-            JSONObject season = scenario.getJSONObject(seasonCount);
-            JSONArray events = season.getJSONArray("events");
-            JSONObject event = events.getJSONObject(0);
+        for(int seasonCount = 0; seasonCount < seasonToParse.length(); seasonCount += 1 ) {
+//            JSONObject season = seasonToParse.getJSONObject(seasonCount);
+//            JSONArray events = season.getJSONArray("events");
+            JSONObject event = seasonToParse.getJSONObject(0);
 
             try {
                 Event currentEvent = parseEvent(event);

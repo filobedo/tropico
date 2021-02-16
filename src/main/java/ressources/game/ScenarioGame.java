@@ -9,12 +9,9 @@ public class ScenarioGame extends Game {
     @Override
     public void play() {
         super.play();
-        /*TODO
-         *  Chaque année
-         *  => 4 tours <=> 4 évènements suivant l'ordre du scénario
-         *  hasNotLost and scenario not finished
-         *  + voir si le joueur peut arrêter le jeu à la fin du bilan
-         */
+        // Check nb events in seasons
+        // si la premiere saison qui commence a moins d'év que les autres c'est mort
+        // si la saison avant la premiere
         System.out.printf("%nNom du scénario : %s%n", this.getScenario().getName());
         System.out.println(this.getScenario().getStory());
 
@@ -62,7 +59,6 @@ public class ScenarioGame extends Game {
                     }
                     // ^à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
 
-                    // TODO addScore(calculateYearEndScore());
                     year += 1;
                     UserInput.pressAnyKeyToContinue();
                 }
