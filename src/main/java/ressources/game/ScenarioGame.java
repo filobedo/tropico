@@ -1,21 +1,10 @@
 package ressources.game;
 
-import org.json.JSONObject;
-import ressources.scenario.Event;
-
 public class ScenarioGame extends Game {
-    private String name;
-    private String scenarioFile;
 
-    public ScenarioGame(GameDifficulty gameDifficulty, String name) {
+    public ScenarioGame(GameDifficulty gameDifficulty) {
         super(gameDifficulty);
-        this.name = name;
     }
-
-    public void setScenarioFile(String scenarioFile) {
-        this.scenarioFile = scenarioFile;
-    }
-
 
     @Override
     public void play() {
@@ -41,6 +30,7 @@ public class ScenarioGame extends Game {
                 irreversibleEventImpacts();
                 int playerSolutionChoice = getPlayerChoice(getCurrentEvent().getNbChoices());
                 playerChoiceImpacts(playerSolutionChoice);
+                addScore(getSeasonEndScore());
 
                 seasonCount += 1;
                 eventCount += 1;
@@ -48,26 +38,33 @@ public class ScenarioGame extends Game {
                 getScenario().nextSeason();
 
                 if(isTimeToYearEndSummary(seasonCount)) {
+                    // TODO à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
                     // Industry and Farm generate money and food
-                    this.getTreasury().generateFarmIncome();
-                    this.getTreasury().generateIndustryIncome();
+                    getTreasury().generateFarmIncome();
+                    getTreasury().generateIndustryIncome();
                     // Year End Summary
                     displayYearEndSummary(year);
                     handlePlayerYearEndChoices();
                     UserInput.pressAnyKeyToContinue();
                     displayYearEndSummary(year);
                     // TODO Vérifier le calcul de "eliminateSupportersUntilEnoughFood()" dans population
-                    boolean hasEliminatedSupporters = this.getPopulation().eliminateSupportersUntilEnoughFood(getFoodUnits());
+                    int nbCitizensEliminated = getPopulation().getNbSupportersToEliminateToHaveEnoughFood(getFoodUnits());
+                    boolean hasEliminatedSupporters = getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
                     if(hasEliminatedSupporters) {
-                        // TODO retour à l'utilisateur que sa population a diminué
+                        System.out.println("La population a diminué car vous n'aviez pas assez de nourriture.");
+                        System.out.printf("%nVous avez perdu %d citoyens.%n", nbCitizensEliminated);
                     }
                     else {
-                        // TODO retour à l'utilisateur que sa population a grandit
-                        this.getPopulation().increasePopulationRandomly();
+                        int nbNewCitizens = this.getPopulation().increasePopulationRandomly();
+                        System.out.println("Félicitation, vous aviez assez de nourriture pour nourriture toute votre population.");
+                        System.out.println("Vous avez même du surplus.");
+                        System.out.printf("%nAinsi, la population a augmenté de %d citoyens.%n", nbNewCitizens);
                     }
+                    // ^à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
+
                     // TODO addScore(calculateYearEndScore());
                     year += 1;
-
+                    UserInput.pressAnyKeyToContinue();
                 }
             }
             else {
@@ -76,6 +73,8 @@ public class ScenarioGame extends Game {
                 break;
             }
         }
+        System.out.printf("%n%nVotre score est de %f", getEndGameScore(year));
+
     }
 
     public boolean isScenarioFinished() {

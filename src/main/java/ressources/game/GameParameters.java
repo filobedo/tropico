@@ -114,23 +114,23 @@ public class GameParameters {
 
     public File[] getScenarioList() {
         File directory = new File(scenariosResourcePath);
-        File[] scenarios = directory.listFiles();
-        return scenarios;
+        return directory.listFiles();
+    }
+
+    public void displayScenarioListInstructions(File[] scenarios) {
+        System.out.print(getScenarioListInstructions(scenarios));
     }
 
     public String getScenarioListInstructions(File[] scenarios) {
         int nbScenario = scenarios.length;
         int countScenario = 1;
-        String instructions = String.format("%nVeuillez choisir parmis ces %d scénarios :%n", nbScenario);
+        StringBuilder instructions = new StringBuilder(String.format("%nVeuillez choisir parmis ces %d scénarios :%n", nbScenario));
         for (File scenario: scenarios) {
             String currentScenario = String.format("%d. %s%n",countScenario, getScenarioName(scenario));
-            instructions += currentScenario;
+            instructions.append(currentScenario);
             countScenario += 1;
         }
-        return instructions;
-    }
-    public void displayScenarioListInstructions(File[] scenarios) {
-        System.out.printf(getScenarioListInstructions(scenarios));
+        return instructions.toString();
     }
 
     public String getScenarioName(File file) {
@@ -167,23 +167,19 @@ public class GameParameters {
     }
 
     public boolean isGameModeSandbox() {
-        return this.gameModeClass == SandboxGame.class.getSimpleName();
+        return this.gameModeClass.equals(SandboxGame.class.getSimpleName());
     }
 
     public boolean isGameModeScenario() {
-        return this.gameModeClass == ScenarioGame.class.getSimpleName();
+        return this.gameModeClass.equals(ScenarioGame.class.getSimpleName());
     }
 
-
+    // DELETE
     public JSONObject openScenario(String fileName) {
         File file = new File(fileName);
         try (InputStream is = new FileInputStream(file)) {
             JSONTokener token = new JSONTokener(is);
-            JSONObject scenario = new JSONObject(token);
-            return scenario;
-
-//            this.scenario = scenario.getJSONObject("scenario");
-//            this.currentEvent = this.scenario.getJSONObject(0).getJSONArray("events").getJSONObject(0);
+            return new JSONObject(token);
         } catch (IOException e){
             throw new NullPointerException("Cannot find resource file " + fileName);
         }

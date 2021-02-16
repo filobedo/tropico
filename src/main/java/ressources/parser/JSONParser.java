@@ -156,8 +156,6 @@ public class JSONParser implements IParser{
             String story = gameParameterFile.getString("story");
             Season firstSeason = getFirstSeason();
             Scenario scenario = new Scenario(name, story, firstSeason);
-
-            // Parcourir chaque saison (1 saison = 1 event)
             try {
                 List<Event> events = parseEvents(jsonScenario);
                 scenario.setEvents(events);
@@ -166,8 +164,6 @@ public class JSONParser implements IParser{
             }
             return scenario;
         }
-//        System.out.println("%n--- 1ere année --- %n");
-//        return null;
     }
 
     public List<Event> parseEvents(JSONArray scenario) throws ConfigurationException {
@@ -241,8 +237,7 @@ public class JSONParser implements IParser{
             factionEffects = parseFactionEffects(effects.getJSONArray("factions"));
         }
         Map<String, Integer> factorEffects = parseFactorEffects(effects);
-        Effect choiceEffects = new Effect(factionEffects, factorEffects);
-        return choiceEffects;
+        return new Effect(factionEffects, factorEffects);
     }
 
     public Map<String, Map<String, Integer>> parseFactionEffects(JSONArray factionEffects) {
@@ -298,8 +293,6 @@ public class JSONParser implements IParser{
         if(this.gameParameterFile.has("firstSeason")) {
             return Season.valueOf(this.gameParameterFile.getString("firstSeason").toUpperCase());
         }
-        Random random = new Random();
-        Season randomSeason = Season.getRandom();
-        return randomSeason;
+        return Season.getRandom();
     }
 }

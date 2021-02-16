@@ -1,5 +1,6 @@
 package ressources.factions;
 
+import ressources.game.GameRules;
 import ressources.listeners.BriberyListener;
 
 import java.util.*;
@@ -60,7 +61,7 @@ public class Population {
         return population.get();
     }
 
-    public double getGlobalSatisfactionRate() {
+    public double getTotalSatisfactionRate() {
         double totalSatisfactionRate = 0;
         for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             Faction currentFaction = factionsSet.getValue();
@@ -68,7 +69,11 @@ public class Population {
             double nbSupporters = currentFaction.getNbSupporters();
             totalSatisfactionRate += nbSupporters * satisfactionRate;
         }
-        return totalSatisfactionRate / getTotalPopulation();
+        return totalSatisfactionRate;
+    }
+
+    public double getGlobalSatisfactionRate() {
+        return getTotalSatisfactionRate() / getTotalPopulation();
     }
 
     public int getNbFactions() {
@@ -119,19 +124,16 @@ public class Population {
         }
     }
 
-
     // TODO nombre d'unité de nourriture ou nombre de partisans à éliminer selon l'implémentation de la classe au desssus
     // renvoie si la fonction a eliminé des gens
-    public boolean eliminateSupportersUntilEnoughFood(int foodUnits) {
+    // TODO TEST
+    public boolean eliminateSupportersUntilEnoughFood(int nbSupportersToEliminate) {
         boolean hasEliminatedSupporters = false;
-        double neededFood = getTotalPopulation() * 4;
-        double difference = neededFood - foodUnits;
-        AtomicInteger nbSupportersToEliminate = new AtomicInteger((int)Math.ceil(difference / 4));
-
-        while(nbSupportersToEliminate.get() > 0) {
+        AtomicInteger countNbSupporters = new AtomicInteger(nbSupportersToEliminate);
+        while(countNbSupporters.get() > 0) {
             Faction randomFaction = getRandomFaction();
             randomFaction.eliminateASupporter();
-            nbSupportersToEliminate.decrementAndGet();
+            countNbSupporters.decrementAndGet();
             hasEliminatedSupporters = true;
         }
         if(hasEliminatedSupporters) {
@@ -139,33 +141,35 @@ public class Population {
         }
         return hasEliminatedSupporters;
     }
-    public void increasePopulationRandomly() {
+
+    // TODO TEST
+    public int getNbSupportersToEliminateToHaveEnoughFood(int foodUnits) {
+        int populationWhoCanBeFed = foodUnits / GameRules.NEEDED_FOOD_PER_CITIZEN;
+        return getTotalPopulation() - populationWhoCanBeFed;
+    }
+
+    // TODO TEST
+    public int increasePopulationRandomly() {
         int increasePopulationPercentage = generateRandomNumber(1, 10);
         int nbSupportersToGenerate = getTotalPopulation() * (1 + (increasePopulationPercentage / 100));
+        int nbSupportersGenerated = nbSupportersToGenerate;
         while(nbSupportersToGenerate > 0) {
             Faction randomFaction = getRandomFaction();
             randomFaction.addSupporters(1);
             nbSupportersToGenerate -= 1;
         }
+        return nbSupportersGenerated;
+    }
+
+    public Faction getRandomFaction() {
+        List<Faction> factionNames = new ArrayList<>(this.factionByName.values());
+        int randomIndex = generateRandomNumber(0, factionNames.size() - 1);
+        return factionNames.get(randomIndex);
     }
 
     public int generateRandomNumber(int min, int max) {
         Random randomGenerator = new Random();
         return randomGenerator.nextInt(max - min + 1 ) + min;
-    }
-
-    public Faction getRandomFaction() {
-        List<Faction> factionNames = new ArrayList<>(this.factionByName.values());
-        int randomIndex = generateRandomNumber(0, factionNames.size());
-        return factionNames.get(randomIndex);
-    }
-
-    // DELETE
-    public int parseInt(String toBeParsed) {
-        if(!toBeParsed.equals("")) {
-            return Integer.parseInt(toBeParsed);
-        }
-        return 0;
     }
 
     public void displaySummary() {

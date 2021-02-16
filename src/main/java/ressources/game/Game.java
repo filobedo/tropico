@@ -83,11 +83,6 @@ public abstract class Game {
         }
     }
 
-    public void gameShutDown() {
-        System.out.println("Le jeu est terminé.");
-        System.exit(0);
-    }
-
     public boolean canLoadGame() {
         if(parser.canParseFile()) {
             if(parser.isGameStartParameterDifficultyInJson(this.gameDifficulty)) {
@@ -95,6 +90,11 @@ public abstract class Game {
             }
         }
         return false;
+    }
+
+    public void gameShutDown() {
+        System.out.println("Le jeu est terminé.");
+        System.exit(0);
     }
 
     public void setParserType(String filePath) {
@@ -232,7 +232,7 @@ public abstract class Game {
     }
 
     public void displayPlayerYearEndChoices() {
-        System.out.printf("%n%nEn cette fin d'année, vous avez plusieurs options qui se présente à vous pour tenter de sauver votre république de l'insurrection.");
+        System.out.printf("%n%nEn cette fin d'année, vous avez plusieurs options qui se présente à vous pour tenter de sauver votre république de l'insurrection.%n");
         System.out.println("Option 1 : Ne rien faire");
         System.out.println("Option 2 : Pot-de-vin à une faction (coût par partisan : 15$)");
         System.out.println("\t=> Possible sur toute faction sauf les Loyalistes");
@@ -248,7 +248,7 @@ public abstract class Game {
         String warning = String.format("%nAttention ! Votre choix est incorrect");
         try {
             int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1 && playerChoice <= 3) {
+            if(playerChoice >= 1 && playerChoice <= GameRules.NB_YEAR_END_OPTIONS) {
                 return playerChoice;
             }
             else {
@@ -263,7 +263,7 @@ public abstract class Game {
 
     public void playerYearEndChoiceImpacts(int choice) {
         if(choice == GameRules.YEAR_END_DO_NOTHING_CHOICE) {
-            System.out.println("Vous avez décidé de ne rien faire pour sauver votre république." +
+            System.out.printf("%nVous avez décidé de ne rien faire pour sauver votre république." +
                     " Elle doit se porter à merveille%n");
         }
         if(choice == GameRules.YEAR_END_BRIBE_CHOICE) {
@@ -325,9 +325,13 @@ public abstract class Game {
                 this.treasury.useMoney(factionToBribe.getBribePrice());
             }
             else {
-                System.out.println("Vous n'avez pas assez d'argent pour verser un pot-de-vin aux" + factionToBribe.getName());
+                System.out.printf("%nVous n'avez pas assez d'argent pour verser un pot-de-vin aux %s.%n", factionToBribe.getName());
                 handlePlayerYearEndChoices();
             }
+        }
+        else {
+            System.out.printf("%nIl n'est pas possible de verser un pot de vin à cette faction.%n");
+            handlePlayerYearEndChoices();
         }
     }
 
@@ -346,11 +350,25 @@ public abstract class Game {
     public boolean haveEnoughMoney(int price) {
         return this.treasury.getMoney() >= price;
     }
+
     public int getFoodUnits() {
         return getTreasury().getFood();
     }
 
-    public void addScore(double points) {
-        setScore(getScore() + points);
+    public void addScore(double scoreToAdd) {
+        setScore(getScore() + scoreToAdd);
+    }
+    public double getSeasonEndScore() {
+        double seasonEndScore = 0;
+        seasonEndScore += this.population.getTotalSatisfactionRate() * GameRules.SCORE_POINTS_PER_SATISFACTION_WON;
+        return seasonEndScore;
+    }
+
+    public double getEndGameScore(int nbYear) {
+        double endGameScore = this.score;
+        // +10 points per year
+        endGameScore += nbYear * GameRules.SCORE_POINTS_PER_YEAR;
+        endGameScore += getTreasury().getMoney() * GameRules.SCORE_POINTS_PER_DOLLAR;
+        return endGameScore;
     }
 }

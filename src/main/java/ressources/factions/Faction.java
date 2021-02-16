@@ -25,9 +25,7 @@ public abstract class Faction {
         }
     }
 
-    public String getName() {
-        return this.getClass().getSimpleName();
-    }
+    abstract public String getName();
 
     public int getNbSupporters() {
         return this.nbSupporters;
@@ -48,7 +46,7 @@ public abstract class Faction {
 
     public void setSatisfactionRate(int newRate) {
         if(this.satisfactionRate == 0) {
-            System.out.printf("%s faction is against this republic (unsatisfied), it is no longer possible to increase their satisfaction rate.%n", getName());
+            System.out.printf("Les %s sont contre votre République (insatisfaits), il n'est plus possible d'augmenter leur taux de satisfaction.%n", getName());
         }
         else {
             if(newRate <= 0) {
