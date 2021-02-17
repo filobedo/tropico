@@ -1,7 +1,8 @@
 package ressources.game;
-import ressources.economy.Treasury;
-import ressources.factions.Faction;
-import ressources.factions.Population;
+import ressources.republic.Republic;
+import ressources.republic.economy.Resources;
+import ressources.republic.factions.Faction;
+import ressources.republic.factions.Population;
 import ressources.parser.IParser;
 import ressources.parser.JSONParser;
 import ressources.scenario.Choice;
@@ -9,39 +10,15 @@ import ressources.scenario.Effect;
 import ressources.scenario.Event;
 import ressources.scenario.Scenario;
 
-import java.util.Map;
-import java.util.Scanner;
-
 public abstract class Game {
-    private double score;
-    private Treasury treasury;
-    private Population population;
-    private final GameDifficulty gameDifficulty;
-    private Scenario scenario;
+    protected Republic republic;
+    protected final GameDifficulty gameDifficulty;
+    protected Scenario scenario;
+    protected double score;
     private IParser parser;
 
     public Game(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
-    }
-
-    public Scenario getScenario() {
-        return scenario;
-    }
-
-    public double getScore() {
-        return score;
-    }
-
-    public Treasury getTreasury() {
-        return treasury;
-    }
-
-    public Population getPopulation() {
-        return population;
-    }
-
-    public GameDifficulty getGameDifficulty() {
-        return gameDifficulty;
     }
 
     public void setScore(double score) {
@@ -69,8 +46,9 @@ public abstract class Game {
         }
         if(canLoadGame()) {
             try {
-                this.population = parser.parsePopulation();
-                this.treasury = parser.parseResources();
+                Population population = parser.parsePopulation();
+                Resources resources = parser.parseResources();
+                this.republic = new Republic(population, resources);
                 this.scenario = parser.parseScenario();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -102,12 +80,12 @@ public abstract class Game {
     }
 
     public void play() throws NullPointerException{
-        if(getPopulation() != null && getTreasury() != null) {
+        if(this.republic.isSet()) {
             System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
-            System.out.printf("en difficulté \"%s\".%n", getGameDifficulty());
+            System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
             System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
-            UserInput.pressAnyKeyToContinue();
-            System.out.printf("%nLancement du jeu...%n");
+            PlayerInput.pressAnyKeyToContinue();
+            System.out.printf("%nLancement du jeu...%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n");
         }
         else {
             System.out.println("Arrêt du jeu...");
@@ -115,118 +93,42 @@ public abstract class Game {
         }
     }
 
-    public boolean hasPlayerLost() {
-        if(getPopulation().getTotalPopulation() > 0) {
-            return getPopulation().getGlobalSatisfactionRate() < 25;
+    public boolean isPlayerWinning() {
+        if(this.republic.getTotalPopulation() > 0) {
+            return this.republic.getPopulation().getGlobalSatisfactionRate() >= GameRules.MINIMUM_GLOBAL_SATISFACTION_RATE;
         }
         return true;
+    }
+
+    public Event getCurrentEvent() {
+        return this.scenario.getCurrentEvent();
+    }
+
+
+    public void playerChoiceImpacts(int choice) {
+        Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
+        Effect choiceEffects = playerChoice.getEffects();
+        this.republic.impacts(choiceEffects);
     }
 
     public boolean isTimeToYearEndSummary(int seasonCount) {
         return seasonCount % 4 == 0 && seasonCount != 0;
     }
 
-    public void displayCurrentEvent(int eventCount) {
-        getScenario().displayCurrentEvent(eventCount);
-    }
-
-    public Event getCurrentEvent() {
-        return getScenario().getCurrentEvent();
-    }
-
-    public int getPlayerChoice(int nbChoice) {
-        Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("%nAttention ! Votre choix est incorrect");
-        try {
-            int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1 && playerChoice <= nbChoice) {
-                return playerChoice;
-            }
-            else {
-                System.out.println(warning);
-                return getPlayerChoice(nbChoice);
-            }
-        } catch (Exception ex) {
-            System.out.println(warning);
-            return getPlayerChoice(nbChoice);
-        }
-    }
-
-    public void irreversibleEventImpacts() {
-        Event currentEvent = getCurrentEvent();
-        Effect eventEffects = currentEvent.getIrreversibleEffects();
-        if(eventEffects != null) {
-            factionImpacts(eventEffects);
-            factorImpacts(eventEffects);
-        }
-    }
-    public void playerChoiceImpacts(int choice) {
-        Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
-        Effect choiceEffects = playerChoice.getEffects();
-        factionImpacts(choiceEffects);
-        factorImpacts(choiceEffects);
-    }
-
-    public void factionImpacts(Effect effect) {
-        Map<String, Map<String, Integer>> factionImpacts = effect.getEffectsByFaction();
-        // Each faction
-        for(Map.Entry<String, Map<String, Integer>> factionEffectsSet: factionImpacts.entrySet()) {
-            String factionName = factionEffectsSet.getKey();
-            Map<String, Integer> effectsOnFaction = factionEffectsSet.getValue();
-            // Each effect on the faction
-            for(Map.Entry<String, Integer> factionEffects: effectsOnFaction.entrySet()) {
-                String factorName = factionEffects.getKey();
-                int factorEffect = factionEffects.getValue();
-                if(factorName.equals("nbSupporters")) {
-                    this.population.updateNbSupportersByFaction(factorEffect, factionName);
-                }
-                if(factorName.equals("satisfactionRate")) {
-                    this.population.updateSatisfactionRateByFaction(factorEffect, factionName);
-                }
-            }
-        }
-    }
-    public void factorImpacts(Effect effect) {
-        Map<String, Integer> factorImpacts = effect.getEffectsByFactor();
-        // Each factor
-        for(Map.Entry<String,Integer> factorEffectsSet: factorImpacts.entrySet()) {
-            String factorName = factorEffectsSet.getKey();
-            int factorEffect = factorEffectsSet.getValue();
-            if(factorName.equals("industryRate")) {
-                this.treasury.updateIndustryRate(factorEffect);
-            }
-            if(factorName.equals("farmRate")) {
-                this.treasury.updateFarmRate(factorEffect);
-            }
-            if(factorName.equals("foodUnits")) {
-                this.treasury.addFood(factorEffect);
-            }
-            if(factorName.equals("treasury")) {
-                this.treasury.earnMoney(factorEffect);
-            }
-            if(factorName.equals("population")) {
-                this.population.updateNbSupportersOnAllFactions(factorEffect);
-            }
-            if(factorName.equals("satisfactionRate")) {
-                this.population.updateNbSupportersOnAllFactions(factorEffect);
-            }
-        }
-    }
-
     public void displayYearEndSummary(int year) {
         System.out.printf("%n%n- Bilan de cette %de année -%n", year);
-        // Population
-        this.population.displaySummary();
+        this.republic.getPopulation().displaySummary();
         System.out.println();
-        // Treasury
-        this.treasury.displaySummary();
-        UserInput.pressAnyKeyToContinue();
+        this.republic.getResources().displaySummary();
+        PlayerInput.pressAnyKeyToContinue();
     }
 
     public void handlePlayerYearEndChoices() {
         displayPlayerYearEndChoices();
-        int playerYearEndChoice = chooseEndYearOption();
-        playerYearEndChoiceImpacts(playerYearEndChoice);
+        int playerYearEndChoice = PlayerInput.chooseEndYearOption();
+        if(!this.republic.playerYearEndChoiceImpacts(playerYearEndChoice)) {
+            handlePlayerYearEndChoices();
+        }
     }
 
     public void displayPlayerYearEndChoices() {
@@ -241,128 +143,13 @@ public abstract class Game {
         System.out.println("Entrez votre choix :");
     }
 
-    public int chooseEndYearOption() {
-        Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("%nAttention ! Votre choix est incorrect");
-        try {
-            int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1 && playerChoice <= GameRules.NB_YEAR_END_OPTIONS) {
-                return playerChoice;
-            }
-            else {
-                System.out.println(warning);
-                return chooseEndYearOption();
-            }
-        } catch (Exception ex) {
-            System.out.println(warning);
-            return chooseEndYearOption();
-        }
-    }
-
-    public void playerYearEndChoiceImpacts(int choice) {
-        if(choice == GameRules.YEAR_END_DO_NOTHING_CHOICE) {
-            System.out.printf("%nVous avez décidé de ne rien faire pour sauver votre république." +
-                    " Elle doit se porter à merveille%n");
-        }
-        if(choice == GameRules.YEAR_END_BRIBE_CHOICE) {
-            // Bribe
-            this.population.displayAvailableFactions();
-            int indexFactionToBribe = chooseFactionToBribe();
-            String factionToBribe = this.population.getFactionNameByIndex(indexFactionToBribe);
-            bribe(factionToBribe);
-        }
-        if(choice == GameRules.YEAR_END_BUY_FOOD_CHOICE) {
-            // Buy food
-            int foodUnitsToBuy = chooseFoodUnitsQuantityToBuy();
-            buyFood(foodUnitsToBuy);
-        }
-    }
-
-    public int chooseFactionToBribe() {
-        Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("%nAttention ! Votre choix est incorrect");
-        try {
-            int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1 && playerChoice <= this.population.getNbFactions()) {
-                return playerChoice;
-            }
-            else {
-                System.out.println(warning);
-                return chooseFactionToBribe();
-            }
-        } catch (Exception ex) {
-            System.out.println(warning);
-            return chooseFactionToBribe();
-        }
-    }
-
-    public int chooseFoodUnitsQuantityToBuy() {
-        Scanner playerInput = new Scanner(System.in);
-        System.out.println("%nEntrez le nombre d'unité de nourriture que vous voulez acheter :");
-        String warning = String.format("%nAttention ! Votre entrée est incorrect");
-        try {
-            int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1) {
-                return playerChoice;
-            }
-            else {
-                System.out.println(warning);
-                return chooseFoodUnitsQuantityToBuy();
-            }
-        } catch (Exception ex) {
-            System.out.println(warning);
-            return chooseFoodUnitsQuantityToBuy();
-        }
-    }
-
-    public void bribe(String factionName) {
-        Faction factionToBribe = this.population.getFaction(factionName);
-        if(factionToBribe.canBeBribed()) {
-            if(haveEnoughMoney(factionToBribe.getBribePrice())) {
-                factionToBribe.bribe();
-                this.treasury.useMoney(factionToBribe.getBribePrice());
-            }
-            else {
-                System.out.printf("%nVous n'avez pas assez d'argent pour verser un pot-de-vin aux %s.%n", factionToBribe.getName());
-                handlePlayerYearEndChoices();
-            }
-        }
-        else {
-            System.out.printf("%nIl n'est pas possible de verser un pot de vin à cette faction.%n");
-            handlePlayerYearEndChoices();
-        }
-    }
-
-    public void buyFood(int foodUnit) {
-        int foodPrice = this.treasury.getFoodPrice(foodUnit);
-        if(haveEnoughMoney(foodPrice)) {
-            this.treasury.buyFood(foodUnit);
-            this.treasury.useMoney(foodPrice);
-        }
-        else {
-            System.out.println("Vous n'avez pas assez d'argent pour acheter autant de nourriture !");
-            handlePlayerYearEndChoices();
-        }
-    }
-
-    public boolean haveEnoughMoney(int price) {
-        return this.treasury.getMoney() >= price;
-    }
-
-    public int getFoodUnits() {
-        return getTreasury().getFoodQuantity();
-    }
-
-    public void eatFood() {
-        this.treasury.eat(getPopulation().getTotalPopulation());
-    }
     public void addScore(double scoreToAdd) {
-        setScore(getScore() + scoreToAdd);
+        setScore(this.score + scoreToAdd);
     }
 
     public double getSeasonEndScore() {
         double seasonEndScore = 0;
-        seasonEndScore += this.population.getTotalSatisfactionRate() * GameRules.SCORE_POINTS_PER_SATISFACTION_WON;
+        seasonEndScore += this.republic.getPopulation().getTotalSatisfactionRate() * GameRules.SCORE_POINTS_PER_SATISFACTION_WON;
         return seasonEndScore;
     }
 
@@ -370,7 +157,7 @@ public abstract class Game {
         double endGameScore = this.score;
         // +10 points per year
         endGameScore += nbYear * GameRules.SCORE_POINTS_PER_YEAR;
-        endGameScore += getTreasury().getMoney() * GameRules.SCORE_POINTS_PER_DOLLAR;
+        endGameScore += this.republic.getResources().getMoney() * GameRules.SCORE_POINTS_PER_DOLLAR;
         return endGameScore;
     }
 }

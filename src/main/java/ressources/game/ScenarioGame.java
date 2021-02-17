@@ -12,56 +12,57 @@ public class ScenarioGame extends Game {
         // Check nb events in seasons
         // si la premiere saison qui commence a moins d'év que les autres c'est mort
         // si la saison avant la premiere
-        System.out.printf("%nNom du scénario : %s%n", this.getScenario().getName());
-        System.out.println(this.getScenario().getStory());
+        System.out.printf("%nNom du scénario : %s%n", this.scenario.getName());
+        System.out.println(this.scenario.getStory());
 
         int year = 1;
         int seasonCount = 0;
         int eventCount = 1;
-        getScenario().nextEvent(seasonCount);
-        while(!hasPlayerLost()) {
+        this.scenario.nextEvent(seasonCount);
+        while(isPlayerWinning()) {
             if(!isScenarioFinished()) {
-                System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.getScenario().getCurrentSeason().capitalize(), year);
+                System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.scenario.getCurrentSeason().capitalize(), year);
 
-                displayCurrentEvent(eventCount);
-                irreversibleEventImpacts();
-                int playerSolutionChoice = getPlayerChoice(getCurrentEvent().getNbChoices());
+                this.scenario.displayCurrentEvent(eventCount);
+                this.republic.irreversibleEventImpacts(getCurrentEvent());
+
+                int playerSolutionChoice = PlayerInput.getPlayerEventSolutionChoice(getCurrentEvent().getNbChoices());
                 playerChoiceImpacts(playerSolutionChoice);
                 addScore(getSeasonEndScore());
 
                 seasonCount += 1;
                 eventCount += 1;
-                getScenario().nextSeason();
-                getScenario().nextEvent(year);
-                getTreasury().updateFarmRate(90);
+                this.scenario.nextSeason();
+                this.scenario.nextEvent(year);
+                this.republic.getResources().updateFarmRate(90);
                 if(isTimeToYearEndSummary(seasonCount)) {
                     // TODO à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
                     // Industry and Farm generate money and food
-                    getTreasury().generateFarmIncome();
-                    getTreasury().generateIndustryIncome();
+                    this.republic.getResources().generateFarmIncome();
+                    this.republic.getResources().generateIndustryIncome();
                     // Year End Summary
                     displayYearEndSummary(year);
                     handlePlayerYearEndChoices();
-                    UserInput.pressAnyKeyToContinue();
+                    PlayerInput.pressAnyKeyToContinue();
                     displayYearEndSummary(year);
                     // TODO Vérifier le calcul de "eliminateSupportersUntilEnoughFood()" dans population
-                    int nbCitizensEliminated = getPopulation().getNbSupportersToEliminateToHaveEnoughFood(getFoodUnits());
-                    boolean hasEliminatedSupporters = getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
-                    eatFood();
+                    int nbCitizensEliminated = this.republic.getPopulation().getNbSupportersToEliminateToHaveEnoughFood(this.republic.getFoodUnits());
+                    boolean hasEliminatedSupporters = this.republic.getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
+                    this.republic.feedPopulation();
                     if(hasEliminatedSupporters) {
                         System.out.println("La population a diminué car vous n'aviez pas assez de nourriture.");
                         System.out.printf("%nVous avez perdu %d citoyens.%n", nbCitizensEliminated);
                     }
                     else {
-                        int nbNewCitizens = this.getPopulation().increasePopulationRandomly();
-                        System.out.println("Félicitation, vous aviez assez de nourriture pour nourriture toute votre population.");
+                        int nbNewCitizens = this.republic.getPopulation().increasePopulationRandomly();
+                        System.out.println("Félicitation, vous avez assez de nourriture pour nourriture toute votre population.");
                         System.out.println("Vous avez même du surplus.");
                         System.out.printf("%nAinsi, la population a augmenté de %d citoyens.%n", nbNewCitizens);
                     }
                     // ^à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
 
                     year += 1;
-                    UserInput.pressAnyKeyToContinue();
+                    PlayerInput.pressAnyKeyToContinue();
                 }
             }
             else {
@@ -75,7 +76,7 @@ public class ScenarioGame extends Game {
     }
 
     public boolean isScenarioFinished() {
-        return getScenario().isScenarioFinished();
+        return this.scenario.isScenarioFinished();
     }
 
     @Override

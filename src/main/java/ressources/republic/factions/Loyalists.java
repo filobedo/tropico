@@ -1,4 +1,4 @@
-package ressources.factions;
+package ressources.republic.factions;
 
 public class Loyalists extends Faction {
     public Loyalists(int nbSupporters, int satisfactionRate) {

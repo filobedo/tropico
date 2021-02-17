@@ -1,6 +1,8 @@
 package ressources.game;
 
 public class GameRules {
+    public static final int MINIMUM_GLOBAL_SATISFACTION_RATE = 25;
+
     public static final int NEEDED_FOOD_PER_CITIZEN = 4;
     public static final int FOOD_PRICE = 8;
 

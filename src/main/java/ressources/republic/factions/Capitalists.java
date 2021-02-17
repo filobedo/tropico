@@ -1,4 +1,4 @@
-package ressources.factions;
+package ressources.republic.factions;
 
 public class Capitalists extends Faction {
     public Capitalists(int nbSupporters, int satisfactionRate) {

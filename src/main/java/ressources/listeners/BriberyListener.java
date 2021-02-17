@@ -1,6 +1,6 @@
 package ressources.listeners;
 
-import ressources.factions.Faction;
+import ressources.republic.factions.Faction;
 import ressources.game.GameRules;
 
 public class BriberyListener implements EventListener {

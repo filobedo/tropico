@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ressources.factions.Faction;
+import ressources.republic.factions.Faction;
 import ressources.listeners.EventListener;
 
 public class EventManager {

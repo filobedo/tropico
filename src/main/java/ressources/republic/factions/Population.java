@@ -1,4 +1,4 @@
-package ressources.factions;
+package ressources.republic.factions;
 
 import ressources.game.GameRules;
 import ressources.listeners.BriberyListener;
@@ -163,8 +163,14 @@ public class Population {
     public void displayAvailableFactions() {
         int nbCountFaction = 1;
         System.out.println("Choisissez dans cette liste des factions :");
-        for (String factionName : this.factionByName.keySet()) {
-            System.out.printf("\t%d. %s%n", nbCountFaction, factionName);
+        for (Faction faction : this.factionByName.values()) {
+            String factionName = faction.getName();
+            if(faction.canBeBribed()) {
+                System.out.printf("\t%d. %s => %d$%n", nbCountFaction, factionName, faction.getBribePrice());
+            }
+            else {
+                System.out.printf("\t%d. %s ne peuvent pas recevoir de pot de vin%n", nbCountFaction, factionName);
+            }
             nbCountFaction += 1;
         }
     }

@@ -1,7 +1,7 @@
 package ressources.parser;
 
-import ressources.economy.Treasury;
-import ressources.factions.Population;
+import ressources.republic.economy.Resources;
+import ressources.republic.factions.Population;
 import ressources.game.GameDifficulty;
 import ressources.scenario.Scenario;
 
@@ -13,5 +13,5 @@ public interface IParser {
     boolean isGameStartParameterDifficultyInJson(GameDifficulty gameDifficulty);
     Scenario parseScenario() throws ConfigurationException;
     Population parsePopulation() throws ConfigurationException;
-    Treasury parseResources() throws ConfigurationException;
+    Resources parseResources() throws ConfigurationException;
 }

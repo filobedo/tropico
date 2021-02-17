@@ -1,12 +1,9 @@
 import junit.framework.TestCase;
-import ressources.factions.Faction;
-import ressources.factions.Loyalists;
-import ressources.factions.Population;
-import org.junit.Assert;
+import ressources.republic.factions.Faction;
+import ressources.republic.factions.Loyalists;
+import ressources.republic.factions.Population;
 
-import java.io.FileReader;
 import java.util.Map;
-import java.util.Properties;
 
 public class PopulationTest extends TestCase {
     private Population population;
@@ -99,15 +96,6 @@ public class PopulationTest extends TestCase {
         assertEquals(expectedSatisfactionRate, population.getFaction("Loyalists").getSatisfactionRate());
     }
 
-    public void test_update_satisfaction_rate_on_multiple_factions() {
-        String[] factionsToUpdate = {"Loyalists", "Communists"};
-        population.updateSatisfactionRateOnMultipleFactions(10, factionsToUpdate);
-        int expectedSatisfactionRate = 60;
-
-        assertEquals(expectedSatisfactionRate, population.getFaction("Loyalists").getSatisfactionRate());
-        assertEquals(expectedSatisfactionRate, population.getFaction("Communists").getSatisfactionRate());
-    }
-
     public void test_update_satisfaction_rate_on_all_factions() {
         population.updateSatisfactionRateOnAllFactions(1000);
         assertFactionsSatisfactionRateEquals(100);
@@ -132,15 +120,6 @@ public class PopulationTest extends TestCase {
         population.updateNbSupportersByFaction(100, "Loyalists");
         int expectedNbSupporters = 30;
         assertEquals(expectedNbSupporters, population.getFaction("Loyalists").getNbSupporters());
-    }
-
-    public void test_update_nb_supporters_on_multiple_factions() {
-        String[] factionsToUpdate = {"Loyalists", "Communists"};
-        population.updateNbSupportersOnMultipleFactions(100, factionsToUpdate);
-        int expectedNbSupporters = 30;
-
-        assertEquals(expectedNbSupporters, population.getFaction("Loyalists").getNbSupporters());
-        assertEquals(expectedNbSupporters, population.getFaction("Communists").getNbSupporters());
     }
 
     public void test_update_nb_supporters_on_all_factions() {

@@ -1,4 +1,4 @@
-package ressources.economy;
+package ressources.republic.economy;
 
 public class Industry implements Development {
     int rate = 0;

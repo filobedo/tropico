@@ -1,4 +1,4 @@
-package ressources.factions;
+package ressources.republic.factions;
 
 import ressources.game.GameRules;
 import ressources.publisher.EventManager;

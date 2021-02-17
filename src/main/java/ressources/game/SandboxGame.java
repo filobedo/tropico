@@ -1,7 +1,5 @@
 package ressources.game;
 
-import org.json.JSONObject;
-
 public class SandboxGame extends Game {
 
     public SandboxGame(GameDifficulty gameDifficulty) {
@@ -18,7 +16,7 @@ public class SandboxGame extends Game {
         */
         int year = 0;
         int seasonCount = 0;
-        while(!hasPlayerLost()) {
+        while(isPlayerWinning()) {
             year += 1;
             while(seasonCount < 4) {
                 // Event event = getEvent();

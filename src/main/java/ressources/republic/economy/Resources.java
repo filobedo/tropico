@@ -1,22 +1,22 @@
-package ressources.economy;
+package ressources.republic.economy;
 
 import ressources.game.GameRules;
 
-public class Treasury {
+public class Resources {
     Industry industry;
     Farm farm;
 
-    public Treasury() {
+    public Resources() {
         this.industry = new Industry();
         this.farm = new Farm();
     }
 
-    public Treasury(int foodQuantity, int money, int farmRate, int industryRate) throws IllegalArgumentException {
+    public Resources(int foodUnits, int money, int farmRate, int industryRate) throws IllegalArgumentException {
         if(!isFarmAndIndustrySumRateCorrect(farmRate, industryRate)) {
             throw new IllegalArgumentException("Industry and/or farm rate have an incorrect sum value.");
         }
         this.industry = new Industry(money, industryRate);
-        this.farm = new Farm(foodQuantity, farmRate);
+        this.farm = new Farm(foodUnits, farmRate);
     }
 
     private Boolean isFarmAndIndustrySumRateCorrect(int newMarker, int otherOneMarker) {
@@ -63,7 +63,7 @@ public class Treasury {
         return this.industry.getRate();
     }
 
-    public Treasury generateFarmIncome() {
+    public Resources generateFarmIncome() {
         addFood(getFoodIncomeFromFarm());
         return this;
     }
@@ -82,8 +82,8 @@ public class Treasury {
         return this.getFarmRate() * GameRules.GENERATED_FOOD_BY_FARM_RATE;
     }
 
-    public int getFoodQuantity() {
-        return this.farm.getFoodQuantity();
+    public int getFoodUnits() {
+        return this.farm.getFoodUnits();
     }
 
     public int getMoney() {
@@ -91,12 +91,12 @@ public class Treasury {
     }
 
     public void addFood(int foodUnits) {
-        this.farm.setFoodQuantity(foodUnits + getFoodQuantity());
+        this.farm.setFoodUnits(foodUnits + getFoodUnits());
     }
 
-    public Treasury eat(int population) {
-        int res = getFoodQuantity() - (population * GameRules.NEEDED_FOOD_PER_CITIZEN);
-        this.farm.setFoodQuantity(res);
+    public Resources feed(int population) {
+        int res = getFoodUnits() - (population * GameRules.NEEDED_FOOD_PER_CITIZEN);
+        this.farm.setFoodUnits(res);
         return this; // Quoi retourner en fonction de la consommation de la bouffe ?
     }
 
@@ -113,13 +113,17 @@ public class Treasury {
         this.industry.setMoney(getMoney() + amount);
     }
 
-    public int getFoodPrice(int foodQuantity) {
-        return foodQuantity * GameRules.FOOD_PRICE;
+    public int buyingFoodUnitsPossible() {
+        return getMoney() / GameRules.FOOD_PRICE;
     }
 
-    public void buyFood(int foodQuantity) {
-        useMoney(getFoodPrice(foodQuantity));
-        addFood(foodQuantity);
+    public int getFoodPrice(int foodUnits) {
+        return foodUnits * GameRules.FOOD_PRICE;
+    }
+
+    public void buyFood(int foodUnits) {
+        useMoney(getFoodPrice(foodUnits));
+        addFood(foodUnits);
     }
 
     public void displaySummary() {
@@ -131,7 +135,7 @@ public class Treasury {
                 // FarmRate
                 String.format("\tAgriculture : %d%%%n", getFarmRate()) +
                 // Food
-                String.format("\tNourriture : %d%n", getFoodQuantity());
+                String.format("\tNourriture : %d%n", getFoodUnits());
         System.out.println(treasurySummary);
     }
 }
