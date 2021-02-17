@@ -14,7 +14,7 @@ public class Population {
         setFactionNamesInFactionByName();
     }
 
-    public void setFactionNamesInFactionByName() {
+    private void setFactionNamesInFactionByName() {
         this.factionByName.put(Capitalists.class.getSimpleName(), null);
         this.factionByName.put(Communists.class.getSimpleName(), null);
         this.factionByName.put(Environmentalists.class.getSimpleName(), null);
@@ -88,30 +88,6 @@ public class Population {
         this.factionByName.get(factionName).updateNbSupportersBy(percentage);
     }
 
-    // delete
-    public void updateNbSupportersOnMultipleFactions(int percentagePoint, String[] factionsToUpdate) {
-        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
-            String currentFactionName = factionsSet.getKey();
-            if (isArrayContainingString(factionsToUpdate, currentFactionName)) {
-                factionsSet.getValue().updateNbSupportersBy(percentagePoint);
-            }
-        }
-    }
-
-    // delete
-    public void updateSatisfactionRateOnMultipleFactions(int percentagePoint, String[] factionsToUpdate) {
-        for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
-            String currentFactionName = factionsSet.getKey();
-            if (isArrayContainingString(factionsToUpdate, currentFactionName)) {
-                factionsSet.getValue().updateSatisfactionRate(percentagePoint);
-            }
-        }
-    }
-    // delete
-    public boolean isArrayContainingString(String[] searchList, String searched) {
-        return Arrays.asList(searchList).contains(searched);
-    }
-
     public void updateSatisfactionRateOnAllFactions(int percentagePoint) {
         for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             factionsSet.getValue().updateSatisfactionRate(percentagePoint);
@@ -176,11 +152,8 @@ public class Population {
         StringBuilder populationSummary = new StringBuilder();
         System.out.printf("Population :%n");
         for (Map.Entry<String, Faction> factionsSet : factionByName.entrySet()) {
-            String name = factionsSet.getKey();
             Faction faction = factionsSet.getValue();
-            String factionSummary = String.format("\t%s : %n", name);
-            factionSummary += String.format("\t\tPartisans : %d | Satisfaction : %d%%%n", faction.getNbSupporters(), faction.getSatisfactionRate());
-            populationSummary.append(factionSummary);
+            populationSummary.append(faction.toString());
         }
         populationSummary.append(String.format("=> Population totale : %d", getTotalPopulation()));
         populationSummary.append(String.format(" - Satisfaction globale : %.2f%%", getGlobalSatisfactionRate()));

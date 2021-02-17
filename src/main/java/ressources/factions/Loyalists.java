@@ -1,6 +1,6 @@
 package ressources.factions;
 
-public class Loyalists extends Faction{
+public class Loyalists extends Faction {
     public Loyalists(int nbSupporters, int satisfactionRate) {
         super(nbSupporters, satisfactionRate);
     }

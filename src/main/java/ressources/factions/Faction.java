@@ -8,7 +8,7 @@ public abstract class Faction {
     private int satisfactionRate;
     public EventManager events;
 
-    public Faction(int nbSupporters, int satisfactionRate) throws IllegalArgumentException {
+    protected Faction(int nbSupporters, int satisfactionRate) throws IllegalArgumentException {
         if(nbSupporters < 0) {
             throw new IllegalArgumentException("Number of supporters can't be a negative value!");
         }
@@ -35,7 +35,7 @@ public abstract class Faction {
         return this.satisfactionRate;
     }
 
-    public void setNbSupporters(int nbSupporters) {
+    private void setNbSupporters(int nbSupporters) {
         if(nbSupporters >= 0) {
             this.nbSupporters = nbSupporters;
         }
@@ -44,7 +44,7 @@ public abstract class Faction {
         }
     }
 
-    public void setSatisfactionRate(int newRate) {
+    private void setSatisfactionRate(int newRate) {
         if(this.satisfactionRate == 0) {
             System.out.printf("Les %s sont contre votre République (insatisfaits), il n'est plus possible d'augmenter leur taux de satisfaction.%n", getName());
         }
@@ -61,7 +61,7 @@ public abstract class Faction {
         }
     }
 
-    public void addSupporters(int nbSupporters) {
+    protected void addSupporters(int nbSupporters) {
         setNbSupporters(this.nbSupporters + nbSupporters);
     }
 
@@ -93,6 +93,8 @@ public abstract class Faction {
 
     @Override
     public String toString() {
-        return String.format("Faction: %s%nSupporters: %s%nSatisfaction: %s%n", getName(), getNbSupporters(), getSatisfactionRate());
+        String factionSummary = String.format("\t%s : %n", getName());
+        factionSummary += String.format("\t\tPartisans : %d | Satisfaction : %d%%%n", getNbSupporters(), getSatisfactionRate());
+        return factionSummary;
     }
 }

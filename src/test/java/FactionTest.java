@@ -37,52 +37,6 @@ public class FactionTest extends TestCase {
         }
     }
 
-    public void test_set_nb_supporters_to_possible_values() {
-        liberals.setNbSupporters(-1000);
-        assertEquals(0, liberals.getNbSupporters());
-        liberals.setNbSupporters(1000);
-        assertEquals(1000, liberals.getNbSupporters());
-        liberals.setNbSupporters(25);
-        assertEquals(25, liberals.getNbSupporters());
-    }
-
-    public void test_set_satisfaction_rate_to_positive_values() {
-        liberals.setSatisfactionRate(65);
-        assertEquals(65, liberals.getSatisfactionRate());
-        liberals.setSatisfactionRate(1);
-        assertEquals(1, liberals.getSatisfactionRate());
-        liberals.setSatisfactionRate(100);
-        assertEquals(100, liberals.getSatisfactionRate());
-        liberals.setSatisfactionRate(95);
-        assertEquals(95, liberals.getSatisfactionRate());
-    }
-
-    public void test_set_satisfaction_rate_to_negative_values() {
-        liberals.setSatisfactionRate(-100);
-        assertEquals(0, liberals.getSatisfactionRate());
-        liberals.setSatisfactionRate(-1000);
-        assertEquals(0, liberals.getSatisfactionRate());
-        liberals.setSatisfactionRate(-1);
-        assertEquals(0, liberals.getSatisfactionRate());
-    }
-
-    public void test_set_satisfaction_rate_to_more_than_100() {
-        liberals.setSatisfactionRate(200);
-        assertEquals(100, liberals.getSatisfactionRate());
-        liberals.setSatisfactionRate(101);
-        assertEquals(100, liberals.getSatisfactionRate());
-    }
-
-    public void test_set_satisfaction_rate_to_some_value_when_faction_is_unsatisfied() {
-        Faction theUnsatisfied = new Communists(10, 0);
-        theUnsatisfied.setSatisfactionRate(50);
-        assertEquals(0, theUnsatisfied.getSatisfactionRate());
-        theUnsatisfied.setSatisfactionRate(-50);
-        assertEquals(0, theUnsatisfied.getSatisfactionRate());
-        theUnsatisfied.setSatisfactionRate(120);
-        assertEquals(0, theUnsatisfied.getSatisfactionRate());
-    }
-
     public void test_update_nb_supporters() {
         liberals.updateNbSupportersBy(100);
         assertEquals(80, liberals.getNbSupporters());

@@ -31,26 +31,28 @@ public class Treasury {
         return this.farm;
     }
 
-    public Boolean updateFarmRate(int newFarmRate) {
-        int updateValue = checkRate(newFarmRate, this.industry.getRate());
+    public Boolean updateFarmRate(int percentagePoint) {
+        int newWantedFarmRate = getFarmRate() + percentagePoint;
+        int updateValue = getBalancedRate(newWantedFarmRate, getIndustryRate());
         this.farm.updateRate(updateValue);
         return true;
     }
 
-    public Boolean updateIndustryRate(int newIndustryRate) {
-        int updateValue = checkRate(newIndustryRate, this.farm.getRate());
-        this.industry.updateRate(updateValue);
+    public Boolean updateIndustryRate(int percentagePoint) {
+        int newWantedIndustryRate = getIndustryRate() + percentagePoint;
+        int newIndustryRate = getBalancedRate(newWantedIndustryRate, getFarmRate());
+        this.industry.updateRate(newIndustryRate);
         return true;
     }
 
-    private int checkRate(int newMarker, int otherOneMarker) {
-        if (newMarker + otherOneMarker > 100) {
-            return 100 - otherOneMarker;
+    private int getBalancedRate(int newRate, int otherRate) {
+        if (newRate + otherRate > 100) {
+            return 100 - otherRate;
         }
-        if (newMarker + otherOneMarker < 0) {
+        if (newRate + otherRate < 0) {
             return 0;
         }
-        return newMarker;
+        return newRate;
     }
 
     public int getFarmRate() {
