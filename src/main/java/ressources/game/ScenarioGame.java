@@ -13,8 +13,9 @@ public class ScenarioGame extends Game {
         // si la premiere saison qui commence a moins d'év que les autres c'est mort
         // si la saison avant la premiere
         System.out.printf("%nNom du scénario : %s%n", this.scenario.getName());
-        System.out.println(this.scenario.getStory());
-
+        System.out.printf("Histoire : %s%n",this.scenario.getStory());
+        System.out.printf("%nVous commencez avec ces paramètres de jeu : %n");
+        displayYearEndSummary(0);
         int year = 1;
         int seasonCount = 0;
         int eventCount = 1;
@@ -35,7 +36,7 @@ public class ScenarioGame extends Game {
                 this.scenario.nextSeason();
                 this.scenario.nextEvent(year);
                 this.republic.getResources().updateFarmRate(90);
-                if(isTimeToYearEndSummary(seasonCount)) {
+                if(isEndOfYear(seasonCount)) {
                     // TODO à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
                     // Industry and Farm generate money and food
                     this.republic.getResources().generateFarmIncome();
@@ -45,7 +46,7 @@ public class ScenarioGame extends Game {
                     handlePlayerYearEndChoices();
                     PlayerInput.pressAnyKeyToContinue();
                     displayYearEndSummary(year);
-                    // TODO Vérifier le calcul de "eliminateSupportersUntilEnoughFood()" dans population
+
                     int nbCitizensEliminated = this.republic.getPopulation().getNbSupportersToEliminateToHaveEnoughFood(this.republic.getFoodUnits());
                     boolean hasEliminatedSupporters = this.republic.getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
                     this.republic.feedPopulation();

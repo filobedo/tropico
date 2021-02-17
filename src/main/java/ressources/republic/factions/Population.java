@@ -118,13 +118,11 @@ public class Population {
         return hasEliminatedSupporters;
     }
 
-    // TODO TEST
     public int getNbSupportersToEliminateToHaveEnoughFood(int foodUnits) {
         int populationWhoCanBeFed = foodUnits / GameRules.NEEDED_FOOD_PER_CITIZEN;
         return getTotalPopulation() - populationWhoCanBeFed;
     }
 
-    // TODO TEST
     public int increasePopulationRandomly() {
         int increasePopulationPercentage = generateRandomNumber(1, 10);
         int nbSupportersToGenerate = getTotalPopulation() * (1 + (increasePopulationPercentage / 100));

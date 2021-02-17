@@ -31,28 +31,36 @@ public class Resources {
         return this.farm;
     }
 
-    public Boolean updateFarmRate(int percentagePoint) {
+    public void updateFarmRate(int percentagePoint) {
         int newWantedFarmRate = getFarmRate() + percentagePoint;
-        int updateValue = getBalancedRate(newWantedFarmRate, getIndustryRate());
-        this.farm.updateRate(updateValue);
-        return true;
+        if(newWantedFarmRate < 0) {
+            this.farm.updateRate(percentagePoint);
+        }
+        else {
+            int addedRate = getBalancedRate(newWantedFarmRate, getIndustryRate());
+            this.farm.updateRate(addedRate);
+        }
     }
 
-    public Boolean updateIndustryRate(int percentagePoint) {
+    public void updateIndustryRate(int percentagePoint) {
         int newWantedIndustryRate = getIndustryRate() + percentagePoint;
-        int newIndustryRate = getBalancedRate(newWantedIndustryRate, getFarmRate());
-        this.industry.updateRate(newIndustryRate);
-        return true;
+        if(newWantedIndustryRate < 0) {
+            this.farm.updateRate(percentagePoint);
+        }
+        else {
+            int addedRate = getBalancedRate(newWantedIndustryRate, getFarmRate());
+            this.industry.updateRate(addedRate);
+        }
     }
 
-    private int getBalancedRate(int newRate, int otherRate) {
-        if (newRate + otherRate > 100) {
-            return 100 - otherRate;
+    private int getBalancedRate(int newWantedRate, int oppositeRate) {
+        if(newWantedRate + oppositeRate > 100) {
+            return newWantedRate % 100;
         }
-        if (newRate + otherRate < 0) {
-            return 0;
+        if(newWantedRate + oppositeRate < 0) {
+            return - 100;
         }
-        return newRate;
+        return newWantedRate;
     }
 
     public int getFarmRate() {
@@ -127,7 +135,7 @@ public class Resources {
     }
 
     public void displaySummary() {
-        String treasurySummary = String.format("Resources :%n") +
+        String treasurySummary = String.format("Ressources :%n") +
                 // Argent
                 String.format("\tArgent : %d$%n", getMoney()) +
                 // IndustryRate

@@ -111,12 +111,14 @@ public abstract class Game {
         this.republic.impacts(choiceEffects);
     }
 
-    public boolean isTimeToYearEndSummary(int seasonCount) {
+    public boolean isEndOfYear(int seasonCount) {
         return seasonCount % 4 == 0 && seasonCount != 0;
     }
 
     public void displayYearEndSummary(int year) {
-        System.out.printf("%n%n- Bilan de cette %de année -%n", year);
+        if(year > 0) {
+            System.out.printf("%n%n- Bilan de cette %de année -%n", year);
+        }
         this.republic.getPopulation().displaySummary();
         System.out.println();
         this.republic.getResources().displaySummary();

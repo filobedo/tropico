@@ -18,7 +18,8 @@ import java.util.*;
 
 public class JSONParser implements IParser{
     private JSONObject gameParameterFile;
-    private String gameDifficulty; // TODO pas besoin ?
+    private GameDifficulty gameParameterDifficulty;
+    private double difficultyCoefficient;
 
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
@@ -54,14 +55,15 @@ public class JSONParser implements IParser{
     }
 
     public boolean isGameStartParameterDifficultyInJson(GameDifficulty chosenGameDifficulty) {
+        this.difficultyCoefficient = chosenGameDifficulty.getDifficultyCoefficient();
         if(this.gameParameterFile.getJSONObject("gameStartParameters").has(chosenGameDifficulty.name())) {
-            this.gameDifficulty = chosenGameDifficulty.name();
+            this.gameParameterDifficulty = chosenGameDifficulty;
             return true;
         }
-        else if (this.gameParameterFile.getJSONObject("gameStartParameters").has(GameDifficulty.NORMAL.name())) {
+        else if(this.gameParameterFile.getJSONObject("gameStartParameters").has(GameDifficulty.NORMAL.name())) {
             System.out.printf("%nLa difficulté \"%s\" n'existe pas dans ce scénario, c'est-à-dire que les ressources de base (population, agriculture, argent...) sont de difficulté %s.", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
             System.out.printf("%nCependant, la difficulté des évènements est appliqué selon votre choix, c'est-à-dire que si un évènement en mode normal diminue la population de 10%%,%nalors avec la difficulté que vous avez choisi, la population diminuera de %d%%.%n", (int)(10 * chosenGameDifficulty.getDifficultyCoefficient()));
-            this.gameDifficulty = GameDifficulty.NORMAL.name();
+            this.gameParameterDifficulty = GameDifficulty.NORMAL;
             return true;
         }
         System.out.printf("%nLes difficultés %s et %s n'existent pas dans ce scénario.%n", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
@@ -70,8 +72,9 @@ public class JSONParser implements IParser{
 
     public Population parsePopulation() throws ConfigurationException {
         Population population = new Population();
-        if(canParsePopulation(population)) {
-            JSONObject factions = this.gameParameterFile.getJSONObject("gameStartParameters").getJSONObject("NORMAL").getJSONObject("factions");
+        JSONObject gameStartParameters = this.gameParameterFile.getJSONObject("gameStartParameters").getJSONObject(this.gameParameterDifficulty.name());
+        if(canParsePopulation(gameStartParameters, population)) {
+            JSONObject factions = gameStartParameters.getJSONObject("factions");
             for(Map.Entry<String, Faction> factionsSet : population.getFactionByName().entrySet()) {
                 String factionName = factionsSet.getKey();
                 int satisfactionRate = factions.getJSONObject(factionName.toUpperCase()).getInt("satisfactionRate");
@@ -85,15 +88,11 @@ public class JSONParser implements IParser{
         throw new ConfigurationException("Missing JSON key to set faction values");
     }
 
-    public boolean canParsePopulation(Population population) {
-        JSONObject gameStartParameters = gameParameterFile.getJSONObject("gameStartParameters");
-        if(gameStartParameters.has("NORMAL")) {
-            JSONObject normal = gameStartParameters.getJSONObject("NORMAL");
-            if(normal.has("factions")) {
-                JSONObject factions = normal.getJSONObject("factions");
-                if(areFactionsInfoInJson(population.getFactionByName().keySet(), factions)) {
-                    return true;
-                }
+    public boolean canParsePopulation(JSONObject gameStartParameters, Population population) {
+        if(gameStartParameters.has("factions")) {
+            JSONObject factions = gameStartParameters.getJSONObject("factions");
+            if(areFactionsInfoInJson(population.getFactionByName().keySet(), factions)) {
+                return true;
             }
         }
         return false;
@@ -126,7 +125,7 @@ public class JSONParser implements IParser{
 
 
     public Resources parseResources() throws ConfigurationException {
-        JSONObject gameStartParameters = this.gameParameterFile.getJSONObject("gameStartParameters").getJSONObject(this.gameDifficulty);
+        JSONObject gameStartParameters = this.gameParameterFile.getJSONObject("gameStartParameters").getJSONObject(this.gameParameterDifficulty.name());
         if(canParseRepublicResources(gameStartParameters)) {
             int farmRate = gameStartParameters.getInt("farmRate");
             int foodUnits = gameStartParameters.getInt("foodUnits");
@@ -241,7 +240,6 @@ public class JSONParser implements IParser{
     }
 
     public Effect parseEffects(JSONObject effects) {
-        // TODO IF ???
         Map<String, Map<String, Integer>> factionEffects = new HashMap<>();
         if(effects.has("factions")) {
             factionEffects = parseFactionEffects(effects.getJSONArray("factions"));
@@ -256,11 +254,11 @@ public class JSONParser implements IParser{
             JSONObject faction = factionEffects.getJSONObject(indexFactionEffect);
             Map<String, Integer> effectOnFaction = new HashMap<>();
             if(faction.has("satisfactionRate")) {
-                int satisfactionRateEffect = faction.getInt("satisfactionRate");
+                int satisfactionRateEffect = (int)Math.round(faction.getInt("satisfactionRate") * this.difficultyCoefficient);
                 effectOnFaction.put("satisfactionRate", satisfactionRateEffect);
             }
             if(faction.has("nbSupporters")) {
-                int satisfactionRateEffect = faction.getInt("nbSupporters");
+                int satisfactionRateEffect = (int)Math.round(faction.getInt("nbSupporters") * this.difficultyCoefficient);
                 effectOnFaction.put("nbSupporters", satisfactionRateEffect);
             }
             String factionName = faction.getString("name");
@@ -270,32 +268,32 @@ public class JSONParser implements IParser{
     }
 
     public Map<String, Integer> parseFactorEffects(JSONObject effects) {
+        double difficultyCoefficient = this.gameParameterDifficulty.getDifficultyCoefficient();
         Map<String, Integer> effectByFactor = new HashMap<>();
         if(effects.has("industryRate")) {
-            int industryEffect = effects.getInt("industryRate");
+            int industryEffect = (int)Math.round(effects.getInt("industryRate") * this.difficultyCoefficient);
             effectByFactor.put("industryRate", industryEffect);
         }
         if(effects.has("farmRate")) {
-            int agricultureEffect = effects.getInt("farmRate");
+            int agricultureEffect = (int)Math.round(effects.getInt("farmRate") * this.difficultyCoefficient);
             effectByFactor.put("farmRate", agricultureEffect);
         }
         if(effects.has("foodUnits")) {
-            int foodUnitsEffect = effects.getInt("foodUnits");
+            int foodUnitsEffect = (int)Math.round(effects.getInt("foodUnits") * this.difficultyCoefficient);
             effectByFactor.put("foodUnits", foodUnitsEffect);
         }
         if(effects.has("treasury")) {
-            int treasuryEffect = effects.getInt("treasury");
+            int treasuryEffect = (int)Math.round(effects.getInt("treasury") * this.difficultyCoefficient);
             effectByFactor.put("treasury", treasuryEffect);
         }
         if(effects.has("population")) {
-            int populationEffect = effects.getInt("population");
+            int populationEffect = (int)Math.round(effects.getInt("population") * this.difficultyCoefficient);
             effectByFactor.put("population", populationEffect);
         }
         if(effects.has("satisfactionRate")) {
-            int satisfactionRateEffect = effects.getInt("satisfactionRate");
+            int satisfactionRateEffect = (int)Math.round(effects.getInt("satisfactionRate") * this.difficultyCoefficient);
             effectByFactor.put("satisfactionRate", satisfactionRateEffect);
         }
-
         return effectByFactor;
     }
 

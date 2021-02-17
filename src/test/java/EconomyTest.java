@@ -8,11 +8,11 @@ public class EconomyTest {
         Resources resources = new Resources();
 
         Boolean res;
-        res = resources.updateFarmRate(10 + resources.getFarmRate());
+        resources.updateFarmRate(10 + resources.getFarmRate());
         Assert.assertEquals("farm : 10 industry : 0", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateFarmRate(-80 + resources.getFarmRate());
+        resources.updateFarmRate(-80 + resources.getFarmRate());
         Assert.assertEquals("farm : 0 industry : 0", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateFarmRate(10 + resources.getFarmRate());
+        resources.updateFarmRate(10 + resources.getFarmRate());
         Assert.assertEquals("farm : 10 industry : 0", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
     }
 
@@ -21,11 +21,11 @@ public class EconomyTest {
         Resources resources = new Resources();
 
         Boolean res;
-        res = resources.updateIndustryRate(10 + resources.getIndustryRate());
+        resources.updateIndustryRate(10 + resources.getIndustryRate());
         Assert.assertEquals("farm : 0 industry : 10", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateIndustryRate(-80 + resources.getIndustryRate());
+        resources.updateIndustryRate(-80 + resources.getIndustryRate());
         Assert.assertEquals("farm : 0 industry : 0", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateIndustryRate(10 + resources.getIndustryRate());
+        resources.updateIndustryRate(10 + resources.getIndustryRate());
         Assert.assertEquals("farm : 0 industry : 10", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
     }
 
@@ -34,15 +34,15 @@ public class EconomyTest {
         Resources resources = new Resources();
 
         Boolean res;
-        res = resources.updateFarmRate(10 + resources.getFarmRate());
+        resources.updateFarmRate(10 + resources.getFarmRate());
         Assert.assertEquals("farm : 10 industry : 0", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateIndustryRate(20 + resources.getIndustryRate());
+        resources.updateIndustryRate(20 + resources.getIndustryRate());
         Assert.assertEquals("farm : 10 industry : 20", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateIndustryRate(50 + resources.getIndustryRate());
+        resources.updateIndustryRate(50 + resources.getIndustryRate());
         Assert.assertEquals("farm : 10 industry : 70", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateIndustryRate(50  + resources.getIndustryRate());
+        resources.updateIndustryRate(50  + resources.getIndustryRate());
         Assert.assertEquals("farm : 10 industry : 90", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
-        res = resources.updateFarmRate(50 + resources.getFarmRate());
+        resources.updateFarmRate(50 + resources.getFarmRate());
         Assert.assertEquals("farm : 10 industry : 90", "farm : " + resources.getFarmRate() + " industry : " + resources.getIndustryRate());
     }
 

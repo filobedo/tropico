@@ -23,6 +23,14 @@ public class Industry implements Development {
     }
 
     public void updateRate(int rate) {
-        this.rate = this.rate + rate;
+        if(rate + this.rate <= 0) {
+            this.rate = 0;
+        }
+        else if(rate + this.rate >= 100) {
+            this.rate = 100;
+        }
+        else {
+            this.rate = this.rate + rate;
+        }
     }
 }

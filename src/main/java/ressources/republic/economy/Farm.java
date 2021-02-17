@@ -14,8 +14,8 @@ public class Farm implements Development {
         return foodUnits;
     }
 
-    protected void setFoodUnits(int ressource) {
-        this.foodUnits = ressource;
+    protected void setFoodUnits(int foodUnits) {
+        this.foodUnits = foodUnits;
     }
 
     public int getRate() {
@@ -23,6 +23,14 @@ public class Farm implements Development {
     }
 
     protected void updateRate(int rate) {
-        this.rate = this.rate + rate;
+        if(rate + this.rate <= 0) {
+            this.rate = 0;
+        }
+        else if(rate + this.rate >= 100) {
+            this.rate = 100;
+        }
+        else {
+            this.rate = this.rate + rate;
+        }
     }
 }

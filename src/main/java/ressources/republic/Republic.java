@@ -135,7 +135,6 @@ public class Republic {
         int foodPrice = this.resources.getFoodPrice(foodUnit);
         if(haveEnoughMoney(foodPrice)) {
             this.resources.buyFood(foodUnit);
-            this.resources.useMoney(foodPrice);
             return true;
         }
         else {
