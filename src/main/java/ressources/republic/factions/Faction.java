@@ -94,7 +94,7 @@ public abstract class Faction {
     @Override
     public String toString() {
         String factionSummary = String.format("\t%s : %n", getName());
-        factionSummary += String.format("\t\tPartisans : %d | Satisfaction : %d%%%n", getNbSupporters(), getSatisfactionRate());
+        factionSummary += String.format("\t\tPartisans : %d \t| Satisfaction : %d%%%n", getNbSupporters(), getSatisfactionRate());
         return factionSummary;
     }
 }

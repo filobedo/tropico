@@ -135,15 +135,6 @@ public class Resources {
     }
 
     public void displaySummary() {
-        String treasurySummary = String.format("Ressources :%n") +
-                // Argent
-                String.format("\tArgent : %d$%n", getMoney()) +
-                // IndustryRate
-                String.format("\tIndustrie : %d%%%n", getIndustryRate()) +
-                // FarmRate
-                String.format("\tAgriculture : %d%%%n", getFarmRate()) +
-                // Food
-                String.format("\tNourriture : %d%n", getFoodUnits());
-        System.out.println(treasurySummary);
+        System.out.printf("%nRessources : %n%s%s", this.industry.toString(), this.farm.toString());
     }
 }

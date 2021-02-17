@@ -33,4 +33,9 @@ public class Farm implements Development {
             this.rate = this.rate + rate;
         }
     }
+
+    public String toString() {
+        return String.format("\tAgriculture : %d%%%n", this.rate) +
+                String.format("\tNourriture : %d%n", this.foodUnits);
+    }
 }

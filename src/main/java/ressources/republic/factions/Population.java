@@ -153,8 +153,7 @@ public class Population {
             Faction faction = factionsSet.getValue();
             populationSummary.append(faction.toString());
         }
-        populationSummary.append(String.format("=> Population totale : %d", getTotalPopulation()));
-        populationSummary.append(String.format(" - Satisfaction globale : %.2f%%", getGlobalSatisfactionRate()));
+        populationSummary.append(toString());
         System.out.println(populationSummary);
     }
 
@@ -183,5 +182,10 @@ public class Population {
             nbCountFaction += 1;
         }
         return null;
+    }
+
+    public String toString() {
+        return (String.format("=> Population totale : %d", getTotalPopulation())) +
+                (String.format(" - Satisfaction globale : %.2f%%", getGlobalSatisfactionRate()));
     }
 }

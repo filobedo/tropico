@@ -33,4 +33,9 @@ public class Industry implements Development {
             this.rate = this.rate + rate;
         }
     }
+
+    public String toString() {
+        return String.format("\tIndustrie : %d%%%n", this.rate) +
+                String.format("\tArgent : %d$%n", this.money);
+    }
 }
