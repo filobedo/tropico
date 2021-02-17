@@ -16,13 +16,13 @@ public class main {
 
         if(gameParameters.isGameModeSandbox()) {
             game = new SandboxGame(gameParameters.getGameDifficulty());
-            gamePropertiesFilePath = gameParameters.sandboxFilePath;
+            gameParameters.setFilePath(gameParameters.sandboxFilePath);
         }
         else if(gameParameters.isGameModeScenario()) {
             game = new ScenarioGame(gameParameters.getGameDifficulty());
             File[] scenarioList = gameParameters.getScenarioList();
             gameParameters.displayScenarioListInstructions(scenarioList);
-            gamePropertiesFilePath = gameParameters.chooseScenario(scenarioList);
+            gameParameters.setFilePath(gameParameters.chooseScenario(scenarioList));
         }
         else {
             System.exit(0);
@@ -32,7 +32,7 @@ public class main {
 
         // LET'S GO
 //        JSONObject scenario = gameParameters.openScenario(gamePropertiesFilePath);
-        game.load(gamePropertiesFilePath);
+        game.load(gameParameters);
         game.play();
     }
 }

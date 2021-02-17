@@ -3,6 +3,7 @@ package ressources.parser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import ressources.game.GameParameters;
 import ressources.republic.economy.Resources;
 import ressources.republic.factions.Faction;
 import ressources.republic.factions.Population;
@@ -17,26 +18,31 @@ import java.io.InputStream;
 import java.util.*;
 
 public class JSONParser implements IParser{
-    private JSONObject gameParameterFile;
-    private GameDifficulty gameParameterDifficulty;
+    private JSONObject gameData;
+    private String gameStartParameterDifficulty;
     private double difficultyCoefficient;
+    private GameParameters gameParametersChosen;
 
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
         try (InputStream is = new FileInputStream(file)) {
             JSONTokener token = new JSONTokener(is);
-            this.gameParameterFile = new JSONObject(token);
+            this.gameData = new JSONObject(token);
         } catch (IOException e){
             throw new NullPointerException("Cannot find resource file " + filePath);
         }
     }
 
+    public void setGameParametersChosen(GameParameters gameParametersChosen) {
+        this.gameParametersChosen = gameParametersChosen;
+    }
+
     public boolean canParseFile() {
-        if(this.gameParameterFile.has(ParsingKeys.name)) {
-            if(this.gameParameterFile.has(ParsingKeys.story)) {
-                if(this.gameParameterFile.has(ParsingKeys.gameStartParameters)) {
-                    if(this.gameParameterFile.has(ParsingKeys.scenario)) {
-                        JSONObject scenario = this.gameParameterFile.getJSONObject(ParsingKeys.scenario);
+        if(this.gameData.has(ParsingKeys.name)) {
+            if(this.gameData.has(ParsingKeys.story)) {
+                if(this.gameData.has(ParsingKeys.gameStartParameters)) {
+                    if(this.gameData.has(ParsingKeys.scenario)) {
+                        JSONObject scenario = this.gameData.getJSONObject(ParsingKeys.scenario);
                         return scenario.length() == 4 && hasAllSeasons(scenario);
                     }
                 }
@@ -54,16 +60,17 @@ public class JSONParser implements IParser{
         return true;
     }
 
-    public boolean isGameStartParameterDifficultyInJson(GameDifficulty chosenGameDifficulty) {
-        this.difficultyCoefficient = chosenGameDifficulty.getDifficultyCoefficient();
-        if(this.gameParameterFile.getJSONObject(ParsingKeys.gameStartParameters).has(chosenGameDifficulty.name())) {
-            this.gameParameterDifficulty = chosenGameDifficulty;
+    public boolean isGameStartParameterDifficultyInJson() {
+        this.difficultyCoefficient = this.gameParametersChosen.getGameDifficulty().getDifficultyCoefficient();
+        GameDifficulty chosenGameDifficulty = this.gameParametersChosen.getGameDifficulty();
+        if(this.gameData.getJSONObject(ParsingKeys.gameStartParameters).has(chosenGameDifficulty.name())) {
+            this.gameStartParameterDifficulty = chosenGameDifficulty.name();
             return true;
         }
-        else if(this.gameParameterFile.getJSONObject(ParsingKeys.gameStartParameters).has(GameDifficulty.NORMAL.name())) {
+        else if(this.gameData.getJSONObject(ParsingKeys.gameStartParameters).has(GameDifficulty.NORMAL.name())) {
             System.out.printf("%nLa difficulté \"%s\" n'existe pas dans ce scénario, c'est-à-dire que les ressources de base (population, agriculture, argent...) sont de difficulté %s.", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
             System.out.printf("%nCependant, la difficulté des évènements est appliqué selon votre choix, c'est-à-dire que si un évènement en mode normal diminue la population de 10%%,%nalors avec la difficulté que vous avez choisi, la population diminuera de %d%%.%n", (int)(10 * chosenGameDifficulty.getDifficultyCoefficient()));
-            this.gameParameterDifficulty = GameDifficulty.NORMAL;
+            this.gameStartParameterDifficulty = GameDifficulty.NORMAL.name();
             return true;
         }
         System.out.printf("%nLes difficultés %s et %s n'existent pas dans ce scénario.%n", chosenGameDifficulty.toString(), GameDifficulty.NORMAL.toString());
@@ -72,7 +79,7 @@ public class JSONParser implements IParser{
 
     public Population parsePopulation() throws ConfigurationException {
         Population population = new Population();
-        JSONObject gameStartParameters = this.gameParameterFile.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameParameterDifficulty.name());
+        JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
         if(canParsePopulation(gameStartParameters, population)) {
             JSONObject factions = gameStartParameters.getJSONObject(ParsingKeys.factions);
             for(Map.Entry<String, Faction> factionsSet : population.getFactionByName().entrySet()) {
@@ -121,7 +128,7 @@ public class JSONParser implements IParser{
 
 
     public Resources parseResources() throws ConfigurationException {
-        JSONObject gameStartParameters = this.gameParameterFile.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameParameterDifficulty.name());
+        JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
         if(canParseRepublicResources(gameStartParameters)) {
             int farmRate = gameStartParameters.getInt(ParsingKeys.farmRate);
             int foodUnits = gameStartParameters.getInt(ParsingKeys.foodUnits);
@@ -147,26 +154,37 @@ public class JSONParser implements IParser{
         return false;
     }
 
-    public Scenario parseScenario() throws ConfigurationException {
-        JSONObject scenarioToParse = this.gameParameterFile.getJSONObject(ParsingKeys.scenario);
+    public GamePlay parseScenario() throws ConfigurationException, ClassNotFoundException {
+        JSONObject scenarioToParse = this.gameData.getJSONObject(ParsingKeys.scenario);
 
         if(scenarioToParse.length() == 0) {
             throw new ConfigurationException("Missing events.");
         }
         else {
-            String name = gameParameterFile.getString(ParsingKeys.name);
-            String story = gameParameterFile.getString(ParsingKeys.story);
-            Scenario scenario = new Scenario(name, story, getFirstSeason());
+            String name = gameData.getString(ParsingKeys.name);
+            String story = gameData.getString(ParsingKeys.story);
+            GamePlay gamePlay = getGamePlay(name, story);
+            if(gamePlay == null) { throw new ClassNotFoundException("This game mode doesn't exist"); }
             for(Season season : Season.values()) {
                 JSONArray seasonToParse = scenarioToParse.getJSONArray(season.name());
                 try {
-                    scenario.addEventsToSeason(season, parseSeason(seasonToParse));
+                    gamePlay.addEventsToSeason(season, parseSeason(seasonToParse));
                 } catch (Exception ex) {
                     throw ex;
                 }
             }
-            return scenario;
+            return gamePlay;
         }
+    }
+
+    public GamePlay getGamePlay(String name, String story) {
+        if(this.gameParametersChosen.isGameModeScenario()) {
+            return new Scenario(name, story, getFirstSeason());
+        }
+        else if(this.gameParametersChosen.isGameModeSandbox()) {
+            return new Sandbox(name, story, getFirstSeason());
+        }
+        return null;
     }
 
     public List<Event> parseSeason(JSONArray seasonToParse) throws ConfigurationException {
@@ -287,8 +305,8 @@ public class JSONParser implements IParser{
     }
 
     public Season getFirstSeason() {
-        if(this.gameParameterFile.has(ParsingKeys.firstSeason)) {
-            return Season.valueOf(this.gameParameterFile.getString(ParsingKeys.firstSeason).toUpperCase());
+        if(this.gameData.has(ParsingKeys.firstSeason)) {
+            return Season.valueOf(this.gameData.getString(ParsingKeys.firstSeason).toUpperCase());
         }
         return Season.getRandom();
     }

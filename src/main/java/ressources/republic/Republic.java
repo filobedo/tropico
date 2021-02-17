@@ -98,6 +98,7 @@ public class Republic {
         if(choice == GameRules.YEAR_END_DO_NOTHING_CHOICE) {
             System.out.printf("%nVous avez décidé de ne rien faire pour sauver votre république." +
                     " Elle doit se porter à merveille%n");
+            return true;
         }
         if(choice == GameRules.YEAR_END_BRIBE_CHOICE) {
             this.population.displayAvailableFactions();

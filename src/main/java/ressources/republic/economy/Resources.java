@@ -32,35 +32,24 @@ public class Resources {
     }
 
     public void updateFarmRate(int percentagePoint) {
-        int newWantedFarmRate = getFarmRate() + percentagePoint;
-        if(newWantedFarmRate < 0) {
-            this.farm.updateRate(percentagePoint);
-        }
-        else {
-            int addedRate = getBalancedRate(newWantedFarmRate, getIndustryRate());
-            this.farm.updateRate(addedRate);
-        }
+        int finalPercentagePointToAdd = getBalancedRate(getFarmRate(), percentagePoint, getIndustryRate());
+        this.farm.updateRate(finalPercentagePointToAdd);
     }
 
     public void updateIndustryRate(int percentagePoint) {
-        int newWantedIndustryRate = getIndustryRate() + percentagePoint;
-        if(newWantedIndustryRate < 0) {
-            this.farm.updateRate(percentagePoint);
-        }
-        else {
-            int addedRate = getBalancedRate(newWantedIndustryRate, getFarmRate());
-            this.industry.updateRate(addedRate);
-        }
+        int finalPercentagePointToAdd = getBalancedRate(getIndustryRate(), percentagePoint, getFarmRate());
+        this.industry.updateRate(finalPercentagePointToAdd);
     }
 
-    private int getBalancedRate(int newWantedRate, int oppositeRate) {
-        if(newWantedRate + oppositeRate > 100) {
-            return newWantedRate % 100;
+    private int getBalancedRate(int rateToUpdate, int percentagePointToAdd, int oppositeRate) {
+        int totalNewRate = rateToUpdate + percentagePointToAdd + oppositeRate;
+        if(totalNewRate > 100) {
+            return 100 - oppositeRate - rateToUpdate;
         }
-        if(newWantedRate + oppositeRate < 0) {
-            return - 100;
+        if(totalNewRate < 0) {
+            return -(rateToUpdate);
         }
-        return newWantedRate;
+        return percentagePointToAdd;
     }
 
     public int getFarmRate() {

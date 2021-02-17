@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class GameParameters {
     private GameDifficulty gameDifficulty;
     private String gameModeClass;
+    private String filePath;
 
     private final String or = "ou";
     private final String chooseSandboxGame = "Tapez '1' pour le mode bac à sable";
@@ -25,9 +26,6 @@ public class GameParameters {
     public final String scenariosResourcePath = "src/main/resources/scenarios";
     public final String sandboxFilePath = "src/main/resources/sandBoxProperties.json";
 
-    public GameDifficulty getGameDifficulty() {
-        return gameDifficulty;
-    }
 
     public void askPlayerGameDifficultyAndMode() {
         displayGameModeInstructions();
@@ -41,12 +39,28 @@ public class GameParameters {
         setGameDifficulty(chosenGameDifficulty);
     }
 
+    public void setGameDifficulty(GameDifficulty gameDifficulty) {
+        this.gameDifficulty = gameDifficulty;
+    }
+
     public void setGameModeClass(String gameModeClass) {
         this.gameModeClass = gameModeClass;
     }
 
-    public void setGameDifficulty(GameDifficulty gameDifficulty) {
-        this.gameDifficulty = gameDifficulty;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public GameDifficulty getGameDifficulty() {
+        return gameDifficulty;
+    }
+
+    public String getGameModeClass() {
+        return gameModeClass;
+    }
+
+    public String getFilePath() {
+        return filePath;
     }
 
     public void displayGameModeInstructions() {
@@ -173,16 +187,5 @@ public class GameParameters {
 
     public boolean isGameModeScenario() {
         return this.gameModeClass.equals(ScenarioGame.class.getSimpleName());
-    }
-
-    // DELETE
-    public JSONObject openScenario(String fileName) {
-        File file = new File(fileName);
-        try (InputStream is = new FileInputStream(file)) {
-            JSONTokener token = new JSONTokener(is);
-            return new JSONObject(token);
-        } catch (IOException e){
-            throw new NullPointerException("Cannot find resource file " + fileName);
-        }
     }
 }

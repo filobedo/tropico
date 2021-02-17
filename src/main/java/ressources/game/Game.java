@@ -7,13 +7,14 @@ import ressources.parser.JSONParser;
 import ressources.scenario.Choice;
 import ressources.scenario.Effect;
 import ressources.scenario.Event;
-import ressources.scenario.Scenario;
+import ressources.scenario.GamePlay;
 
 public abstract class Game {
     protected Republic republic;
+    protected GamePlay gamePlay;
     protected final GameDifficulty gameDifficulty;
-    protected Scenario scenario;
     protected double score;
+    protected int year = 1;
     private IParser parser;
 
     public Game(GameDifficulty gameDifficulty) {
@@ -35,20 +36,21 @@ public abstract class Game {
         System.out.println("===================");
     }
 
-    public void load(String filePath) {
+    public void load(GameParameters gameParameters) {
         try {
-            setParserType(filePath);
-            parser.openFile(filePath);
+            setParserType(gameParameters.getFilePath());
+            this.parser.openFile(gameParameters.getFilePath());
         } catch (Exception ex) {
             ex.printStackTrace();
             gameShutDown();
         }
+        this.parser.setGameParametersChosen(gameParameters);
         if(canLoadGame()) {
             try {
-                Population population = parser.parsePopulation();
-                Resources resources = parser.parseResources();
+                Population population = this.parser.parsePopulation();
+                Resources resources = this.parser.parseResources();
                 this.republic = new Republic(population, resources);
-                this.scenario = parser.parseScenario();
+                this.gamePlay = this.parser.parseScenario();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 gameShutDown();
@@ -62,7 +64,7 @@ public abstract class Game {
 
     public boolean canLoadGame() {
         if(parser.canParseFile()) {
-            return parser.isGameStartParameterDifficultyInJson(this.gameDifficulty);
+            return parser.isGameStartParameterDifficultyInJson();
         }
         return false;
     }
@@ -100,7 +102,7 @@ public abstract class Game {
     }
 
     public Event getCurrentEvent() {
-        return this.scenario.getCurrentEvent();
+        return this.gamePlay.getCurrentEvent();
     }
 
 
@@ -113,6 +115,31 @@ public abstract class Game {
 
     public boolean isEndOfYear(int seasonCount) {
         return seasonCount % 4 == 0 && seasonCount != 0;
+    }
+
+    public void handleEndOfYear() {
+        // Industry and Farm generate money and food
+        this.republic.getResources().generateFarmIncome();
+        this.republic.getResources().generateIndustryIncome();
+        // Year End Summary
+        displayYearEndSummary(this.year);
+        handlePlayerYearEndChoices();
+        PlayerInput.pressAnyKeyToContinue();
+        displayYearEndSummary(this.year);
+
+        int nbCitizensEliminated = this.republic.getPopulation().getNbSupportersToEliminateToHaveEnoughFood(this.republic.getFoodUnits());
+        boolean hasEliminatedSupporters = this.republic.getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
+        this.republic.feedPopulation();
+        if(hasEliminatedSupporters) {
+            System.out.println("La population a diminué car vous n'aviez pas assez de nourriture.");
+            System.out.printf("%nVous avez perdu %d citoyens.%n", nbCitizensEliminated);
+        }
+        else {
+            int nbNewCitizens = this.republic.getPopulation().increasePopulationRandomly();
+            System.out.println("Félicitation, vous avez assez de nourriture pour nourriture toute votre population.");
+            System.out.println("Vous avez même du surplus.");
+            System.out.printf("%nAinsi, la population a augmenté de %d citoyens.%n", nbNewCitizens);
+        }
     }
 
     public void displayYearEndSummary(int year) {

@@ -73,13 +73,16 @@ public abstract class Faction {
     public void updateSatisfactionRate(int percentagePoint) {
         setSatisfactionRate(this.satisfactionRate + percentagePoint);
     }
-
+im
     public void eliminateASupporter() {
         setNbSupporters(getNbSupporters() - 1);
     }
 
     public boolean canBeBribed() {
-        return !this.getClass().getSimpleName().equals(Loyalists.class.getSimpleName());
+        if(this.satisfactionRate > 0) {
+            return !this.getClass().getSimpleName().equals(Loyalists.class.getSimpleName());
+        }
+        return false;
     }
 
     public int getBribePrice() {
