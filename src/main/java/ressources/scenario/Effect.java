@@ -2,12 +2,11 @@ package ressources.scenario;
 
 import ressources.parser.ParsingKeys;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class Effect {
-    private Map<String, Map<String, Integer>> effectsByFaction = new HashMap<>();
-    private Map<String, Integer> effectsByFactor = new HashMap<>();
+    private final Map<String, Map<String, Integer>> effectsByFaction;
+    private final Map<String, Integer> effectsByFactor;
 
     public Effect(Map<String, Map<String, Integer>> effectsByFaction, Map<String, Integer> effectsByFactor) {
         this.effectsByFaction = effectsByFaction;
@@ -19,8 +18,9 @@ public class Effect {
             for(Map.Entry<String, Map<String, Integer>> effectsByFactionSet : effectsByFaction.entrySet()) {
                 StringBuilder factionEffects = new StringBuilder("\t");
                 String factionName = effectsByFactionSet.getKey();
-                Map<String, Integer> effectsOnFaction = effectsByFactionSet.getValue();
                 factionEffects.append(String.format("%s : ", factionName));
+
+                Map<String, Integer> effectsOnFaction = effectsByFactionSet.getValue();
                 for(Map.Entry<String, Integer> effectByFactionSet : effectsOnFaction.entrySet()) {
                     String factionFactorName = effectByFactionSet.getKey();
                     int factionFactorEffect = effectByFactionSet.getValue();
@@ -31,7 +31,6 @@ public class Effect {
                         factionEffects.append(getEffectNameAndValue("Partisans", factionFactorEffect, ""));
                     }
                 }
-                // factionEffects = new StringBuilder((factionEffects.toString()));
                 System.out.printf("%s%n", (deleteLastHyphen(factionEffects.toString())));
             }
         }

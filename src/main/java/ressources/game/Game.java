@@ -2,7 +2,7 @@ package ressources.game;
 import ressources.republic.Republic;
 import ressources.republic.economy.Resources;
 import ressources.republic.factions.Population;
-import ressources.parser.IParser;
+import ressources.parser.Parser;
 import ressources.parser.JSONParser;
 import ressources.scenario.Choice;
 import ressources.scenario.Effect;
@@ -15,7 +15,7 @@ public abstract class Game {
     protected final GameDifficulty gameDifficulty;
     protected double score;
     protected int year = 1;
-    private IParser parser;
+    private Parser parser;
 
     public Game(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;

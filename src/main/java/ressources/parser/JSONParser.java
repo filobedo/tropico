@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import ressources.game.GameParameters;
+import ressources.game.GameRules;
 import ressources.republic.economy.Resources;
 import ressources.republic.factions.Faction;
 import ressources.republic.factions.Population;
@@ -17,11 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-public class JSONParser implements IParser{
-    private JSONObject gameData;
-    private String gameStartParameterDifficulty;
-    private double difficultyCoefficient;
-    private GameParameters gameParametersChosen;
+public class JSONParser extends Parser {
 
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
@@ -227,8 +224,7 @@ public class JSONParser implements IParser{
 
     public List<Choice> parseChoices(JSONArray choices) throws ConfigurationException {
         List<Choice> eventChoices = new ArrayList<>();
-        // We can't have 0 choices nor more than 4, we can have 1 to 4 choices
-        if(choices.length() < 1 || choices.length() > 4) {
+        if(choices.length() < GameRules.MIN_CHOICE_PER_EVENT || choices.length() > GameRules.MAX_CHOICE_PER_EVENT) {
             throw new ConfigurationException("There isn't enough choice, or too many choices");
         }
         for(int indexChoice = 0; indexChoice < choices.length(); indexChoice += 1 ) {
@@ -238,6 +234,7 @@ public class JSONParser implements IParser{
             String description = choice.getString(ParsingKeys.description);
             Choice currentChoice = new Choice(name, description);
             currentChoice.setEffects(parseEffects(choice.getJSONObject(ParsingKeys.effects)));
+
             if(choice.has(ParsingKeys.relatedEvents)) {
                 currentChoice.setRelatedEvent(parseEvent(choice.getJSONObject(ParsingKeys.relatedEvents)));
             }
@@ -260,6 +257,7 @@ public class JSONParser implements IParser{
         Map<String, Map<String, Integer>> effectsByFaction = new HashMap<>();
         for(int indexFactionEffect = 0; indexFactionEffect < factionEffects.length(); indexFactionEffect += 1 ) {
             JSONObject faction = factionEffects.getJSONObject(indexFactionEffect);
+
             Map<String, Integer> effectOnFaction = new HashMap<>();
             if(faction.has(ParsingKeys.satisfactionRate)) {
                 int satisfactionRateEffect = (int)Math.round(faction.getInt(ParsingKeys.satisfactionRate) * this.difficultyCoefficient);

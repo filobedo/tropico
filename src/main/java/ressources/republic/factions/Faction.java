@@ -73,7 +73,7 @@ public abstract class Faction {
     public void updateSatisfactionRate(int percentagePoint) {
         setSatisfactionRate(this.satisfactionRate + percentagePoint);
     }
-im
+
     public void eliminateASupporter() {
         setNbSupporters(getNbSupporters() - 1);
     }
