@@ -2,6 +2,7 @@ package ressources.game;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import ressources.parser.ParsingKeys;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -137,7 +138,7 @@ public class GameParameters {
         try (InputStream is = new FileInputStream(file)) {
             JSONTokener token = new JSONTokener(is);
             JSONObject scenario = new JSONObject(token);
-            return scenario.get("name").toString();
+            return scenario.get(ParsingKeys.name).toString();
         } catch (IOException e){
             throw new NullPointerException("Cannot find resource file " + file.getPath());
         }

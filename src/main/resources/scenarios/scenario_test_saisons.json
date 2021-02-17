@@ -5,7 +5,7 @@
     "NORMAL": {
       "farmRate": 45,
       "industryRate": 25,
-      "treasury": 800,
+      "money": 800,
       "foodUnits": 1000,
       "factions": {
         "CAPITALISTS": {
@@ -61,7 +61,7 @@
             "population": -15,
             "farmRate": -2,
             "industryRate": -5,
-            "treasury": 150,
+            "money": 150,
             "factions": [
               {
                 "name": "Capitalists",
@@ -79,7 +79,7 @@
               "name": "Déblayer",
               "description": "Vous gagnerez de la thunas",
               "effects": {
-                "treasury": 150,
+                "money": 150,
                 "factions": [
                   {
                     "name": "Capitalists",
@@ -149,7 +149,7 @@
             "population": -15,
             "farmRate": -2,
             "industryRate": -5,
-            "treasury": 150,
+            "money": 150,
             "factions": [
               {
                 "name": "Capitalists",
@@ -167,7 +167,7 @@
               "name": "Déblayer",
               "description": "Vous gagnerez de la thunas",
               "effects": {
-                "treasury": 150,
+                "money": 150,
                 "factions": [
                   {
                     "name": "Capitalists",
@@ -204,7 +204,7 @@
               "name": "Vider les réserve d'eau",
               "description": "Empêchera la diminution de la population",
               "effects": {
-                "treasury": -100
+                "money": -100
               }
             },
             {
@@ -235,7 +235,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "treasury": 150,
+                "money": 150,
                 "industryRate": 3
               }
             }
@@ -270,7 +270,7 @@
                     "name": "Déblayer",
                     "description": "Vous résoudrez les problèmes de transit.",
                     "effects": {
-                      "treasury": -200
+                      "money": -200
                     }
                   },
                   {
@@ -307,7 +307,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "treasury": -50
+                "money": -50
               }
             },
             {
@@ -337,7 +337,7 @@
               "name": "Déblayer",
               "description": "Vous résoudrez les problèmes de transit.",
               "effects": {
-                "treasury": -200
+                "money": -200
               }
             },
             {
@@ -358,7 +358,7 @@
               "name": "Déblayer",
               "description": "Vous résoudrez les problèmes de transit.",
               "effects": {
-                "treasury": -200
+                "money": -200
               }
             },
             {
@@ -415,7 +415,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "treasury": 150,
+                "money": 150,
                 "industryRate": 3
               }
             },
@@ -434,7 +434,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "treasury": 150,
+                "money": 150,
                 "industryRate": 3
               }
             },
@@ -453,7 +453,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "treasury": 150,
+                "money": 150,
                 "industryRate": 3
               }
             },
@@ -472,7 +472,7 @@
                     "satisfactionRate": -10
                   }
                 ],
-                "treasury": 150,
+                "money": 150,
                 "industryRate": 3
               }
             }

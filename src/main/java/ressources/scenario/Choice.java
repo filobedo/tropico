@@ -22,13 +22,13 @@ public class Choice {
         this.relatedEvent = relatedEvent;
     }
 
+    public Effect getEffects() {
+        return this.effects;
+    }
+
     public void display() {
         System.out.printf("%s : %s%n", this.name, this.description);
         effects.displayFactionEffects();
         effects.displayFactorEffects();
-    }
-
-    public Effect getEffects() {
-        return this.effects;
     }
 }

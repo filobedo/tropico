@@ -2,6 +2,7 @@ package ressources.republic;
 
 import ressources.game.GameRules;
 import ressources.game.PlayerInput;
+import ressources.parser.ParsingKeys;
 import ressources.republic.economy.Resources;
 import ressources.republic.factions.Faction;
 import ressources.republic.factions.Population;
@@ -57,10 +58,10 @@ public class Republic {
             for(Map.Entry<String, Integer> factionEffects: effectsOnFaction.entrySet()) {
                 String factorName = factionEffects.getKey();
                 int factorEffect = factionEffects.getValue();
-                if(factorName.equals("nbSupporters")) {
+                if(factorName.equals(ParsingKeys.nbSupporters)) {
                     this.population.updateNbSupportersByFaction(factorEffect, factionName);
                 }
-                if(factorName.equals("satisfactionRate")) {
+                if(factorName.equals(ParsingKeys.satisfactionRate)) {
                     this.population.updateSatisfactionRateByFaction(factorEffect, factionName);
                 }
             }
@@ -72,22 +73,22 @@ public class Republic {
         for(Map.Entry<String,Integer> factorEffectsSet: factorImpacts.entrySet()) {
             String factorName = factorEffectsSet.getKey();
             int factorEffect = factorEffectsSet.getValue();
-            if(factorName.equals("industryRate")) {
+            if(factorName.equals(ParsingKeys.industryRate)) {
                 this.resources.updateIndustryRate(factorEffect);
             }
-            if(factorName.equals("farmRate")) {
+            if(factorName.equals(ParsingKeys.farmRate)) {
                 this.resources.updateFarmRate(factorEffect);
             }
-            if(factorName.equals("foodUnits")) {
+            if(factorName.equals(ParsingKeys.foodUnits)) {
                 this.resources.addFood(factorEffect);
             }
-            if(factorName.equals("treasury")) {
+            if(factorName.equals(ParsingKeys.money)) {
                 this.resources.earnMoney(factorEffect);
             }
-            if(factorName.equals("population")) {
+            if(factorName.equals(ParsingKeys.population)) {
                 this.population.updateNbSupportersOnAllFactions(factorEffect);
             }
-            if(factorName.equals("satisfactionRate")) {
+            if(factorName.equals(ParsingKeys.satisfactionRate)) {
                 this.population.updateNbSupportersOnAllFactions(factorEffect);
             }
         }

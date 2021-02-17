@@ -1,7 +1,6 @@
 package ressources.game;
 import ressources.republic.Republic;
 import ressources.republic.economy.Resources;
-import ressources.republic.factions.Faction;
 import ressources.republic.factions.Population;
 import ressources.parser.IParser;
 import ressources.parser.JSONParser;
@@ -109,6 +108,7 @@ public abstract class Game {
         Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
         Effect choiceEffects = playerChoice.getEffects();
         this.republic.impacts(choiceEffects);
+        // TODO RELATED EVENTS
     }
 
     public boolean isEndOfYear(int seasonCount) {
