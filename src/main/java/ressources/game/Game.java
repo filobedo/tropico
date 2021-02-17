@@ -1,5 +1,5 @@
 package ressources.game;
-import ressources.economy.Tresory;
+import ressources.economy.Treasury;
 import ressources.factions.Faction;
 import ressources.factions.Population;
 import ressources.parser.IParser;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public abstract class Game {
     private double score;
-    private Tresory treasury;
+    private Treasury treasury;
     private Population population;
     private final GameDifficulty gameDifficulty;
     private Scenario scenario;
@@ -32,7 +32,7 @@ public abstract class Game {
         return score;
     }
 
-    public Tresory getTreasury() {
+    public Treasury getTreasury() {
         return treasury;
     }
 
@@ -85,9 +85,7 @@ public abstract class Game {
 
     public boolean canLoadGame() {
         if(parser.canParseFile()) {
-            if(parser.isGameStartParameterDifficultyInJson(this.gameDifficulty)) {
-                return true;
-            }
+            return parser.isGameStartParameterDifficultyInJson(this.gameDifficulty);
         }
         return false;
     }
@@ -201,10 +199,10 @@ public abstract class Game {
                 this.treasury.updateFarmRate(factorEffect);
             }
             if(factorName.equals("foodUnits")) {
-                this.treasury.addBonusFarm(factorEffect);
+                this.treasury.addFood(factorEffect);
             }
             if(factorName.equals("treasury")) {
-                this.treasury.addMoney(factorEffect);
+                this.treasury.earnMoney(factorEffect);
             }
             if(factorName.equals("population")) {
                 this.population.updateNbSupportersOnAllFactions(factorEffect);
@@ -336,7 +334,7 @@ public abstract class Game {
     }
 
     public void buyFood(int foodUnit) {
-        int foodPrice = this.treasury.simulatePriceBuyingFood(foodUnit);
+        int foodPrice = this.treasury.getFoodPrice(foodUnit);
         if(haveEnoughMoney(foodPrice)) {
             this.treasury.buyFood(foodUnit);
             this.treasury.useMoney(foodPrice);
@@ -352,12 +350,16 @@ public abstract class Game {
     }
 
     public int getFoodUnits() {
-        return getTreasury().getFood();
+        return getTreasury().getFoodQuantity();
     }
 
+    public void eatFood() {
+        this.treasury.eat(getPopulation().getTotalPopulation());
+    }
     public void addScore(double scoreToAdd) {
         setScore(getScore() + scoreToAdd);
     }
+
     public double getSeasonEndScore() {
         double seasonEndScore = 0;
         seasonEndScore += this.population.getTotalSatisfactionRate() * GameRules.SCORE_POINTS_PER_SATISFACTION_WON;

@@ -2,27 +2,27 @@ package ressources.economy;
 
 public class Industry implements Development {
     int rate = 0;
-    int ressource = 0; // money
+    int money = 0; // money
 
     Industry() {}
-    Industry (int startIndustryRessource, int startRate) {
-        this.rate = startRate;
-        this.ressource = startIndustryRessource;
+    Industry (int money, int rate) {
+        this.rate = rate;
+        this.money = money;
     }
 
-    protected int getRessource() {
-        return ressource;
+    protected int getMoney() {
+        return money;
     }
 
-    protected void setRessource(int ressource) {
-        this.ressource = ressource;
+    protected void setMoney(int money) {
+        this.money = money;
     }
 
     public int getRate() {
         return this.rate;
     }
 
-    public void setRate(int rate) {
+    public void updateRate(int rate) {
         this.rate = this.rate + rate;
     }
 }

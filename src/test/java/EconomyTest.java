@@ -1,104 +1,104 @@
-import ressources.economy.Tresory;
+import ressources.economy.Treasury;
 import org.junit.Test;
 import org.junit.Assert;
 
 public class EconomyTest {
     @Test
     public void test_update_farm() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
 
         Boolean res;
-        res = tresory.updateFarmRate(10 + tresory.getFarmRate());
-        Assert.assertEquals("farm : 10 industry : 0", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateFarmRate(-80 + tresory.getFarmRate());
-        Assert.assertEquals("farm : 0 industry : 0", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateFarmRate(10 + tresory.getFarmRate());
-        Assert.assertEquals("farm : 10 industry : 0", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
+        res = treasury.updateFarmRate(10 + treasury.getFarmRate());
+        Assert.assertEquals("farm : 10 industry : 0", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateFarmRate(-80 + treasury.getFarmRate());
+        Assert.assertEquals("farm : 0 industry : 0", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateFarmRate(10 + treasury.getFarmRate());
+        Assert.assertEquals("farm : 10 industry : 0", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
     }
 
     @Test
     public void test_update_industry() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
 
         Boolean res;
-        res = tresory.updateIndustryRate(10 + tresory.getIndustryRate());
-        Assert.assertEquals("farm : 0 industry : 10", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateIndustryRate(-80 + tresory.getIndustryRate());
-        Assert.assertEquals("farm : 0 industry : 0", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateIndustryRate(10 + tresory.getIndustryRate());
-        Assert.assertEquals("farm : 0 industry : 10", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
+        res = treasury.updateIndustryRate(10 + treasury.getIndustryRate());
+        Assert.assertEquals("farm : 0 industry : 10", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateIndustryRate(-80 + treasury.getIndustryRate());
+        Assert.assertEquals("farm : 0 industry : 0", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateIndustryRate(10 + treasury.getIndustryRate());
+        Assert.assertEquals("farm : 0 industry : 10", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
     }
 
     @Test
     public void test_update_farm_and_industry() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
 
         Boolean res;
-        res = tresory.updateFarmRate(10 + tresory.getFarmRate());
-        Assert.assertEquals("farm : 10 industry : 0", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateIndustryRate(20 + tresory.getIndustryRate());
-        Assert.assertEquals("farm : 10 industry : 20", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateIndustryRate(50 + tresory.getIndustryRate());
-        Assert.assertEquals("farm : 10 industry : 70", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateIndustryRate(50  + tresory.getIndustryRate());
-        Assert.assertEquals("farm : 10 industry : 90", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
-        res = tresory.updateFarmRate(50 + tresory.getFarmRate());
-        Assert.assertEquals("farm : 10 industry : 90", "farm : " + tresory.getFarmRate() + " industry : " + tresory.getIndustryRate());
+        res = treasury.updateFarmRate(10 + treasury.getFarmRate());
+        Assert.assertEquals("farm : 10 industry : 0", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateIndustryRate(20 + treasury.getIndustryRate());
+        Assert.assertEquals("farm : 10 industry : 20", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateIndustryRate(50 + treasury.getIndustryRate());
+        Assert.assertEquals("farm : 10 industry : 70", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateIndustryRate(50  + treasury.getIndustryRate());
+        Assert.assertEquals("farm : 10 industry : 90", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
+        res = treasury.updateFarmRate(50 + treasury.getFarmRate());
+        Assert.assertEquals("farm : 10 industry : 90", "farm : " + treasury.getFarmRate() + " industry : " + treasury.getIndustryRate());
     }
 
     @Test
     public void test_food_stock() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
         //Year 1
-        tresory.updateFarmRate(10 + tresory.getFarmRate());
+        treasury.updateFarmRate(10 + treasury.getFarmRate());
         //End year
-        Assert.assertEquals(400, tresory.updateFoodByYear().getFood());
+        Assert.assertEquals(400, treasury.generateFarmIncome().getFoodQuantity());
 
         //Year 2
-        tresory.updateFarmRate(80 + tresory.getFarmRate());
+        treasury.updateFarmRate(80 + treasury.getFarmRate());
         //End year
-        Assert.assertEquals(4000, tresory.updateFoodByYear().getFood());
+        Assert.assertEquals(4000, treasury.generateFarmIncome().getFoodQuantity());
     }
 
     @Test
     public void test_food_conso() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
         //Year 1
-        tresory.updateFarmRate(10 + tresory.getFarmRate());
+        treasury.updateFarmRate(10 + treasury.getFarmRate());
         //End year
-        Assert.assertEquals(360, tresory.updateFoodByYear().eat(10).getFood());
+        Assert.assertEquals(360, treasury.generateFarmIncome().eat(10).getFoodQuantity());
         //Year 2
-        tresory.updateFarmRate(80 + tresory.getFarmRate());
+        treasury.updateFarmRate(80 + treasury.getFarmRate());
         //End year
-        Assert.assertEquals(3880, tresory.updateFoodByYear().eat(20).getFood());
+        Assert.assertEquals(3880, treasury.generateFarmIncome().eat(20).getFoodQuantity());
     }
 
     @Test
     public void test_food_add_bonus() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
         //Year 1
-        tresory.updateFarmRate(10 + tresory.getFarmRate());
+        treasury.updateFarmRate(10 + treasury.getFarmRate());
         //End year
-        Assert.assertEquals(360, tresory.updateFoodByYear().eat(10).getFood());
+        Assert.assertEquals(360, treasury.generateFarmIncome().eat(10).getFoodQuantity());
         //Year 2
-        tresory.updateFarmRate(80 + tresory.getFarmRate());
+        treasury.updateFarmRate(80 + treasury.getFarmRate());
         //Add bonus
-        tresory.addBonusFarm(150);
+        treasury.addFood(150);
         //End year
-        Assert.assertEquals(4030, tresory.updateFoodByYear().eat(20).getFood());
+        Assert.assertEquals(4030, treasury.generateFarmIncome().eat(20).getFoodQuantity());
     }
 
     @Test
     public void test_update_money() {
-        Tresory tresory = new Tresory();
+        Treasury treasury = new Treasury();
 
         //Industry up by 10%
-        tresory.updateIndustryRate(10);
+        treasury.updateIndustryRate(10);
         //End year
-        tresory.addMoney(100);
-        tresory.updateIndustryByYear();
-        tresory.useMoney(100);
-        Assert.assertEquals(100, tresory.getMoney());
+        treasury.earnMoney(100);
+        treasury.generateIndustryIncome();
+        treasury.useMoney(100);
+        Assert.assertEquals(100, treasury.getMoney());
 
     }
 

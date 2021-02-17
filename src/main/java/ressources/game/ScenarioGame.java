@@ -31,9 +31,9 @@ public class ScenarioGame extends Game {
 
                 seasonCount += 1;
                 eventCount += 1;
-                getScenario().nextEvent(seasonCount);
                 getScenario().nextSeason();
-
+                getScenario().nextEvent(year);
+                getTreasury().updateFarmRate(90);
                 if(isTimeToYearEndSummary(seasonCount)) {
                     // TODO à mettre dans une fonction handle end year pour pouvoir l'utiliser quand le scénario est fini
                     // Industry and Farm generate money and food
@@ -47,6 +47,7 @@ public class ScenarioGame extends Game {
                     // TODO Vérifier le calcul de "eliminateSupportersUntilEnoughFood()" dans population
                     int nbCitizensEliminated = getPopulation().getNbSupportersToEliminateToHaveEnoughFood(getFoodUnits());
                     boolean hasEliminatedSupporters = getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
+                    eatFood();
                     if(hasEliminatedSupporters) {
                         System.out.println("La population a diminué car vous n'aviez pas assez de nourriture.");
                         System.out.printf("%nVous avez perdu %d citoyens.%n", nbCitizensEliminated);

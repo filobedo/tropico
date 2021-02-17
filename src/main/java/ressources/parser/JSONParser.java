@@ -3,7 +3,7 @@ package ressources.parser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import ressources.economy.Tresory;
+import ressources.economy.Treasury;
 import ressources.factions.Faction;
 import ressources.factions.Population;
 import ressources.game.GameDifficulty;
@@ -125,7 +125,7 @@ public class JSONParser implements IParser{
     }
 
 
-    public Tresory parseResources() throws ConfigurationException {
+    public Treasury parseResources() throws ConfigurationException {
         JSONObject gameStartParameters = this.gameParameterFile.getJSONObject("gameStartParameters").getJSONObject(this.gameDifficulty);
         if(canParseRepublicResources(gameStartParameters)) {
             int farmRate = gameStartParameters.getInt("farmRate");
@@ -133,7 +133,7 @@ public class JSONParser implements IParser{
             int treasury = gameStartParameters.getInt("treasury");
             int industryRate = gameStartParameters.getInt("industryRate");
             try {
-                return new Tresory(foodUnits, treasury, farmRate, industryRate);
+                return new Treasury(foodUnits, treasury, farmRate, industryRate);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
