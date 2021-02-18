@@ -1,5 +1,5 @@
 {
-  "name": "Joue celui là | L'attaque des titans <3",
+  "name": "Joue celui là | L'attaque des titans :D",
   "story": "Dans un monde ravagé par des titans mangeurs d’homme depuis plus d’un siècle, les rares survivants de l’Humanité n’ont d’autre choix pour survivre que de se barricader dans une cité-forteresse. Jeune, témoin de la mort de plusieurs de vos concitoyens dévorés par des titans, vous n’avez qu’un rêve : devinir le meilleur président de ce pays et découvrir l’origine des Titans afin de les annihiler jusqu’au dernier…",
   "gameStartParameters": {
     "NORMAL": {
@@ -1042,7 +1042,7 @@
                 },
                 {
                   "name": "Militarists",
-                  "satisfactionRate": -30
+                  "satisfactionRate": 30
                 },
                 {
                   "name": "Nationalists",

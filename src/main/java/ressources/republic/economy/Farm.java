@@ -15,7 +15,12 @@ public class Farm implements Development {
     }
 
     protected void setFoodUnits(int foodUnits) {
-        this.foodUnits = foodUnits;
+        if(foodUnits <= 0) {
+            this.foodUnits = 0;
+        }
+        else {
+            this.foodUnits = foodUnits;
+        }
     }
 
     public int getRate() {

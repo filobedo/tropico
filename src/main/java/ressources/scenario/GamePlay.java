@@ -9,7 +9,7 @@ public abstract class GamePlay {
     protected final String story;
     protected Map<Season, List<Event>> eventsBySeason = new HashMap<>();
     protected Event currentEvent;
-    protected int year;
+    protected int year = 0;
     protected Season currentSeason;
 
     public GamePlay(String name, String story, Season firstSeason) {
@@ -25,6 +25,14 @@ public abstract class GamePlay {
 
     public String getStory() {
         return this.story;
+    }
+
+    public Event getCurrentEvent() {
+        return this.currentEvent;
+    }
+
+    public int getYear() {
+        return this.year;
     }
 
     public Season getCurrentSeason() {
@@ -43,9 +51,13 @@ public abstract class GamePlay {
 
     abstract public void nextEvent();
 
+    public void nextYear() {
+        this.year += 1;
+    }
     public void nextSeason() {
         this.currentSeason = Season.getNextSeason(this.currentSeason);
     }
+
     public boolean isScenarioFinished() {
         return this.currentEvent == null;
     }
@@ -54,7 +66,4 @@ public abstract class GamePlay {
         this.currentEvent.display(nbEvent);
     }
 
-    public Event getCurrentEvent() {
-        return currentEvent;
-    }
 }

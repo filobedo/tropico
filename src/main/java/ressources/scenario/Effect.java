@@ -18,7 +18,7 @@ public class Effect {
             for(Map.Entry<String, Map<String, Integer>> effectsByFactionSet : effectsByFaction.entrySet()) {
                 StringBuilder factionEffects = new StringBuilder("\t");
                 String factionName = effectsByFactionSet.getKey();
-                factionEffects.append(String.format("%s : ", factionName));
+                factionEffects.append(String.format("%s : %n\t\t", factionName));
 
                 Map<String, Integer> effectsOnFaction = effectsByFactionSet.getValue();
                 for(Map.Entry<String, Integer> effectByFactionSet : effectsOnFaction.entrySet()) {

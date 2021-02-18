@@ -8,8 +8,11 @@ public class Scenario extends GamePlay {
     }
 
     public void nextEvent() {
-        // Get next event ?? See with teacher
         List<Event> seasonEvents = this.eventsBySeason.get(this.currentSeason);
-        this.currentEvent = seasonEvents.get(this.year);
+        try {
+            this.currentEvent = seasonEvents.get(this.year);
+        } catch (Exception ex) {
+            this.currentEvent = null;
+        }
     }
 }

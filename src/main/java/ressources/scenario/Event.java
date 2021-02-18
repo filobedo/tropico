@@ -45,7 +45,7 @@ public class Event {
     public void displayChoices() {
         int nbChoix = 1;
         for(Choice choice : choices) {
-            System.out.printf("%d. ", nbChoix);
+            System.out.printf("%n%d. ", nbChoix);
             choice.display();
             nbChoix += 1;
         }

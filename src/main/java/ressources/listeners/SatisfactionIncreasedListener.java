@@ -12,7 +12,7 @@ public class SatisfactionIncreasedListener implements EventListener {
 
     @Override
     public void update(String eventName, Object variation) {
-        int satisfactionVariation = (int)variation;
+        int satisfactionVariation = Math.abs((int)variation);
         this.game.addScore(satisfactionVariation * GameRules.SCORE_POINTS_PER_SATISFACTION_WON);
     }
 }

@@ -16,8 +16,7 @@ public abstract class Game {
     protected Republic republic;
     protected GamePlay gamePlay;
     protected final GameDifficulty gameDifficulty;
-    protected double score;
-    protected int year = 1;
+    protected double score = 10; // score de base  10 * gameDiff-
     protected int eventCount = 1;
     public EventManager events;
     private Parser parser;
@@ -27,11 +26,6 @@ public abstract class Game {
         this.events = new EventManager("satisfaction_increased", "satisfaction_decreased");
         this.events.subscribe("satisfaction_decreased", new SatisfactionDecreasedListener(this));
         this.events.subscribe("satisfaction_increased", new SatisfactionIncreasedListener(this));
-    }
-
-    public void setScore(double score) {
-        // TODO score négatif possible ?
-        this.score = score;
     }
 
     public static void displayIntroduction() {
@@ -89,6 +83,10 @@ public abstract class Game {
         }
     }
 
+    public int getYear() {
+        return gamePlay.getYear();
+    }
+
     public void launchGame() throws NullPointerException{
         if(this.republic.isSet()) {
             System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
@@ -97,7 +95,7 @@ public abstract class Game {
             System.out.printf("%nLancement du jeu...%n");
             PlayerInput.pressAnyKeyToContinue();
             System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
-            displaySummary(0);
+            displaySummary();
         }
         else {
             System.out.println("Arrêt du jeu...");
@@ -106,10 +104,11 @@ public abstract class Game {
     }
 
     public boolean isPlayerWinning() {
-        if(this.republic.getTotalPopulation() > 0) {
-            return this.republic.getPopulation().getGlobalSatisfactionRate() >= GameRules.MINIMUM_GLOBAL_SATISFACTION_RATE;
-        }
-        return false;
+        return isScorePositive() && this.republic.isGlobalSatisfactionRateOkay(this.gameDifficulty.getDifficultyCoefficient());
+    }
+
+    public boolean isScorePositive() {
+        return this.score >= 0;
     }
 
     public Event getCurrentEvent() {
@@ -117,7 +116,7 @@ public abstract class Game {
     }
 
     public void playGame() {
-        System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.gamePlay.getCurrentSeason().capitalize(), this.year);
+        System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.gamePlay.getCurrentSeason().capitalize(), getYear() + 1);
         handleCurrentSeason(this.eventCount);
 
         this.gamePlay.nextSeason();
@@ -125,8 +124,7 @@ public abstract class Game {
 
         if(isEndOfYear(this.eventCount)) {
             handleEndOfYear();
-            this.year += 1;
-            PlayerInput.pressAnyKeyToContinue();
+            this.gamePlay.nextYear();
         }
         this.eventCount += 1;
     }
@@ -151,12 +149,18 @@ public abstract class Game {
     }
 
     public void handleEndOfYear() {
-        generateIncomes();
+        endOfYearConsequencesAndChoices();
+        displaySummary();
+    }
 
-        displaySummary(this.year);
+    public void endOfYearConsequencesAndChoices() {
+        generateIncomes();
+        PlayerInput.pressAnyKeyToContinue();
+
+        displaySummary();
+
         handlePlayerYearEndChoices();
         PlayerInput.pressAnyKeyToContinue();
-        displaySummary(this.year);
 
         killAndOrFeedCitizen();
     }
@@ -188,9 +192,9 @@ public abstract class Game {
         }
     }
 
-    public void displaySummary(int year) {
-        if(year > 0) {
-            System.out.printf("%n%n- Bilan de cette %de année -%n", year);
+    public void displaySummary() {
+        if(getYear() > 0) {
+            System.out.printf("%n%n- Bilan de cette %de année -%n", getYear());
         }
         this.republic.getPopulation().displaySummary();
         System.out.println();
@@ -219,13 +223,18 @@ public abstract class Game {
         System.out.println("Entrez votre choix :");
     }
 
+    public void setScore(double score) {
+        // TODO score négatif possible ?
+        this.score = score;
+    }
+
     public void addScore(double scoreToAdd) {
         setScore(this.score + scoreToAdd);
     }
 
     public double getEndGameScore() {
         double endGameScore = this.score;
-        endGameScore += this.year * GameRules.END_SCORE_POINTS_PER_YEAR;
+        endGameScore += getYear() * GameRules.END_SCORE_POINTS_PER_YEAR;
         int money = this.republic.getResources().getMoney();
         if(money >= 0) {
             endGameScore += this.republic.getResources().getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_POSITIVE;

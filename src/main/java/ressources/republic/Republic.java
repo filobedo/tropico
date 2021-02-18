@@ -13,8 +13,8 @@ import ressources.scenario.Event;
 import java.util.Map;
 
 public class Republic {
-    private Population population;
-    private Resources resources;
+    private final Population population;
+    private final Resources resources;
     public EventManager events;
 
     public Republic(Population population, Resources resources) {
@@ -32,6 +32,17 @@ public class Republic {
 
     public Resources getResources() {
         return resources;
+    }
+
+    public boolean isGlobalSatisfactionRateOkay(double gameDifficultyCoefficient) {
+        if(isThereAnyPopulation()) {
+            return getPopulation().getGlobalSatisfactionRate() >= GameRules.MINIMUM_GLOBAL_SATISFACTION_RATE * gameDifficultyCoefficient;
+        }
+        return false;
+    }
+
+    public boolean isThereAnyPopulation() {
+        return getTotalPopulation() > 0;
     }
 
     public int getTotalPopulation() {
@@ -65,16 +76,33 @@ public class Republic {
                 }
                 if(factorName.equals(ParsingKeys.satisfactionRate)) {
                     if(factorEffect > 0) {
-                         events.notify("satisfaction_increased", Math.abs(factorEffect));
+                         events.notify("satisfaction_increased", getRealSatisfactionVariation(factorEffect, factionName));
                     }
                     if(factorEffect < 0) {
-                         events.notify("satisfaction_decreased", Math.abs(factorEffect));
+                         events.notify("satisfaction_decreased", getRealSatisfactionVariation(factorEffect, factionName));
                     }
                     this.population.updateSatisfactionRateByFaction(factorEffect, factionName);
                 }
             }
         }
     }
+
+    public int getRealSatisfactionVariation(int percentagePoints, String factionName) {
+        Faction targetFaction = this.population.getFactionByName().get(factionName);
+        int targetFactionSatisfactionRate = targetFaction.getSatisfactionRate();
+        if(percentagePoints >= 0) {
+            if(percentagePoints > 100 - targetFactionSatisfactionRate) {
+                return 100 - targetFactionSatisfactionRate;
+            }
+        }
+        else {
+            if(Math.abs(percentagePoints) > targetFactionSatisfactionRate) {
+                return -(targetFactionSatisfactionRate);
+            }
+        }
+        return percentagePoints;
+    }
+
     public void factorImpacts(Effect effect) {
         Map<String, Integer> factorImpacts = effect.getEffectsByFactor();
         // Each factor
