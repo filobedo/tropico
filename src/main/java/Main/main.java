@@ -33,6 +33,6 @@ public class main {
         // LET'S GO
 //        JSONObject scenario = gameParameters.openScenario(gamePropertiesFilePath);
         game.load(gameParameters);
-        game.play();
+        game.launchGame();
     }
 }

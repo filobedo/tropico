@@ -7,7 +7,7 @@ public class Choice {
     private String name;
     private String description;
     private Effect effects;
-    private Event relatedEvent;
+    private List<Event> relatedEvents;
 
     public Choice(String name, String description) {
         this.name = name;
@@ -18,8 +18,8 @@ public class Choice {
         this.effects = effects;
     }
 
-    public void setRelatedEvent(Event relatedEvent) {
-        this.relatedEvent = relatedEvent;
+    public void setRelatedEvent(List<Event> relatedEvents) {
+        this.relatedEvents = relatedEvents;
     }
 
     public Effect getEffects() {

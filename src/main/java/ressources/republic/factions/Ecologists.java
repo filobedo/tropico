@@ -1,7 +1,7 @@
 package ressources.republic.factions;
 
-public class Environmentalists extends Faction {
-    public Environmentalists(int nbSupporters, int satisfactionRate) {
+public class Ecologists extends Faction {
+    public Ecologists(int nbSupporters, int satisfactionRate) {
         super(nbSupporters, satisfactionRate);
     }
 

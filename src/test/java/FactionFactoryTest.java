@@ -48,10 +48,10 @@ public class FactionFactoryTest extends TestCase {
         }
     }
 
-    public void test_create_faction_can_create_environmentalists() {
+    public void test_create_faction_can_create_ecologists() {
         try {
-            Faction environmentalists = factionFactory.createFaction("Environmentalists", 50, 100);
-            assertEquals(Environmentalists.class, environmentalists.getClass());
+            Faction ecologists = factionFactory.createFaction("Ecologists", 50, 100);
+            assertEquals(Ecologists.class, ecologists.getClass());
         } catch (Exception ex) {
             Assert.fail(ex.getClass() + " shouldn't have been thrown");
             ex.printStackTrace();

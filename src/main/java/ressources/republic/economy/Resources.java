@@ -60,22 +60,19 @@ public class Resources {
         return this.industry.getRate();
     }
 
-    public Resources generateFarmIncome() {
+    public void generateFarmIncome() {
         addFood(getFoodIncomeFromFarm());
-        return this;
     }
 
     public void generateIndustryIncome() {
         earnMoney(getMoneyIncomeFromIndustry());
     }
 
-    //get Resources this year
-    private int getMoneyIncomeFromIndustry() {
+    public int getMoneyIncomeFromIndustry() {
         return this.getIndustryRate() * GameRules.GENERATED_MONEY_BY_INDUSTRY_RATE;
     }
 
-    //get Resources this year
-    private int getFoodIncomeFromFarm() {
+    public int getFoodIncomeFromFarm() {
         return this.getFarmRate() * GameRules.GENERATED_FOOD_BY_FARM_RATE;
     }
 

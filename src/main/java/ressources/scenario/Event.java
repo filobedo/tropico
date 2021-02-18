@@ -25,7 +25,9 @@ public class Event {
 
     public void display(int nbEvent) {
         System.out.printf("%nÉvénement %d : %s%n", nbEvent, this.name);
-        System.out.printf("Description : %s%n", this.description);
+        if(!this.description.equals("")) {
+            System.out.printf("Description : %s%n", this.description);
+        }
         if(hasIrreversibleEffects()) {
             System.out.printf("%nImpact(s) direct(s) :%n");
             this.irreversibleEffects.displayFactionEffects();

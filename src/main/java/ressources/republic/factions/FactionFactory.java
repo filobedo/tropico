@@ -10,8 +10,8 @@ public class FactionFactory {
                 return new Capitalists(nbSupporters, satisfactionRate);
             case "COMMUNISTS":
                 return new Communists(nbSupporters, satisfactionRate);
-            case "ENVIRONMENTALISTS":
-                return new Environmentalists(nbSupporters, satisfactionRate);
+            case "ECOLOGISTS":
+                return new Ecologists(nbSupporters, satisfactionRate);
             case "LIBERALS":
                 return new Liberals(nbSupporters, satisfactionRate);
             case "LOYALISTS":

@@ -204,7 +204,10 @@ public class JSONParser extends Parser {
         JSONArray choices = event.getJSONArray(ParsingKeys.choices);
 
         String name = event.getString(ParsingKeys.name);
-        String description = event.getString(ParsingKeys.description);
+        String description = "";
+        if(event.has(ParsingKeys.description)) {
+            description = event.getString(ParsingKeys.description);
+        }
         Event currentEvent = new Event(name, description);
         if(hasIrreversibleEffects(event)) {
             currentEvent.setIrreversibleEffects(parseEffects(event.getJSONObject(ParsingKeys.irreversible)));
@@ -236,7 +239,7 @@ public class JSONParser extends Parser {
             currentChoice.setEffects(parseEffects(choice.getJSONObject(ParsingKeys.effects)));
 
             if(choice.has(ParsingKeys.relatedEvents)) {
-                currentChoice.setRelatedEvent(parseEvent(choice.getJSONObject(ParsingKeys.relatedEvents)));
+                currentChoice.setRelatedEvent(parseSeason(choice.getJSONArray(ParsingKeys.relatedEvents)));
             }
             eventChoices.add(currentChoice);
         }

@@ -7,32 +7,18 @@ public class SandboxGame extends Game {
     }
 
     @Override
-    public void play() {
-        super.play();
-        /*TODO
-        *  Chaque année
-        *  => 4 tours <=> 4 évènements aléatoires respectant les saisons
-        *  while hasNotLost
-        */
-        int year = 0;
-        int seasonCount = 0;
+    public void launchGame() {
+        super.launchGame();
+        System.out.printf("%n%s%n", this.gamePlay.getName());
+        System.out.printf("%s%n",this.gamePlay.getStory());
+        this.gamePlay.nextEvent();
         while(isPlayerWinning()) {
-            year += 1;
-            while(seasonCount < 4) {
-                // Event event = getEvent();
-                // displayEvent(event);
-                // int playerSolutionChoice = getPlayerChoice();
-                // eventImpacts(playerSolutionChoice);
-                seasonCount += 1;
-            }
-            // displayYearEndSummary();
-            // displayPlayerYearEndChoices();
-            // int playerSaveRepublicChoice = getPlayerChoice();
-            // yearEndChoiceImpacts();
-            // displayYearEndSummary();
-            // foodImpactOnPopulation(checkEnoughFood());
-            // addScore(calculateYearEndScore());
+            playGame();
         }
+        handleEndOfYear();
+        System.out.println("Le scénario est fini. Vous avez gagné la partie.");
+        System.out.println("Voulez-vous continuer en mode bac à sable, ou arrêter de jouer ?");
+        System.out.printf("%n%nVotre score est de %f", getEndGameScore(year));
     }
 
     @Override

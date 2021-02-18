@@ -52,12 +52,14 @@ public class EconomyTest {
         //Year 1
         resources.updateFarmRate(10 + resources.getFarmRate());
         //End year
-        Assert.assertEquals(400, resources.generateFarmIncome().getFoodUnits());
+        resources.generateFarmIncome();
+        Assert.assertEquals(400, resources.getFoodUnits());
 
         //Year 2
         resources.updateFarmRate(80 + resources.getFarmRate());
         //End year
-        Assert.assertEquals(4000, resources.generateFarmIncome().getFoodUnits());
+        resources.generateFarmIncome();
+        Assert.assertEquals(4000, resources.getFoodUnits());
     }
 
     @Test
@@ -66,11 +68,13 @@ public class EconomyTest {
         //Year 1
         resources.updateFarmRate(10 + resources.getFarmRate());
         //End year
-        Assert.assertEquals(360, resources.generateFarmIncome().feed(10).getFoodUnits());
+        resources.generateFarmIncome();
+        Assert.assertEquals(360, resources.feed(10).getFoodUnits());
         //Year 2
         resources.updateFarmRate(80 + resources.getFarmRate());
         //End year
-        Assert.assertEquals(3880, resources.generateFarmIncome().feed(20).getFoodUnits());
+        resources.generateFarmIncome();
+        Assert.assertEquals(3880, resources.feed(20).getFoodUnits());
     }
 
     @Test
@@ -79,13 +83,15 @@ public class EconomyTest {
         //Year 1
         resources.updateFarmRate(10 + resources.getFarmRate());
         //End year
-        Assert.assertEquals(360, resources.generateFarmIncome().feed(10).getFoodUnits());
+        resources.generateFarmIncome();
+        Assert.assertEquals(360, resources.feed(10).getFoodUnits());
         //Year 2
         resources.updateFarmRate(80 + resources.getFarmRate());
         //Add bonus
         resources.addFood(150);
         //End year
-        Assert.assertEquals(4030, resources.generateFarmIncome().feed(20).getFoodUnits());
+        resources.generateFarmIncome();
+        Assert.assertEquals(4030, resources.feed(20).getFoodUnits());
     }
 
     @Test

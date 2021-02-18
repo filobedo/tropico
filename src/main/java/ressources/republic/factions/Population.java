@@ -17,7 +17,7 @@ public class Population {
     private void setFactionNamesInFactionByName() {
         this.factionByName.put(Capitalists.class.getSimpleName(), null);
         this.factionByName.put(Communists.class.getSimpleName(), null);
-        this.factionByName.put(Environmentalists.class.getSimpleName(), null);
+        this.factionByName.put(Ecologists.class.getSimpleName(), null);
         this.factionByName.put(Liberals.class.getSimpleName(), null);
         this.factionByName.put(Loyalists.class.getSimpleName(), null);
         this.factionByName.put(Militarists.class.getSimpleName(), null);
@@ -73,7 +73,10 @@ public class Population {
     }
 
     public double getGlobalSatisfactionRate() {
-        return getTotalSatisfactionRate() / getTotalPopulation();
+        if(getTotalPopulation() != 0) {
+            return getTotalSatisfactionRate() / getTotalPopulation();
+        }
+        return 0;
     }
 
     public int getNbFactions() {
@@ -163,10 +166,10 @@ public class Population {
         for (Faction faction : this.factionByName.values()) {
             String factionName = faction.getName();
             if(faction.canBeBribed()) {
-                System.out.printf("\t%d. %s => %d$%n", nbCountFaction, factionName, faction.getBribePrice());
+                System.out.printf("\t%d. Les %s => %d$%n", nbCountFaction, factionName, faction.getBribePrice());
             }
             else {
-                System.out.printf("\t%d. %s ne peuvent pas recevoir de pot de vin%n", nbCountFaction, factionName);
+                System.out.printf("\t%d. Les %s ne peuvent pas recevoir de pot de vin%n", nbCountFaction, factionName);
             }
             nbCountFaction += 1;
         }

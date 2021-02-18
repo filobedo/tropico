@@ -15,6 +15,7 @@ public abstract class Game {
     protected final GameDifficulty gameDifficulty;
     protected double score;
     protected int year = 1;
+    protected int eventCount = 1;
     private Parser parser;
 
     public Game(GameDifficulty gameDifficulty) {
@@ -80,13 +81,15 @@ public abstract class Game {
         }
     }
 
-    public void play() throws NullPointerException{
+    public void launchGame() throws NullPointerException{
         if(this.republic.isSet()) {
             System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
             System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
             System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
-            PlayerInput.pressAnyKeyToContinue();
             System.out.printf("%nLancement du jeu...%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n");
+            PlayerInput.pressAnyKeyToContinue();
+            System.out.printf("%nVous commencez avec ces paramètres de jeu : %n");
+            displayYearEndSummary(0);
         }
         else {
             System.out.println("Arrêt du jeu...");
@@ -98,13 +101,36 @@ public abstract class Game {
         if(this.republic.getTotalPopulation() > 0) {
             return this.republic.getPopulation().getGlobalSatisfactionRate() >= GameRules.MINIMUM_GLOBAL_SATISFACTION_RATE;
         }
-        return true;
+        return false;
     }
 
     public Event getCurrentEvent() {
         return this.gamePlay.getCurrentEvent();
     }
 
+    public void playGame() {
+        System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.gamePlay.getCurrentSeason().capitalize(), this.year);
+        handleCurrentSeason(this.eventCount);
+
+        this.gamePlay.nextSeason();
+        this.gamePlay.nextEvent();
+
+        if(isEndOfYear(this.eventCount)) {
+            handleEndOfYear();
+            this.year += 1;
+            PlayerInput.pressAnyKeyToContinue();
+        }
+        this.eventCount += 1;
+    }
+
+    public void handleCurrentSeason(int nbEvents) {
+        this.gamePlay.displayCurrentEvent(nbEvents);
+        this.republic.irreversibleEventImpacts(getCurrentEvent());
+
+        int playerSolutionChoice = PlayerInput.getPlayerEventSolutionChoice(getCurrentEvent().getNbChoices());
+        playerChoiceImpacts(playerSolutionChoice);
+        addScore(getSeasonEndScore());
+    }
 
     public void playerChoiceImpacts(int choice) {
         Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
@@ -118,18 +144,31 @@ public abstract class Game {
     }
 
     public void handleEndOfYear() {
-        // Industry and Farm generate money and food
-        this.republic.getResources().generateFarmIncome();
-        this.republic.getResources().generateIndustryIncome();
-        // Year End Summary
+        generateIncomes();
+
         displayYearEndSummary(this.year);
         handlePlayerYearEndChoices();
         PlayerInput.pressAnyKeyToContinue();
         displayYearEndSummary(this.year);
 
+        killAndOrFeedCitizen();
+    }
+
+    public void generateIncomes() {
+        this.republic.getResources().generateFarmIncome();
+        this.republic.getResources().generateIndustryIncome();
+        System.out.printf("L'agriculture a généré cette année %d unité(s) de nourriture.", this.republic.getResources().getFoodIncomeFromFarm());
+        System.out.printf("%nL'industrie, quant à elle, a généré cette année %d$.", this.republic.getResources().getMoneyIncomeFromIndustry());
+    }
+
+    public void killAndOrFeedCitizen() {
         int nbCitizensEliminated = this.republic.getPopulation().getNbSupportersToEliminateToHaveEnoughFood(this.republic.getFoodUnits());
         boolean hasEliminatedSupporters = this.republic.getPopulation().eliminateSupportersUntilEnoughFood(nbCitizensEliminated);
         this.republic.feedPopulation();
+        applyFoodConsequences(hasEliminatedSupporters, nbCitizensEliminated);
+    }
+
+    public void applyFoodConsequences(boolean hasEliminatedSupporters, int nbCitizensEliminated) {
         if(hasEliminatedSupporters) {
             System.out.println("La population a diminué car vous n'aviez pas assez de nourriture.");
             System.out.printf("%nVous avez perdu %d citoyens.%n", nbCitizensEliminated);

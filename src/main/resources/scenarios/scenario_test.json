@@ -1,5 +1,5 @@
 {
-  "name": "JSON DE REFERENCE Partie classique en 2022",
+  "name": "Json V1.0 sans saison Partie classique en 2022",
   "story": "Une partie démarrant en 2022 ou rien n'a changé par rapport à l'époque actuelle",
   "gameStartParameters": {
     "NORMAL": {
@@ -33,8 +33,8 @@
           "satisfactionRate": 60,
           "nbSupporters": 28
         },
-        "ENVIRONMENTALISTS": {
-          "name": "Environmentalists",
+        "ECOLOGISTS": {
+          "name": "Ecologists",
           "satisfactionRate": 40,
           "nbSupporters": 15
         },
@@ -70,7 +70,7 @@
                 "nbSupporters": 5
               },
               {
-                "name": "Environmentalists",
+                "name": "Ecologists",
                 "satisfactionRate": -10
               }
             ]
@@ -88,7 +88,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ]
@@ -150,7 +150,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
@@ -168,7 +168,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ]
@@ -195,7 +195,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
@@ -223,7 +223,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ]
@@ -240,7 +240,7 @@
                     "nbSupporters": -5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": 10
                   }
                 ]
@@ -292,7 +292,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ]
@@ -319,7 +319,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
@@ -373,7 +373,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ]
@@ -422,7 +422,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
@@ -441,7 +441,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
@@ -460,7 +460,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
@@ -479,7 +479,7 @@
                     "nbSupporters": 5
                   },
                   {
-                    "name": "Environmentalists",
+                    "name": "Ecologists",
                     "satisfactionRate": -10
                   }
                 ],
