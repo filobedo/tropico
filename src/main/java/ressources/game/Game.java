@@ -16,13 +16,14 @@ public abstract class Game {
     protected Republic republic;
     protected GamePlay gamePlay;
     protected final GameDifficulty gameDifficulty;
-    protected double score = 10; // score de base  10 * gameDiff-
+    protected double score;
     protected int eventCount = 1;
     public EventManager events;
     private Parser parser;
 
     public Game(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
+        this.score = GameRules.INITIAL_SCORE * (1 / gameDifficulty.getDifficultyCoefficient());
         this.events = new EventManager("satisfaction_increased", "satisfaction_decreased");
         this.events.subscribe("satisfaction_decreased", new SatisfactionDecreasedListener(this));
         this.events.subscribe("satisfaction_increased", new SatisfactionIncreasedListener(this));
@@ -217,14 +218,13 @@ public abstract class Game {
         System.out.println("Option 2 : Pot-de-vin à une faction (coût par partisan : 15$)");
         System.out.println("\t=> Possible sur toute faction sauf les Loyalistes");
         System.out.println("\t=> +10 points de pourcentage de satisfaction sur la faction choisie");
-        System.out.println("\t=> Diminution de la satisfaction des Loyalistes à hauteur du prix du pot-de-vin");
+        System.out.printf("%n\t=> Diminution de la satisfaction des Loyalistes à hauteur du prix du pot-de-vin (prix / %d)%n", GameRules.BRIBE_FACTION_DECREASE_LOYALISTS_SATISFACTION);
         System.out.println("Option 3 : Marché alimentaire (coût par unité : 8$)");
         System.out.println("\t=> Rappel : 4 unités de nourriture par citoyen sont nécessaires");
         System.out.println("Entrez votre choix :");
     }
 
     public void setScore(double score) {
-        // TODO score négatif possible ?
         this.score = score;
     }
 

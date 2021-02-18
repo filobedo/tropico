@@ -15,4 +15,9 @@ public class Scenario extends GamePlay {
             this.currentEvent = null;
         }
     }
+
+    @Override
+    public void placeRelatedEvents() {
+
+    }
 }

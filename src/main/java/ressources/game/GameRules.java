@@ -22,6 +22,7 @@ public class GameRules {
     public static final int YEAR_END_BUY_FOOD_CHOICE = 3;
 
 
+    public static final int INITIAL_SCORE = 10;
     public static final int END_SCORE_POINTS_PER_YEAR = 10;
     public static final int END_SCORE_POINTS_PER_DOLLAR_POSITIVE = 5;
     public static final int END_SCORE_POINTS_PER_DOLLAR_NEGATIVE = -3;

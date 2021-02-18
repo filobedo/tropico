@@ -15,4 +15,9 @@ public class Sandbox extends GamePlay {
         int indexRandomEvent = random.nextInt(seasonEvents.size());
         currentEvent = seasonEvents.get(indexRandomEvent);
     }
+
+    @Override
+    public void placeRelatedEvents() {
+
+    }
 }

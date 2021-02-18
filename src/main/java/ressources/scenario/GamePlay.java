@@ -51,6 +51,8 @@ public abstract class GamePlay {
 
     abstract public void nextEvent();
 
+    abstract public void placeRelatedEvents();
+
     public void nextYear() {
         this.year += 1;
     }

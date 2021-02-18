@@ -63,9 +63,9 @@ public class ScenarioGame extends Game {
     }
 
     public void displayPlayerLostButCanCatchUp() {
-        System.out.printf("%nUn dernier bilan vous sera affiché.%nCependant, peut-être" +
-                " que vous pouvez encore sauver votre république en essayant" +
-                " d'améliorer la satisfaction globale de votre république...");
+        System.out.println("Un dernier bilan vous sera affiché.");
+        System.out.println("Cependant, peut-être que vous pouvez encore sauver votre république.");
+        System.out.println("Essayez d'améliorer la satisfaction globale de votre république...");
     }
 
     public void displayPlayerFinishedScenarioButLost() {
