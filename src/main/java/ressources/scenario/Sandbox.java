@@ -8,6 +8,15 @@ public class Sandbox extends GamePlay {
         super(name, story, currentSeason);
     }
 
+    public boolean canPlayEvents() {
+        for(Season season : Season.values()) {
+            if(this.eventsBySeason.get(season.name()).size() == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void nextEvent() {
         // Get next random event according to the season
         Random random = new Random();
@@ -16,7 +25,6 @@ public class Sandbox extends GamePlay {
         currentEvent = seasonEvents.get(indexRandomEvent);
     }
 
-    @Override
     public void placeRelatedEvents() {
 
     }

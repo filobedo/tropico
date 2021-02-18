@@ -49,6 +49,8 @@ public abstract class GamePlay {
         this.eventsBySeason.put(season, events);
     }
 
+    abstract public boolean canPlayEvents();
+
     abstract public void nextEvent();
 
     abstract public void placeRelatedEvents();

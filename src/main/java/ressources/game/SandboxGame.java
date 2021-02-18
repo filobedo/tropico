@@ -1,5 +1,7 @@
 package ressources.game;
 
+import exceptions.MissingEventsException;
+
 public class SandboxGame extends Game {
 
     public SandboxGame(GameDifficulty gameDifficulty) {
@@ -7,7 +9,7 @@ public class SandboxGame extends Game {
     }
 
     @Override
-    public void launchGame() {
+    public void launchGame() throws MissingEventsException {
         super.launchGame();
         System.out.printf("%n%s%n", this.gamePlay.getName());
         System.out.printf("%s%n",this.gamePlay.getStory());

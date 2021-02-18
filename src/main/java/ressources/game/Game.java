@@ -1,4 +1,5 @@
 package ressources.game;
+import exceptions.MissingEventsException;
 import ressources.listeners.SatisfactionDecreasedListener;
 import ressources.listeners.SatisfactionIncreasedListener;
 import ressources.publisher.EventManager;
@@ -88,19 +89,24 @@ public abstract class Game {
         return gamePlay.getYear();
     }
 
-    public void launchGame() throws NullPointerException{
+    public void launchGame() throws NullPointerException, MissingEventsException {
         if(this.republic.isSet()) {
-            System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
-            System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
-            System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
-            System.out.printf("%nLancement du jeu...%n");
-            PlayerInput.pressAnyKeyToContinue();
-            System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
-            displaySummary();
+            if(this.gamePlay.canPlayEvents()) {
+                System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
+                System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
+                System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
+                System.out.printf("%nLancement du jeu...%n");
+                PlayerInput.pressAnyKeyToContinue();
+                System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
+                displaySummary();
+            }
+            else {
+                throw new MissingEventsException("There is not enough events in one of the seasons.");
+            }
         }
         else {
-            System.out.println("Arrêt du jeu...");
-            throw new NullPointerException("Game properties are not set.");
+            System.out.printf("%n%nArrêt du jeu...%n");
+            throw new NullPointerException("Republic properties are not set.");
         }
     }
 

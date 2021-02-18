@@ -27,7 +27,7 @@ public class GameParameters {
     public final String sandboxFilePath = "src/main/resources/sandBoxProperties.json";
 
 
-    public void askPlayerGameDifficultyAndMode() {
+    public void askPlayerGameModeAndDifficulty() {
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();
         String chosenGameMode = getGameModeClass(gameModeIndex);
@@ -47,16 +47,8 @@ public class GameParameters {
         this.gameModeClass = gameModeClass;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
     public GameDifficulty getGameDifficulty() {
         return gameDifficulty;
-    }
-
-    public String getGameModeClass() {
-        return gameModeClass;
     }
 
     public String getFilePath() {
@@ -127,15 +119,6 @@ public class GameParameters {
         return choice == 1 || choice == 2 || choice == 3;
     }
 
-    public File[] getScenarioList() {
-        File directory = new File(scenariosResourcePath);
-        return directory.listFiles();
-    }
-
-    public void displayScenarioListInstructions(File[] scenarios) {
-        System.out.print(getScenarioListInstructions(scenarios));
-    }
-
     public String getScenarioListInstructions(File[] scenarios) {
         int nbScenario = scenarios.length;
         int countScenario = 1;
@@ -179,6 +162,36 @@ public class GameParameters {
 
     public boolean isPlayerScenarioChoiceCorrect(int playerChoice, int nbScenario) {
         return playerChoice >= 1 && playerChoice <= nbScenario;
+    }
+
+    public Game getGameAccordingToChosenGameParameters() throws ClassNotFoundException {
+        if(isGameModeSandbox()) {
+            setFilePath(sandboxFilePath);
+            return new SandboxGame(this.gameDifficulty);
+        }
+        else if(isGameModeScenario()) {
+            File[] scenarioList = getScenarioList();
+            displayScenarioListInstructions(scenarioList);
+
+            setFilePath(chooseScenario(scenarioList));
+            return new ScenarioGame(this.gameDifficulty);
+        }
+        else {
+            throw new ClassNotFoundException("Game mode not found.");
+        }
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public File[] getScenarioList() {
+        File directory = new File(scenariosResourcePath);
+        return directory.listFiles();
+    }
+
+    public void displayScenarioListInstructions(File[] scenarios) {
+        System.out.print(getScenarioListInstructions(scenarios));
     }
 
     public boolean isGameModeSandbox() {

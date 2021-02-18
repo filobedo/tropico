@@ -1,5 +1,7 @@
 package ressources.game;
 
+import exceptions.MissingEventsException;
+
 public class ScenarioGame extends Game {
 
     public ScenarioGame(GameDifficulty gameDifficulty) {
@@ -7,8 +9,9 @@ public class ScenarioGame extends Game {
     }
 
     @Override
-    public void launchGame() {
+    public void launchGame() throws MissingEventsException {
         super.launchGame();
+        this.gamePlay.canPlayEvents();
         System.out.printf("%nNom du scénario : %s%n", this.gamePlay.getName());
         System.out.printf("Histoire : %s%n",this.gamePlay.getStory());
         this.gamePlay.nextEvent();

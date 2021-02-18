@@ -7,6 +7,10 @@ public class Scenario extends GamePlay {
         super(name, story, currentSeason);
     }
 
+    public boolean canPlayEvents() {
+        return false;
+    }
+
     public void nextEvent() {
         List<Event> seasonEvents = this.eventsBySeason.get(this.currentSeason);
         try {
@@ -16,7 +20,6 @@ public class Scenario extends GamePlay {
         }
     }
 
-    @Override
     public void placeRelatedEvents() {
 
     }

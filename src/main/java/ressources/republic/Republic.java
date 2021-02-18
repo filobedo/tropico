@@ -68,7 +68,7 @@ public class Republic {
             String factionName = factionEffectsSet.getKey();
             Map<String, Integer> effectsOnFaction = factionEffectsSet.getValue();
             // Each effect on the faction
-            for(Map.Entry<String, Integer> factionEffects: effectsOnFaction.entrySet()) {
+            for(Map.Entry<String, Integer> factionEffects : effectsOnFaction.entrySet()) {
                 String factorName = factionEffects.getKey();
                 int factorEffect = factionEffects.getValue();
                 if(factorName.equals(ParsingKeys.nbSupporters)) {
@@ -106,7 +106,7 @@ public class Republic {
     public void factorImpacts(Effect effect) {
         Map<String, Integer> factorImpacts = effect.getEffectsByFactor();
         // Each factor
-        for(Map.Entry<String,Integer> factorEffectsSet: factorImpacts.entrySet()) {
+        for(Map.Entry<String,Integer> factorEffectsSet : factorImpacts.entrySet()) {
             String factorName = factorEffectsSet.getKey();
             int factorEffect = factorEffectsSet.getValue();
             if(factorName.equals(ParsingKeys.industryRate)) {
