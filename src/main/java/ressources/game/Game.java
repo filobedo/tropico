@@ -1,4 +1,7 @@
 package ressources.game;
+import ressources.listeners.SatisfactionDecreasedListener;
+import ressources.listeners.SatisfactionIncreasedListener;
+import ressources.publisher.EventManager;
 import ressources.republic.Republic;
 import ressources.republic.economy.Resources;
 import ressources.republic.factions.Population;
@@ -16,10 +19,14 @@ public abstract class Game {
     protected double score;
     protected int year = 1;
     protected int eventCount = 1;
+    public EventManager events;
     private Parser parser;
 
     public Game(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
+        this.events = new EventManager("satisfaction_increased", "satisfaction_decreased");
+        this.events.subscribe("satisfaction_decreased", new SatisfactionDecreasedListener(this));
+        this.events.subscribe("satisfaction_increased", new SatisfactionIncreasedListener(this));
     }
 
     public void setScore(double score) {
@@ -51,6 +58,7 @@ public abstract class Game {
                 Population population = this.parser.parsePopulation();
                 Resources resources = this.parser.parseResources();
                 this.republic = new Republic(population, resources);
+                this.republic.events = this.events;
                 this.gamePlay = this.parser.parseScenario();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -89,7 +97,7 @@ public abstract class Game {
             System.out.printf("%nLancement du jeu...%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n");
             PlayerInput.pressAnyKeyToContinue();
             System.out.printf("%nVous commencez avec ces paramètres de jeu : %n");
-            displayYearEndSummary(0);
+            displaySummary(0);
         }
         else {
             System.out.println("Arrêt du jeu...");
@@ -146,10 +154,10 @@ public abstract class Game {
     public void handleEndOfYear() {
         generateIncomes();
 
-        displayYearEndSummary(this.year);
+        displaySummary(this.year);
         handlePlayerYearEndChoices();
         PlayerInput.pressAnyKeyToContinue();
-        displayYearEndSummary(this.year);
+        displaySummary(this.year);
 
         killAndOrFeedCitizen();
     }
@@ -181,13 +189,14 @@ public abstract class Game {
         }
     }
 
-    public void displayYearEndSummary(int year) {
+    public void displaySummary(int year) {
         if(year > 0) {
             System.out.printf("%n%n- Bilan de cette %de année -%n", year);
         }
         this.republic.getPopulation().displaySummary();
         System.out.println();
         this.republic.getResources().displaySummary();
+        System.out.printf("%n%n- Score : %.2f -%n", this.score);
         PlayerInput.pressAnyKeyToContinue();
     }
 

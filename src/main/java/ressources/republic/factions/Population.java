@@ -28,7 +28,7 @@ public class Population {
     public Faction createAndGetFaction(String factionName, int nbSupporters, int satisfactionRate) {
         try {
             return this.factionFactory.createFaction(factionName, nbSupporters, satisfactionRate);
-        } catch (ClassNotFoundException e) { // TODO Faut-il throw; ? Bonnes pratiques ? Quelles exception faut il throw
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

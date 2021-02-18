@@ -23,7 +23,7 @@ public class FactionFactory {
             case "RELIGIOUS":
                 return new Religious(nbSupporters, satisfactionRate);
             default:
-                throw new ClassNotFoundException("Invalid class name!");
+                throw new ClassNotFoundException("Invalid class name! (you tried to create an invalid faction)");
         }
     }
 

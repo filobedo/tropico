@@ -12,7 +12,7 @@ public class GameRules {
     public static final int GENERATED_MONEY_BY_INDUSTRY_RATE = 10;
     public static final int GENERATED_FOOD_BY_FARM_RATE = 40;
 
-    public static final int BRIBING_DECREASE_LOYALISTS_SATISFACTION = 10;
+    public static final int BRIBING_DECREASE_LOYALISTS_SATISFACTION = -10;
     public static final int BRIBE_SATISFACTION_RATE = 10;
     public static final int BRIBE_PRICE_BY_SUPPORTER = 15;
 

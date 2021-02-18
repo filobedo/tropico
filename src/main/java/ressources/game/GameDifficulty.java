@@ -1,6 +1,6 @@
 package ressources.game;
 
-public enum GameDifficulty { // TODO Gestion de la difficulté -> dans la gestion des impacts
+public enum GameDifficulty {
     EASY(0.5) {
         @Override
         public String toString() {

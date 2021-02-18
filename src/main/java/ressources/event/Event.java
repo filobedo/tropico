@@ -4,9 +4,6 @@ import org.json.*;
 
 import java.io.*;
 
-
-//TODO : lecture
-
 public class Event {
     JSONObject currentEvent;
     JSONArray scenario;
@@ -156,7 +153,6 @@ public class Event {
     }
 
     void updateGameStats(JSONObject impact) {
-        //TODO
         if (impact.get("money") != null) {
 
         }

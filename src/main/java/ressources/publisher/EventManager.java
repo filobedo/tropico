@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import ressources.republic.factions.Faction;
 import ressources.listeners.EventListener;
 
 public class EventManager {
@@ -26,10 +25,10 @@ public class EventManager {
         users.remove(listener);
     }
 
-    public void notify(String eventName, Faction faction) {
+    public void notify(String eventName, Object object) {
         List<EventListener> users = listeners.get(eventName);
         for(EventListener listener : users) {
-            listener.update(eventName, faction);
+            listener.update(eventName, object);
         }
     }
 }

@@ -74,7 +74,7 @@ public class GameParameters {
         try {
             int playerChoice = playerInput.nextInt();
             if(isPlayerGameModeChoiceCorrect(playerChoice)) {
-                return playerChoice; // TODO ENUM ?
+                return playerChoice;
             }
             else {
                 System.out.println(warning);

@@ -3,6 +3,7 @@ package ressources.republic;
 import ressources.game.GameRules;
 import ressources.game.PlayerInput;
 import ressources.parser.ParsingKeys;
+import ressources.publisher.EventManager;
 import ressources.republic.economy.Resources;
 import ressources.republic.factions.Faction;
 import ressources.republic.factions.Population;
@@ -14,6 +15,7 @@ import java.util.Map;
 public class Republic {
     private Population population;
     private Resources resources;
+    public EventManager events;
 
     public Republic(Population population, Resources resources) {
         this.population = population;
@@ -62,6 +64,12 @@ public class Republic {
                     this.population.updateNbSupportersByFaction(factorEffect, factionName);
                 }
                 if(factorName.equals(ParsingKeys.satisfactionRate)) {
+                    if(factorEffect > 0) {
+                         events.notify("satisfaction_increased", Math.abs(factorEffect));
+                    }
+                    if(factorEffect < 0) {
+                         events.notify("satisfaction_decreased", Math.abs(factorEffect));
+                    }
                     this.population.updateSatisfactionRateByFaction(factorEffect, factionName);
                 }
             }

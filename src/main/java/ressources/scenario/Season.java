@@ -2,7 +2,7 @@ package ressources.scenario;
 
 import java.util.Random;
 
-public enum Season { // TODO Gestion de la difficulté -> dans la gestion des impacts
+public enum Season {
     WINTER {
         @Override
         public String toString() {
