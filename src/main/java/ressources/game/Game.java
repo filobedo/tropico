@@ -101,7 +101,7 @@ public abstract class Game {
                 displaySummary();
             }
             else {
-                throw new MissingEventsException("There is not enough events in one of the seasons.");
+                throw new MissingEventsException("There is not enough events in at least one of the seasons.");
             }
         }
         else {
