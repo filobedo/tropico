@@ -103,9 +103,6 @@ public class Population {
         }
     }
 
-    // TODO nombre d'unité de nourriture ou nombre de partisans à éliminer selon l'implémentation de la classe au desssus
-    // renvoie si la fonction a eliminé des gens
-    // TODO TEST
     public boolean eliminateSupportersUntilEnoughFood(int nbSupportersToEliminate) {
         boolean hasEliminatedSupporters = false;
         AtomicInteger countNbSupporters = new AtomicInteger(nbSupportersToEliminate);
@@ -128,7 +125,7 @@ public class Population {
 
     public int increasePopulationRandomly() {
         int increasePopulationPercentage = generateRandomNumber(1, 10);
-        int nbSupportersToGenerate = getTotalPopulation() * (1 + (increasePopulationPercentage / 100));
+        int nbSupportersToGenerate = (int)Math.round(getTotalPopulation() * ((double)increasePopulationPercentage / 100));
         int nbSupportersGenerated = nbSupportersToGenerate;
         while(nbSupportersToGenerate > 0) {
             Faction randomFaction = getRandomFaction();

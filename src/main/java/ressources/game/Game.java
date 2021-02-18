@@ -157,7 +157,7 @@ public abstract class Game {
     public void generateIncomes() {
         this.republic.getResources().generateFarmIncome();
         this.republic.getResources().generateIndustryIncome();
-        System.out.printf("L'agriculture a généré cette année %d unité(s) de nourriture.", this.republic.getResources().getFoodIncomeFromFarm());
+        System.out.printf("%n%nL'agriculture a généré cette année %d unité(s) de nourriture.", this.republic.getResources().getFoodIncomeFromFarm());
         System.out.printf("%nL'industrie, quant à elle, a généré cette année %d$.", this.republic.getResources().getMoneyIncomeFromIndustry());
     }
 

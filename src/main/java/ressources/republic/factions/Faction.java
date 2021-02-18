@@ -46,7 +46,9 @@ public abstract class Faction {
 
     private void setSatisfactionRate(int newRate) {
         if(this.satisfactionRate == 0) {
-            System.out.printf("Les %s sont contre votre République (insatisfaits), il n'est plus possible d'augmenter leur taux de satisfaction.%n", getName());
+            if(newRate > 0) {
+                System.out.printf("Les %s sont contre votre République (insatisfaits), il n'est plus possible de changer leur taux de satisfaction.%n", getName());
+            }
         }
         else {
             if(newRate <= 0) {
