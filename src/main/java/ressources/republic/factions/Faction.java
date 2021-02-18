@@ -88,11 +88,11 @@ public abstract class Faction {
     }
 
     public int getBribePrice() {
-        return getNbSupporters() * GameRules.BRIBE_PRICE_BY_SUPPORTER;
+        return getNbSupporters() * GameRules.BRIBE_PRICE_PER_SUPPORTER;
     }
 
     public void bribe() {
-        updateSatisfactionRate(GameRules.BRIBE_SATISFACTION_RATE);
+        updateSatisfactionRate(GameRules.BRIBE_INCREASE_SATISFACTION_RATE);
         events.notify("bribe", this);
     }
 

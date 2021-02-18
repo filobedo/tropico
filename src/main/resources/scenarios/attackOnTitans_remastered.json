@@ -1,5 +1,5 @@
 {
-  "name": "L'attaque des titans <3",
+  "name": "Joue celui là | L'attaque des titans <3",
   "story": "Dans un monde ravagé par des titans mangeurs d’homme depuis plus d’un siècle, les rares survivants de l’Humanité n’ont d’autre choix pour survivre que de se barricader dans une cité-forteresse. Jeune, témoin de la mort de plusieurs de vos concitoyens dévorés par des titans, vous n’avez qu’un rêve : devinir le meilleur président de ce pays et découvrir l’origine des Titans afin de les annihiler jusqu’au dernier…",
   "gameStartParameters": {
     "NORMAL": {
@@ -63,6 +63,7 @@
             "description": "J'envoie toute la force militaire du pays pour les éradiquer",
             "effects": {
               "farmRate": 30,
+              "money": 30,
               "factions": [
                 {
                   "name": "Militarists",
@@ -164,7 +165,6 @@
             "name": "Refuser",
             "description": "Je refuse !",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Ecologists",
@@ -191,7 +191,6 @@
             "name": "Accepter",
             "description": "J'accepte avec hargne",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Militarists",
@@ -211,7 +210,6 @@
                     "name": "Accepter",
                     "description": "J'accepte car cet homme est beaucoup trop badass (hype machine)",
                     "effects": {
-                      "population": -1000,
                       "factions": [
                         {
                           "name": "Ecologists",
@@ -304,7 +302,6 @@
             "name": "Refuser",
             "description": "Je refuse naïvement",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Loyalists",
@@ -348,7 +345,6 @@
             "name": "Refuser",
             "description": "Faire le radin et ne pas distribuer",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Capitalists",
@@ -389,7 +385,6 @@
             "name": "Attaquer",
             "description": "Riposter et envoyer le Caporal Rivaille au front!",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Capitalists",
@@ -446,7 +441,6 @@
             "name": "Attaquer stratégiquement",
             "description": "J'élabore une stratégie pour combattre",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Ecologists",
@@ -694,7 +688,6 @@
             "name": "Examiner",
             "description": "J'examine la carcasse du titan pour essayer de découvrir des informations",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Capitalists",
@@ -715,7 +708,6 @@
             "name": "Craquage",
             "description": "Je déraille, deviens fou et me met à crier comme si j'étais en train de me transformer en titan",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Ecologists",
@@ -764,7 +756,6 @@
             "name": "Accepter",
             "description": "Je le laisse aller défendre ma patrie, celle d'El Presidente, dans le risque que Rivaille décède",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Capitalists",
@@ -785,7 +776,6 @@
             "name": "Refuser",
             "description": "J'empèche Rivaille d'aller affronter ces bêtes farouches tout seul",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Capitalists",
@@ -941,7 +931,6 @@
             "name": "Accepter",
             "description": "Avec évidence",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Ecologists",
@@ -997,7 +986,6 @@
             "name": "Refuser",
             "description": "J'ai autre chose à faire",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Ecologists",
@@ -1067,7 +1055,6 @@
             "name": "Refuser",
             "description": "Je refuse ! C'est trop cher !",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Capitalists",
@@ -1112,7 +1099,7 @@
             "name": "Laisser",
             "description": "Advienne que pourra...",
             "effects": {
-              "population": -1000,
+              "population": -100,
               "factions": [
                 {
                   "name": "Ecologists",
@@ -1159,7 +1146,6 @@
             "name": "Accepter",
             "description": "Mmmhh qui ne tente rien à rien",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Loyalists",
@@ -1184,7 +1170,6 @@
             "name": "Accepter et l'accompagner",
             "description": "Accepter et ordonner au Bataillon d'exploration de l'accompagner",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Loyalists",
@@ -1209,7 +1194,6 @@
             "name": "Refuser",
             "description": "Il est fou lui jamais de la vie",
             "effects": {
-              "population": -1000,
               "factions": [
                 {
                   "name": "Loyalists",

@@ -91,15 +91,15 @@ public class Resources {
     public Resources feed(int population) {
         int res = getFoodUnits() - (population * GameRules.NEEDED_FOOD_PER_CITIZEN);
         this.farm.setFoodUnits(res);
-        return this; // Quoi retourner en fonction de la consommation de la bouffe ?
+        return this;
     }
 
     public void useMoney(int amount) {
         if(amount > getMoney()) {
-            this.industry.setMoney(0); //changer si on veut limiter à 0
+            this.industry.setMoney(0);
         }
         else {
-            this.industry.setMoney(getMoney() - amount); //changer si on veut limiter à 0
+            this.industry.setMoney(getMoney() - amount);
         }
     }
 

@@ -94,9 +94,9 @@ public abstract class Game {
             System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
             System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
             System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
-            System.out.printf("%nLancement du jeu...%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n");
+            System.out.printf("%nLancement du jeu...%n");
             PlayerInput.pressAnyKeyToContinue();
-            System.out.printf("%nVous commencez avec ces paramètres de jeu : %n");
+            System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
             displaySummary(0);
         }
         else {
@@ -137,7 +137,6 @@ public abstract class Game {
 
         int playerSolutionChoice = PlayerInput.getPlayerEventSolutionChoice(getCurrentEvent().getNbChoices());
         playerChoiceImpacts(playerSolutionChoice);
-        addScore(getSeasonEndScore());
     }
 
     public void playerChoiceImpacts(int choice) {
@@ -224,17 +223,16 @@ public abstract class Game {
         setScore(this.score + scoreToAdd);
     }
 
-    public double getSeasonEndScore() {
-        double seasonEndScore = 0;
-        seasonEndScore += this.republic.getPopulation().getTotalSatisfactionRate() * GameRules.SCORE_POINTS_PER_SATISFACTION_WON;
-        return seasonEndScore;
-    }
-
-    public double getEndGameScore(int nbYear) {
+    public double getEndGameScore() {
         double endGameScore = this.score;
-        // +10 points per year
-        endGameScore += nbYear * GameRules.SCORE_POINTS_PER_YEAR;
-        endGameScore += this.republic.getResources().getMoney() * GameRules.SCORE_POINTS_PER_DOLLAR;
+        endGameScore += this.year * GameRules.END_SCORE_POINTS_PER_YEAR;
+        int money = this.republic.getResources().getMoney();
+        if(money >= 0) {
+            endGameScore += this.republic.getResources().getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_POSITIVE;
+        }
+        else {
+            endGameScore += this.republic.getResources().getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_NEGATIVE;
+        }
         return endGameScore;
     }
 }

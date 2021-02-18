@@ -18,7 +18,7 @@ public class SandboxGame extends Game {
         handleEndOfYear();
         System.out.println("Le scénario est fini. Vous avez gagné la partie.");
         System.out.println("Voulez-vous continuer en mode bac à sable, ou arrêter de jouer ?");
-        System.out.printf("%n%nVotre score est de %f", getEndGameScore(year));
+        System.out.printf("%n%nVotre score est de %f", getEndGameScore());
     }
 
     @Override

@@ -25,7 +25,7 @@ public class ScenarioGame extends Game {
         }
         // TODO Win or lose
         handleEndOfYear();
-        System.out.printf("%n%nVotre score est de %f", getEndGameScore(year));
+        System.out.printf("%n%nVotre score est de %f", getEndGameScore());
     }
 
     public boolean isScenarioFinished() {

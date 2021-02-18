@@ -1,6 +1,6 @@
 {
   "name": "Bac à sable",
-  "story": "Pas de temporalité déterminée, des évènements aléatoires vont vous impacter. Bonne chance",
+  "story": "Pas de temporalité déterminée, des évènements aléatoires vont vous impacter.\nLe but est de survivre le plus longtemps.\nBonne chance !",
   "gameStartParameters": {
     "NORMAL": {
       "farmRate": 25,
