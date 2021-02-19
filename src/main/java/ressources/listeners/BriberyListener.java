@@ -10,6 +10,11 @@ public class BriberyListener implements EventListener {
         this.faction = faction;
     }
 
+    /**
+     * Happens when a faction is bribed
+     * @param eventName name of the event, 'bribe' here
+     * @param faction the faction that is being bribed
+     */
     @Override
     public void update(String eventName, Object faction) {
         Faction bribedFaction = (Faction)faction;

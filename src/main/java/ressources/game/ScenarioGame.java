@@ -8,6 +8,11 @@ public class ScenarioGame extends Game {
         super(gameDifficulty);
     }
 
+    /**
+     * While the scenario is not finished and the player's score is above a certain amount
+     * and his global satisfaction rate is above a certain percentage
+     * The player keeps playing
+     */
     @Override
     public void launchGame() throws MissingEventsException {
         super.launchGame();
@@ -27,6 +32,15 @@ public class ScenarioGame extends Game {
             }
         }
         finalSummary();
+        handlePlayerEndGame();
+    }
+
+    /**
+     * According to the scenario, his score and his global satisfaction
+     * This function will display if he won, he lost, he finished the scenario etc...
+     * Then display that the party is finished
+     */
+    public void handlePlayerEndGame() {
         if(isScenarioFinished()) {
             if(isPlayerWinning()) {
                 displayPlayerWon();

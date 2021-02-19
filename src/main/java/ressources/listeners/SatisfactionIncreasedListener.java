@@ -10,6 +10,12 @@ public class SatisfactionIncreasedListener implements EventListener {
         this.game = game;
     }
 
+    /**
+     * Happens when a faction satisfaction rate increases
+     * Only during an event (event irreversible impacts or player choice impacts)
+     * @param eventName name of the event, 'satisfaction_increased' here
+     * @param variation how much the faction satisfaction rate increased by
+     */
     @Override
     public void update(String eventName, Object variation) {
         int satisfactionVariation = Math.abs((int)variation);

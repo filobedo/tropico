@@ -89,6 +89,12 @@ public abstract class Game {
         return gamePlay.getYear();
     }
 
+    /**
+     * Launches the game if game conditions are set (republic and events)
+     * @throws NullPointerException Republic is not fully set
+     * @throws MissingEventsException Events are missing in file so the scenario cannot be fully played
+     *                                or sandbox have no events in one of the seasons
+     */
     public void launchGame() throws NullPointerException, MissingEventsException {
         if(this.republic.isSet()) {
             if(this.gamePlay.canPlayEvents()) {
@@ -159,7 +165,6 @@ public abstract class Game {
     }
 
     public void askPlayerWantsToKeepPlaying() {
-        // Every 4 years
         if(this.gamePlay.getYear() % 4 == 0 && this.gamePlay.getYear() != 0) {
             GamePlayerInput.displayContinueOrQuit();
             if(GamePlayerInput.wantsToQuitGame()) {

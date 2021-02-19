@@ -9,6 +9,10 @@ public class SandboxGamePlay extends GamePlay {
         super(name, story, currentSeason);
     }
 
+    /**
+     * Test if there is at least one event in each season
+     * @return if scenario can be fully played
+     */
     @Override
     public boolean canPlayEvents() {
         if(this.firstSeason == null) {
@@ -22,6 +26,9 @@ public class SandboxGamePlay extends GamePlay {
         return true;
     }
 
+    /**
+     * If the first season is not set in JSON file, it will be generated randomly
+     */
     @Override
     public void setFirstSeason()  {
         // Generate random season
@@ -50,7 +57,6 @@ public class SandboxGamePlay extends GamePlay {
             int yearTarget = randomIndexInSeason(seasonTarget);
             this.eventsBySeason.get(seasonTarget).add(yearTarget, relatedEventToPlace);
         }
-
     }
 
     public int randomIndexInSeason(Season seasonTarget) {

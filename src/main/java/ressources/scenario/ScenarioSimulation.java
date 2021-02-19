@@ -10,6 +10,14 @@ public class ScenarioSimulation {
         this.nbEventsBySeason = nbEventsBySeason;
     }
 
+    /**
+     * Launch the scenario simulation
+     * Simulates scenario by decreasing the number of events by season in the map
+     * Simulates the fact that a player is playing this scenario
+     * Sets the number of events by season after the simulation
+     * Sets the next season after the last season played by the simulation
+     * @param firstSeason launch simulation with this first season
+     */
     public void launch(Season firstSeason) {
         int currentSeasonNbEvents = nbEventsBySeason.get(firstSeason);
         Season currentSimulatedSeason = firstSeason;

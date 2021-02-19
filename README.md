@@ -1,5 +1,7 @@
 # Tropico
 
+#### Groupe 2 : FLACELIÈRE Frédéric, QUACH William, ZERFAOUI Mehdi
+
 Fr ou Eng ?
 
 Class EventManager : Concrete publisher, tracked by other objects
@@ -27,7 +29,7 @@ Scenario    :
 ### Bac à sable :   
 
 - score négatif
-- ou satisfaction globale inférieure à 35% (normal) 70% (hard) et 17,5% facile (c'est selon le coef de difficulté 0.5, 1, 2)
+- ou satisfaction globale inférieure à 25% (normal) 50% (hard) et 12,5% facile (c'est selon le coef de difficulté 0.5, 1, 2)
 
 
 

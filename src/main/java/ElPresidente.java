@@ -1,7 +1,6 @@
 import ressources.game.*;
 
 public class ElPresidente {
-
     public static void main(String[] args) {
         boolean wantsToPlayAgain = true;
         while(wantsToPlayAgain) {

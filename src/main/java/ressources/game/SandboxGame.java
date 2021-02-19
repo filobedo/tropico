@@ -8,6 +8,11 @@ public class SandboxGame extends Game {
         super(gameDifficulty);
     }
 
+    /**
+     * While the player's score is above a certain amount
+     * and his global satisfaction rate is above a certain percentage
+     * The player keeps playing
+     */
     @Override
     public void launchGame() throws MissingEventsException {
         super.launchGame();
