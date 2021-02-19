@@ -110,7 +110,12 @@ public class ScenarioGamePlay extends GamePlay {
             Season seasonTarget = getSeasonWhereRelatedEventWillTakePlace();
             // Insert it in last year or current year
             int yearTarget = getYearWhereRelatedEventWillTakePlace(this.year);
-            this.eventsBySeason.get(seasonTarget).add(yearTarget, relatedEventToPlace);
+            if(yearTarget > this.eventsBySeason.get(seasonTarget).size()) {
+                this.eventsBySeason.get(seasonTarget).add(relatedEventToPlace);
+            }
+            else {
+                this.eventsBySeason.get(seasonTarget).add(yearTarget, relatedEventToPlace);
+            }
         }
     }
 

@@ -974,7 +974,7 @@
                     "name": "Oh shit",
                     "description": "Courir à toute vitesse",
                     "effects": {
-                      "population": -50
+                      "population": -5
                     }
                   }
                 ]
@@ -1098,7 +1098,6 @@
             "name": "Laisser",
             "description": "Advienne que pourra...",
             "effects": {
-              "population": -100,
               "factions": [
                 {
                   "name": "Ecologists",

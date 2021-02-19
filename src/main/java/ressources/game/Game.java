@@ -199,6 +199,7 @@ public abstract class Game {
             System.out.println("Vous avez même du surplus.");
             System.out.printf("%nAinsi, la population a augmenté de %d citoyens.%n", nbNewCitizens);
         }
+        GamePlayerInput.pressAnyKeyToContinue();
     }
 
     public void displaySummary() {
@@ -226,7 +227,7 @@ public abstract class Game {
         System.out.println("Option 2 : Pot-de-vin à une faction (coût par partisan : 15$)");
         System.out.println("\t=> Possible sur toute faction sauf les Loyalistes");
         System.out.println("\t=> +10 points de pourcentage de satisfaction sur la faction choisie");
-        System.out.printf("%n\t=> Diminution de la satisfaction des Loyalistes à hauteur du prix du pot-de-vin (prix / %d)%n", GameRules.BRIBE_FACTION_DECREASE_LOYALISTS_SATISFACTION);
+        System.out.printf("\t=> Diminution de la satisfaction des Loyalistes à hauteur du prix du pot-de-vin (prix / %d)%n", GameRules.BRIBE_FACTION_DECREASE_LOYALISTS_SATISFACTION);
         System.out.println("Option 3 : Marché alimentaire (coût par unité : 8$)");
         System.out.println("\t=> Rappel : 4 unités de nourriture par citoyen sont nécessaires");
         System.out.println("Entrez votre choix :");
@@ -240,6 +241,38 @@ public abstract class Game {
         setScore(this.score + scoreToAdd);
     }
 
+    public boolean handlePlayerCatchingUp() {
+        if(!canCatchUp()) {
+            displayPlayerLostAndCannotCatchUp();
+            GamePlayerInput.pressAnyKeyToContinue();
+            return false;
+        }
+        else {
+            displayPlayerLostButCanCatchUp();
+            GamePlayerInput.pressAnyKeyToContinue();
+            endOfYearConsequencesAndChoices();
+            if(!isPlayerWinning()) {
+                System.out.printf("%n%nDommage, malgré ce dernier effort, vous avez perdu la partie...%n");
+                GamePlayerInput.pressAnyKeyToContinue();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean canCatchUp() {
+        // You cannot get score to positive value by bribing faction
+        // You cannot get global satisfaction rising because no population
+        return isScorePositive() && this.republic.isThereAnyPopulation();
+    }
+
+    public void finalSummary() {
+        System.out.printf("%n==========================%n");
+        System.out.printf("%n- Voici votre bilan final : -%n");
+        displaySummary();
+        System.out.printf("%n- Voici votre score final : %.2f -%n", getEndGameScore());
+    }
+
     public double getEndGameScore() {
         double endGameScore = this.score;
         endGameScore += getYear() * GameRules.END_SCORE_POINTS_PER_YEAR;
@@ -248,8 +281,18 @@ public abstract class Game {
             endGameScore += this.republic.getResources().getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_POSITIVE;
         }
         else {
-            endGameScore += this.republic.getResources().getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_NEGATIVE;
+            endGameScore += Math.abs(this.republic.getResources().getMoney()) * GameRules.END_SCORE_POINTS_PER_DOLLAR_NEGATIVE;
         }
         return endGameScore;
+    }
+
+    public void displayPlayerLostAndCannotCatchUp() {
+        System.out.printf("%nUn dernier bilan vous sera affiché mais le jeu est fini pour vous. %nGAME OVER.%n");
+    }
+
+    public void displayPlayerLostButCanCatchUp() {
+        System.out.println("Un dernier bilan vous sera affiché.");
+        System.out.println("Cependant, peut-être que vous pouvez encore sauver votre république.");
+        System.out.println("Essayez d'améliorer la satisfaction globale de votre république...");
     }
 }

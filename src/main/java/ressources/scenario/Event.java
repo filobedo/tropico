@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Event {
 
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private List<Choice> choices = new ArrayList<>();
     private Effect irreversibleEffects;
     private boolean isARelatedEvent = false;
@@ -44,7 +44,7 @@ public class Event {
         }
         System.out.printf("%nChoix possible(s) :%n");
         displayChoices();
-        System.out.printf("%nEntrez votre choix :%n");
+        System.out.println("Entrez votre choix :");
     }
 
     public boolean hasIrreversibleEffects() {

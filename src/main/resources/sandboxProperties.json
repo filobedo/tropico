@@ -466,7 +466,8 @@
             "name": "Déblayer",
             "description": "Vous résoudrez les problèmes de transit.",
             "effects": {
-              "money": -200
+              "money": -200,
+              "satisfactionRate": -30
             }
           },
           {

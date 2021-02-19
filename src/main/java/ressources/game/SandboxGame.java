@@ -14,13 +14,16 @@ public class SandboxGame extends Game {
         System.out.printf("%n%s%n", this.gamePlay.getName());
         System.out.printf("%s%n",this.gamePlay.getStory());
         this.gamePlay.nextEvent();
-        while(isPlayerWinning()) {
+        while(true) {
             playGame();
+            if(!isPlayerWinning()) {
+                if(!handlePlayerCatchingUp()) {
+                    break;
+                }
+            }
         }
-        handleEndOfYear();
-        System.out.println("Le scénario est fini. Vous avez gagné la partie.");
-        System.out.println("Voulez-vous continuer en mode bac à sable, ou arrêter de jouer ?");
-        System.out.printf("%n%nVotre score est de %f", getEndGameScore());
+        finalSummary();
+        System.out.printf("%nVotre partie en mode bac à sable est terminée.%n");
     }
 
     @Override

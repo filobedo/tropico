@@ -1,19 +1,14 @@
 package ressources.game;
 
-import ressources.republic.factions.Population;
-
 import java.util.Scanner;
 
 public class GamePlayerInput {
     public static void pressAnyKeyToContinue()
     {
         System.out.printf("%n%nAppuyez sur la touche 'Entrer' pour continuer...%n");
-        try
-        {
+        try {
             System.in.read();
-        }
-        catch(Exception e)
-        {}
+        } catch(Exception ignored) {}
     }
 
     public static int getPlayerEventSolutionChoice(int nbChoice) {
@@ -57,7 +52,7 @@ public class GamePlayerInput {
         String warning = String.format("%nAttention ! Votre choix est incorrect");
         try {
             int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1 && playerChoice <= 8) {
+            if(playerChoice >= 1 && playerChoice <= nbFactions) {
                 return playerChoice;
             }
             else {
@@ -87,6 +82,31 @@ public class GamePlayerInput {
         } catch (Exception ex) {
             System.out.println(warning);
             return chooseFoodUnitsToBuy(foodUnitPossibleToBuy);
+        }
+    }
+
+    public static boolean wantsToPlayAgain() {
+        Scanner playerInput = new Scanner(System.in);
+        System.out.printf("%nVoulez-vous continuer de jouer ?%n");
+        System.out.println("Entrez votre choix :");
+        System.out.printf("%n1. Rejouer");
+        System.out.printf("%n2. Quitter%n");
+        String warning = String.format("%nAttention ! Votre entrée est incorrect");
+        try {
+            int playerChoice = playerInput.nextInt();
+            if(playerChoice == GameRules.END_GAME_CHOICE_START_NEW_GAME) {
+                return true;
+            }
+            if(playerChoice == GameRules.END_GAME_CHOICE_STOP_PLAYING) {
+                return false;
+            }
+            else {
+                System.out.println(warning);
+                return wantsToPlayAgain();
+            }
+        } catch (Exception ex) {
+            System.out.println(warning);
+            return wantsToPlayAgain();
         }
     }
 }
