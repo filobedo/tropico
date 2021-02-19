@@ -276,13 +276,12 @@ public abstract class Game {
     public double getEndGameScore() {
         double endGameScore = this.score;
         endGameScore += getYear() * GameRules.END_SCORE_POINTS_PER_YEAR;
-        int money = this.republic.getResources().getMoney();
-        if(money >= 0) {
-            endGameScore += this.republic.getResources().getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_POSITIVE;
-        }
-        else {
-            endGameScore += Math.abs(this.republic.getResources().getMoney()) * GameRules.END_SCORE_POINTS_PER_DOLLAR_NEGATIVE;
-        }
+        endGameScore += this.republic.getPopulationScore();
+        endGameScore += this.republic.getIndustryRateScore();
+        endGameScore += this.republic.getMoneyScore();
+        endGameScore += this.republic.getFarmRateScore();
+        endGameScore += this.republic.getFoodScore();
+
         return endGameScore;
     }
 

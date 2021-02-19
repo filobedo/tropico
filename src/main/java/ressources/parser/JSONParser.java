@@ -131,10 +131,10 @@ public class JSONParser extends Parser {
         if(canParseRepublicResources(gameStartParameters)) {
             int farmRate = gameStartParameters.getInt(ParsingKeys.farmRate);
             int foodUnits = gameStartParameters.getInt(ParsingKeys.foodUnits);
-            int treasury = gameStartParameters.getInt(ParsingKeys.money);
+            double money = gameStartParameters.getDouble(ParsingKeys.money);
             int industryRate = gameStartParameters.getInt(ParsingKeys.industryRate);
             try {
-                return new Resources(foodUnits, treasury, farmRate, industryRate);
+                return new Resources(foodUnits, money, farmRate, industryRate);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -288,8 +288,8 @@ public class JSONParser extends Parser {
             effectByFactor.put(ParsingKeys.foodUnits, foodUnitsEffect);
         }
         if(effects.has(ParsingKeys.money)) {
-            int treasuryEffect = (int)Math.round(effects.getInt(ParsingKeys.money) * this.difficultyCoefficient);
-            effectByFactor.put(ParsingKeys.money, treasuryEffect);
+            int moneyEffect = (int)Math.round(effects.getInt(ParsingKeys.money) * this.difficultyCoefficient);
+            effectByFactor.put(ParsingKeys.money, moneyEffect);
         }
         if(effects.has(ParsingKeys.population)) {
             int populationEffect = (int)Math.round(effects.getInt(ParsingKeys.population) * this.difficultyCoefficient);

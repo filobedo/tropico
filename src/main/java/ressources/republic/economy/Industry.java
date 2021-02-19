@@ -2,19 +2,19 @@ package ressources.republic.economy;
 
 public class Industry implements Development {
     int rate = 0;
-    int money = 0; // money
+    double money = 0; // money
 
     Industry() {}
-    Industry (int money, int rate) {
+    Industry (double money, int rate) {
         this.rate = rate;
         this.money = money;
     }
 
-    protected int getMoney() {
+    protected double getMoney() {
         return money;
     }
 
-    protected void setMoney(int money) {
+    protected void setMoney(double money) {
         this.money = money;
     }
 
@@ -36,6 +36,6 @@ public class Industry implements Development {
 
     public String toString() {
         return String.format("\tIndustrie : %d%%%n", this.rate) +
-                String.format("\tArgent : %d$%n", this.money);
+                String.format("\tArgent : %.2f$%n", this.money);
     }
 }

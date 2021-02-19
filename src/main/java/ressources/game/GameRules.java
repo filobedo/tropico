@@ -23,11 +23,15 @@ public class GameRules {
 
 
     public static final int INITIAL_SCORE = 10;
-    public static final int END_SCORE_POINTS_PER_YEAR = 10;
-    public static final int END_SCORE_POINTS_PER_DOLLAR_POSITIVE = 5;
-    public static final int END_SCORE_POINTS_PER_DOLLAR_NEGATIVE = -3;
     public static final int SCORE_POINTS_PER_SATISFACTION_WON = 2;
     public static final int SCORE_POINTS_PER_SATISFACTION_LOST= -1;
+    public static final int END_SCORE_POINTS_PER_YEAR = 10;
+    public static final int END_SCORE_POINTS_PER_CITIZEN = 2;
+    public static final int END_SCORE_POINTS_PER_INDUSTRY_RATE = 5;
+    public static final int END_SCORE_POINTS_PER_DOLLAR_POSITIVE = 3;
+    public static final int END_SCORE_POINTS_PER_DOLLAR_NEGATIVE = -2;
+    public static final int END_SCORE_POINTS_PER_FARM_RATE = 5;
+    public static final int END_SCORE_POINTS_PER_FOOD_UNITS = 1;
 
     public static final int END_GAME_CHOICE_START_NEW_GAME= 1;
     public static final int END_GAME_CHOICE_STOP_PLAYING= 2;

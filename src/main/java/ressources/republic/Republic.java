@@ -191,4 +191,29 @@ public class Republic {
         return this.resources.getFoodUnits();
     }
 
+    public int getPopulationScore() {
+        return this.resources.getFarmRate() * GameRules.END_SCORE_POINTS_PER_CITIZEN;
+    }
+
+    public int getIndustryRateScore() {
+        return this.resources.getIndustryRate() * GameRules.END_SCORE_POINTS_PER_INDUSTRY_RATE;
+    }
+
+    public double getMoneyScore() {
+        double money = this.resources.getMoney();
+        if(money >= 0) {
+            return this.resources.getMoney() * GameRules.END_SCORE_POINTS_PER_DOLLAR_POSITIVE;
+        }
+        else {
+            return Math.abs(this.resources.getMoney()) * GameRules.END_SCORE_POINTS_PER_DOLLAR_NEGATIVE;
+        }
+    }
+
+    public int getFarmRateScore() {
+        return this.resources.getFarmRate() * GameRules.END_SCORE_POINTS_PER_FARM_RATE;
+    }
+
+    public int getFoodScore() {
+        return this.resources.getFoodUnits() * GameRules.END_SCORE_POINTS_PER_FOOD_UNITS;
+    }
 }

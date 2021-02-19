@@ -11,7 +11,7 @@ public class Resources {
         this.farm = new Farm();
     }
 
-    public Resources(int foodUnits, int money, int farmRate, int industryRate) throws IllegalArgumentException {
+    public Resources(int foodUnits, double money, int farmRate, int industryRate) throws IllegalArgumentException {
         if(!isFarmAndIndustrySumRateCorrect(farmRate, industryRate)) {
             throw new IllegalArgumentException("Industry and/or farm rate have an incorrect sum value.");
         }
@@ -80,7 +80,7 @@ public class Resources {
         return this.farm.getFoodUnits();
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return this.industry.getMoney();
     }
 
@@ -94,7 +94,7 @@ public class Resources {
         return this;
     }
 
-    public void useMoney(int amount) {
+    public void useMoney(double amount) {
         if(amount > getMoney()) {
             this.industry.setMoney(0);
         }
@@ -103,12 +103,12 @@ public class Resources {
         }
     }
 
-    public void earnMoney(int amount) {
+    public void earnMoney(double amount) {
         this.industry.setMoney(getMoney() + amount);
     }
 
     public int buyingFoodUnitsPossible() {
-        return getMoney() / GameRules.FOOD_PRICE;
+        return (int)(getMoney() / GameRules.FOOD_PRICE);
     }
 
     public int getFoodPrice(int foodUnits) {

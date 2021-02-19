@@ -35,5 +35,8 @@ Règles du Score :
 - +2 point par pourcentage de satisfaction obtenu par faction durant le tour
 - -1 point par pourcentage de satisfaction perdu par faction durant le tour
 - +10 points par année survécue en fin de partie
-- +5 points par dollar dans la caisse en fin de partie 
-- ou alors -3 points par dollar de dette en fin de partie
+- +2 points par citoyens en fin de partie
+- +5 points par pourcentage d'industrie et d'agriculture
+- +3 points par dollar dans la caisse en fin de partie
+- ou alors -2 points par dollar de dette en fin de partie
+- +1 point par unité de nourriture en fin de partie
