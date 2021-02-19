@@ -176,10 +176,10 @@ public class JSONParser extends Parser {
 
     public GamePlay getGamePlay(String name, String story) {
         if(this.gameParametersChosen.isGameModeScenario()) {
-            return new Scenario(name, story, getFirstSeason());
+            return new ScenarioGamePlay(name, story, getFirstSeason());
         }
         else if(this.gameParametersChosen.isGameModeSandbox()) {
-            return new Sandbox(name, story, getFirstSeason());
+            return new SandboxGamePlay(name, story, getFirstSeason());
         }
         return null;
     }

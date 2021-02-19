@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Scenario extends GamePlay {
-    public Scenario(String name, String story, Season currentSeason) {
+public class ScenarioGamePlay extends GamePlay {
+    public ScenarioGamePlay(String name, String story, Season currentSeason) {
         super(name, story, currentSeason);
     }
 

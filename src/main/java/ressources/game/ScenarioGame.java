@@ -23,16 +23,16 @@ public class ScenarioGame extends Game {
                 System.out.printf("%n%n%nLe scénario n'est pas fini mais vous avez perdu...%n");
                 if(!canCatchUp()) {
                     displayPlayerLostAndCannotCatchUp();
-                    PlayerInput.pressAnyKeyToContinue();
+                    GamePlayerInput.pressAnyKeyToContinue();
                     break;
                 }
                 else {
                     displayPlayerLostButCanCatchUp();
-                    PlayerInput.pressAnyKeyToContinue();
+                    GamePlayerInput.pressAnyKeyToContinue();
                     endOfYearConsequencesAndChoices();
                     if(!isPlayerWinning()) {
                         System.out.printf("%n%nDommage, malgré ce dernier effort, vous avez perdu la partie...%n");
-                        PlayerInput.pressAnyKeyToContinue();
+                        GamePlayerInput.pressAnyKeyToContinue();
                         break;
                     }
                 }

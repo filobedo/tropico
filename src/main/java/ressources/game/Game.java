@@ -96,7 +96,7 @@ public abstract class Game {
                 System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
                 System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
                 System.out.printf("%nLancement du jeu...%n");
-                PlayerInput.pressAnyKeyToContinue();
+                GamePlayerInput.pressAnyKeyToContinue();
                 System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
                 displaySummary();
             }
@@ -138,17 +138,16 @@ public abstract class Game {
 
     public void handleCurrentSeason(int nbEvents) {
         this.gamePlay.displayCurrentEvent(nbEvents);
-        this.republic.irreversibleEventImpacts(getCurrentEvent());
+        this.republic.irreversibleEventEffects(getCurrentEvent());
 
-        int playerSolutionChoice = PlayerInput.getPlayerEventSolutionChoice(getCurrentEvent().getNbChoices());
-        playerChoiceImpacts(playerSolutionChoice);
+        int playerSolutionChoice = GamePlayerInput.getPlayerEventSolutionChoice(getCurrentEvent().getNbChoices());
+        playerChoiceEffects(playerSolutionChoice);
     }
 
-    public void playerChoiceImpacts(int choice) {
+    public void playerChoiceEffects(int choice) {
         Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
         Effect choiceEffects = playerChoice.getEffects();
-        this.republic.impacts(choiceEffects);
-        // TODO RELATED EVENTS
+        this.republic.applyEffects(choiceEffects);
         if(playerChoice.hasRelatedEvents()) {
             gamePlay.placeRelatedEvents(playerChoice.getRelatedEvents());
         }
@@ -165,12 +164,12 @@ public abstract class Game {
 
     public void endOfYearConsequencesAndChoices() {
         generateIncomes();
-        PlayerInput.pressAnyKeyToContinue();
+        GamePlayerInput.pressAnyKeyToContinue();
 
         displaySummary();
 
         handlePlayerYearEndChoices();
-        PlayerInput.pressAnyKeyToContinue();
+        GamePlayerInput.pressAnyKeyToContinue();
 
         killAndOrFeedCitizen();
     }
@@ -210,13 +209,13 @@ public abstract class Game {
         System.out.println();
         this.republic.getResources().displaySummary();
         System.out.printf("%n%n- Score : %.2f -%n", this.score);
-        PlayerInput.pressAnyKeyToContinue();
+        GamePlayerInput.pressAnyKeyToContinue();
     }
 
     public void handlePlayerYearEndChoices() {
         displayPlayerYearEndChoices();
-        int playerYearEndChoice = PlayerInput.chooseEndYearOption();
-        if(!this.republic.playerYearEndChoiceImpacts(playerYearEndChoice)) {
+        int playerYearEndChoice = GamePlayerInput.chooseEndYearOption();
+        if(!this.republic.playerEndYearChoiceImpactsIfPossible(playerYearEndChoice)) {
             handlePlayerYearEndChoices();
         }
     }

@@ -1,7 +1,7 @@
 package ressources.republic;
 
 import ressources.game.GameRules;
-import ressources.game.PlayerInput;
+import ressources.game.GamePlayerInput;
 import ressources.parser.ParsingKeys;
 import ressources.publisher.EventManager;
 import ressources.republic.economy.Resources;
@@ -49,22 +49,22 @@ public class Republic {
         return this.population.getTotalPopulation();
     }
 
-    public void irreversibleEventImpacts(Event currentEvent) {
+    public void irreversibleEventEffects(Event currentEvent) {
         Effect eventEffects = currentEvent.getIrreversibleEffects();
         if(eventEffects != null) {
-            impacts(eventEffects);
+            applyEffects(eventEffects);
         }
     }
 
-    public void impacts(Effect effect) {
-        factionImpacts(effect);
-        factorImpacts(effect);
+    public void applyEffects(Effect effect) {
+        factionEffects(effect);
+        factorEffects(effect);
     }
 
-    public void factionImpacts(Effect effect) {
-        Map<String, Map<String, Integer>> factionImpacts = effect.getEffectsByFaction();
+    public void factionEffects(Effect effect) {
+        Map<String, Map<String, Integer>> effectsByFaction = effect.getEffectsByFaction();
         // Each faction
-        for(Map.Entry<String, Map<String, Integer>> factionEffectsSet: factionImpacts.entrySet()) {
+        for(Map.Entry<String, Map<String, Integer>> factionEffectsSet: effectsByFaction.entrySet()) {
             String factionName = factionEffectsSet.getKey();
             Map<String, Integer> effectsOnFaction = factionEffectsSet.getValue();
             // Each effect on the faction
@@ -103,10 +103,10 @@ public class Republic {
         return percentagePoints;
     }
 
-    public void factorImpacts(Effect effect) {
-        Map<String, Integer> factorImpacts = effect.getEffectsByFactor();
+    public void factorEffects(Effect effect) {
+        Map<String, Integer> effectsByFactor = effect.getEffectsByFactor();
         // Each factor
-        for(Map.Entry<String,Integer> factorEffectsSet : factorImpacts.entrySet()) {
+        for(Map.Entry<String,Integer> factorEffectsSet : effectsByFactor.entrySet()) {
             String factorName = factorEffectsSet.getKey();
             int factorEffect = factorEffectsSet.getValue();
             if(factorName.equals(ParsingKeys.industryRate)) {
@@ -130,21 +130,19 @@ public class Republic {
         }
     }
 
-    public boolean playerYearEndChoiceImpacts(int choice) {
+    public boolean playerEndYearChoiceImpactsIfPossible(int choice) {
         if(choice == GameRules.YEAR_END_DO_NOTHING_CHOICE) {
-            System.out.printf("%nVous avez décidé de ne rien faire pour sauver votre république." +
-                    " Elle doit se porter à merveille%n");
             return true;
         }
         if(choice == GameRules.YEAR_END_BRIBE_CHOICE) {
             this.population.displayAvailableFactions();
-            int indexFactionToBribe = PlayerInput.chooseFactionToBribe(this.population.getNbFactions());
+            int indexFactionToBribe = GamePlayerInput.chooseFactionToBribe(this.population.getNbFactions());
             String factionToBribe = this.population.getFactionNameByIndex(indexFactionToBribe);
             return bribeIfPossible(factionToBribe);
         }
         if(choice == GameRules.YEAR_END_BUY_FOOD_CHOICE) {
             int foodUnitPossibleToBuy = this.resources.buyingFoodUnitsPossible();
-            int foodUnitsToBuy = PlayerInput.chooseFoodUnitsToBuy(foodUnitPossibleToBuy);
+            int foodUnitsToBuy = GamePlayerInput.chooseFoodUnitsToBuy(foodUnitPossibleToBuy);
             return buyFoodIfPossible(foodUnitsToBuy);
         }
         return false;

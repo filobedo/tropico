@@ -4,7 +4,7 @@ import ressources.republic.factions.Population;
 
 import java.util.Scanner;
 
-public class PlayerInput {
+public class GamePlayerInput {
     public static void pressAnyKeyToContinue()
     {
         System.out.printf("%n%nAppuyez sur la touche 'Entrer' pour continuer...%n");

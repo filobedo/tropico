@@ -1,11 +1,10 @@
 package ressources.scenario;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-public class Sandbox extends GamePlay {
-    public Sandbox(String name, String story, Season currentSeason) {
+public class SandboxGamePlay extends GamePlay {
+    public SandboxGamePlay(String name, String story, Season currentSeason) {
         super(name, story, currentSeason);
     }
 
