@@ -15,8 +15,7 @@ public class ElPresidente {
                 wantsToPlayAgain = GamePlayerInput.wantsToPlayAgain();
             } catch (Exception ex) {
                 ex.printStackTrace();
-                Game.shutDown();
-                System.exit(0);
+                System.exit(1);
             }
         }
         Game.shutDown();

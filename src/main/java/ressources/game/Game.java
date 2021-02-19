@@ -132,6 +132,7 @@ public abstract class Game {
         if(isEndOfYear(this.eventCount)) {
             handleEndOfYear();
             this.gamePlay.nextYear();
+            askPlayerWantsToKeepPlaying();
         }
         this.eventCount += 1;
     }
@@ -155,6 +156,17 @@ public abstract class Game {
 
     public boolean isEndOfYear(int seasonCount) {
         return seasonCount % 4 == 0 && seasonCount != 0;
+    }
+
+    public void askPlayerWantsToKeepPlaying() {
+        // Every 4 years
+        if(this.gamePlay.getYear() % 4 == 0 && this.gamePlay.getYear() != 0) {
+            GamePlayerInput.displayContinueOrQuit();
+            if(GamePlayerInput.wantsToQuitGame()) {
+                finalSummary();
+                shutDown();
+            }
+        }
     }
 
     public void handleEndOfYear() {
@@ -204,7 +216,7 @@ public abstract class Game {
 
     public void displaySummary() {
         if(getYear() > 0) {
-            System.out.printf("%n%n- Bilan de cette %de année -%n", getYear());
+            System.out.printf("%n%n- Bilan de cette %de année -%n", getYear() + 1);
         }
         this.republic.getPopulation().displaySummary();
         System.out.println();
