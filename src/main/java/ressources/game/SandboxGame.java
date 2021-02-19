@@ -14,7 +14,7 @@ public class SandboxGame extends Game {
         System.out.printf("%n%s%n", this.gamePlay.getName());
         System.out.printf("%s%n",this.gamePlay.getStory());
         this.gamePlay.nextEvent();
-        while(true) {
+        while(isPlayerWinning()) {
             playGame();
             if(!isPlayerWinning()) {
                 if(!handlePlayerCatchingUp()) {
