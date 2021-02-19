@@ -185,6 +185,7 @@ public class JSONParser extends Parser {
     }
 
     public List<Event> parseSeason(JSONArray seasonToParse) throws ConfigurationException {
+        
         List<Event> seasonEvents = new ArrayList<>();
         for(int eventCount = 0; eventCount < seasonToParse.length(); eventCount += 1 ) {
             JSONObject event = seasonToParse.getJSONObject(eventCount);

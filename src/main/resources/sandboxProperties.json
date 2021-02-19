@@ -143,7 +143,7 @@
         ]
       },
       {
-        "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
+        "name": "Related Les Soviétiques envoient des sous marins nucléaires vers votre pays",
         "description": "Vous devez prendre une décision",
         "choices": [
           {
@@ -180,6 +180,30 @@
                     "effects": {
                       "farmRate": -15,
                       "industryRate": -15
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "un sécheresse s'est déclaré !",
+                "description": "Notre population crie famine, vous devez faire quelques choses !",
+                "irreversible": {
+                  "population": -5,
+                  "farmRate": -10
+                },
+                "choices": [
+                  {
+                    "name": "Vider les réserve d'eau",
+                    "description": "Empêchera la diminution de la population",
+                    "effects": {
+                      "money": -100
+                    }
+                  },
+                  {
+                    "name": "Ne rien faire",
+                    "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
+                    "effects": {
+                      "population": -15
                     }
                   }
                 ]

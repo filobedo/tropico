@@ -9,6 +9,7 @@ public class Event {
     private String description;
     private List<Choice> choices = new ArrayList<>();
     private Effect irreversibleEffects;
+    private boolean isARelatedEvent = false;
 
     public Event(String name, String description) {
         this.name = name;
@@ -17,6 +18,14 @@ public class Event {
 
     public void setChoices(List<Choice> choices) {
         this.choices = choices;
+    }
+
+    public void setIsARelatedEvent() {
+        this.isARelatedEvent = true;
+    }
+
+    public boolean isARelatedEvent() {
+        return isARelatedEvent;
     }
 
     public void setIrreversibleEffects(Effect irreversibleEffects) {
