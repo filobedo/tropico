@@ -31,4 +31,12 @@ public class Choice {
         effects.displayFactionEffects();
         effects.displayFactorEffects();
     }
+
+    public boolean hasRelatedEvents() {
+        return this.relatedEvents != null;
+    }
+
+    public List<Event> getRelatedEvents() {
+        return relatedEvents;
+    }
 }

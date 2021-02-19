@@ -149,6 +149,9 @@ public abstract class Game {
         Effect choiceEffects = playerChoice.getEffects();
         this.republic.impacts(choiceEffects);
         // TODO RELATED EVENTS
+        if(playerChoice.hasRelatedEvents()) {
+            gamePlay.placeRelatedEvents(playerChoice.getRelatedEvents());
+        }
     }
 
     public boolean isEndOfYear(int seasonCount) {

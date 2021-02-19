@@ -10,11 +10,13 @@ public abstract class GamePlay {
     protected Map<Season, List<Event>> eventsBySeason = new HashMap<>();
     protected Event currentEvent;
     protected int year = 0;
+    protected Season firstSeason;
     protected Season currentSeason;
 
     public GamePlay(String name, String story, Season firstSeason) {
         this.name = name;
         this.story = story;
+        this.firstSeason = firstSeason;
         this.currentSeason = firstSeason;
         setSeasonsInEventsBySeason();
     }
@@ -53,7 +55,7 @@ public abstract class GamePlay {
 
     abstract public void nextEvent();
 
-    abstract public void placeRelatedEvents();
+    abstract public void placeRelatedEvents(List<Event> relatedEvents);
 
     public void nextYear() {
         this.year += 1;

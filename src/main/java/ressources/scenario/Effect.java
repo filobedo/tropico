@@ -80,7 +80,6 @@ public class Effect {
         return toShorten.substring(0, toShorten.length() - 2);
     }
 
-
     public Map<String, Map<String, Integer>> getEffectsByFaction() {
         return effectsByFaction;
     }
@@ -88,4 +87,6 @@ public class Effect {
     public Map<String, Integer> getEffectsByFactor() {
         return effectsByFactor;
     }
+
+
 }

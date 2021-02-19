@@ -19,13 +19,13 @@ public class Sandbox extends GamePlay {
 
     public void nextEvent() {
         // Get next random event according to the season
-        Random random = new Random();
+        Random randomGenerator = new Random();
         List<Event> seasonEvents = this.eventsBySeason.get(this.currentSeason);
-        int indexRandomEvent = random.nextInt(seasonEvents.size());
+        int indexRandomEvent = randomGenerator.nextInt(seasonEvents.size());
         currentEvent = seasonEvents.get(indexRandomEvent);
     }
 
-    public void placeRelatedEvents() {
+    public void placeRelatedEvents(List<Event> relatedEvents) {
 
     }
 }

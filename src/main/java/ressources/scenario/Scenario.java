@@ -3,6 +3,7 @@ package ressources.scenario;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Scenario extends GamePlay {
     public Scenario(String name, String story, Season currentSeason) {
@@ -10,7 +11,7 @@ public class Scenario extends GamePlay {
     }
 
     public boolean canPlayEvents() {
-        if(doScenarioHaveNoEvents(getNumberOfEventsInAList())) {
+        if(doScenarioHaveNoEvents(getNbEventsBySeason())) {
             return false;
         }
         if(doFirstSeasonHaveNoEvent()) {
@@ -19,8 +20,7 @@ public class Scenario extends GamePlay {
         if(doAllSeasonsHaveEqualNbEvents()) {
             return true;
         }
-        Map<Season, Integer> nbEventsBySeason = getNumberOfEventsInAList();
-        return willAllEventsBePlayed(nbEventsBySeason);
+        return willAllEventsBePlayed();
     }
 
     public boolean doScenarioHaveNoEvents(Map<Season, Integer> nbEventsBySeason) {
@@ -33,11 +33,11 @@ public class Scenario extends GamePlay {
     }
 
     public boolean doFirstSeasonHaveNoEvent() {
-        return this.eventsBySeason.get(this.currentSeason).size() == 0;
+        return this.eventsBySeason.get(this.firstSeason).size() == 0;
     }
 
     public boolean doAllSeasonsHaveEqualNbEvents() {
-        int nbEventsFirstSeason = this.eventsBySeason.get(this.currentSeason).size();
+        int nbEventsFirstSeason = this.eventsBySeason.get(this.firstSeason).size();
         for(Season season : Season.values()) {
             if(nbEventsFirstSeason != this.eventsBySeason.get(season).size()) {
                 return false;
@@ -46,7 +46,7 @@ public class Scenario extends GamePlay {
         return true;
     }
 
-    public Map<Season, Integer> getNumberOfEventsInAList() {
+    public Map<Season, Integer> getNbEventsBySeason() {
         Map<Season, Integer> nbEventsBySeason = new HashMap<>();
         for(Season season : Season.values()) {
             nbEventsBySeason.put(season, this.eventsBySeason.get(season).size());
@@ -58,17 +58,17 @@ public class Scenario extends GamePlay {
      * Simulates scenario by decreasing the number of events by season in the map
      * When this simulation is done
      * If there is one or more "events" in any seasons, then the scenario won't be fully played
-     * @param nbEventsBySeason Number of events according to the season in the scenario JSON file
      * @return boolean meaning if all events will be played
      */
-    public boolean willAllEventsBePlayed(Map<Season, Integer> nbEventsBySeason) {
-        int currSeasonNbEvents = nbEventsBySeason.get(this.currentSeason);
-        Season currSeason = this.currentSeason;
-        while(currSeasonNbEvents != 0) {
-            Integer newNbEvents = nbEventsBySeason.get(currSeason) - 1;
-            nbEventsBySeason.put(currSeason, newNbEvents);
-            currSeason = Season.getNextSeason(currSeason);
-            currSeasonNbEvents = nbEventsBySeason.get(currSeason);
+    public boolean willAllEventsBePlayed() {
+        Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
+        int currentSeasonNbEvents = nbEventsBySeason.get(this.firstSeason);
+        Season currentSimulatedSeason = this.firstSeason;
+        while(currentSeasonNbEvents != 0) {
+            Integer newNbEvents = nbEventsBySeason.get(currentSimulatedSeason) - 1;
+            nbEventsBySeason.put(currentSimulatedSeason, newNbEvents);
+            currentSimulatedSeason = Season.getNextSeason(currentSimulatedSeason);
+            currentSeasonNbEvents = nbEventsBySeason.get(currentSimulatedSeason);
         }
         return doScenarioHaveNoEvents(nbEventsBySeason);
     }
@@ -82,7 +82,45 @@ public class Scenario extends GamePlay {
         }
     }
 
-    public void placeRelatedEvents() {
+    public void placeRelatedEvents(List<Event> relatedEvents) {
+        // Get season where I can place it
+        for(Event relatedEventToPlace : relatedEvents) {
+            Season seasonTarget = getSeasonWhereRelatedEventWillTakePlace();
+            // Insert it in last year or current year
+            int yearTarget = getYearWhereRelatedEventWillTakePlace(this.year);
+            this.eventsBySeason.get(seasonTarget).add(yearTarget, relatedEventToPlace);
+        }
+    }
 
+    public Season getSeasonWhereRelatedEventWillTakePlace() {
+        Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
+        int currentSeasonNbEvents = getNbEventsBySeason().get(this.firstSeason);
+        Season currentSimulatedSeason = this.firstSeason;
+        while(currentSeasonNbEvents != 0) {
+            Integer newNbEvents = nbEventsBySeason.get(currentSimulatedSeason) - 1;
+            nbEventsBySeason.put(currentSimulatedSeason, newNbEvents);
+            currentSimulatedSeason = Season.getNextSeason(currentSimulatedSeason);
+            currentSeasonNbEvents = nbEventsBySeason.get(currentSimulatedSeason);
+        }
+        return currentSimulatedSeason;
+    }
+
+    public int getYearWhereRelatedEventWillTakePlace(int yearMin) {
+        int yearMax = getMaxYearPossible();
+        // Randomly between currentYear and last year possible
+        Random randomGenerator = new Random();
+        if(Season.getNextSeason(this.currentSeason) == this.firstSeason) {
+            yearMin += 1;
+        }
+        return randomGenerator.nextInt(yearMax - yearMin + 1 ) + yearMin;
+    }
+
+    public int getMaxYearPossible() {
+        Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
+        int nbTotalEvents = 0;
+        for(Integer nbEvents : nbEventsBySeason.values()) {
+            nbTotalEvents += nbEvents;
+        }
+        return (int)Math.ceil(nbTotalEvents / Season.values().length);
     }
 }
