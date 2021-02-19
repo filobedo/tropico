@@ -49,6 +49,7 @@ public class ScenarioGame extends Game {
                 displayPlayerWon();
             }
         }
+        shutDown();
     }
 
     public boolean isScenarioFinished() {

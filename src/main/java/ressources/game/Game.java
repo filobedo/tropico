@@ -1,5 +1,6 @@
 package ressources.game;
 import exceptions.MissingEventsException;
+import exceptions.MissingParsingKeysException;
 import ressources.listeners.SatisfactionDecreasedListener;
 import ressources.listeners.SatisfactionIncreasedListener;
 import ressources.publisher.EventManager;
@@ -40,13 +41,13 @@ public abstract class Game {
         System.out.println("===================");
     }
 
-    public void load(GameParameters gameParameters) {
+    public void load(GameParameters gameParameters) throws MissingParsingKeysException {
         try {
             setParserType(gameParameters.getFilePath());
             this.parser.openFile(gameParameters.getFilePath());
         } catch (Exception ex) {
             ex.printStackTrace();
-            gameShutDown();
+            shutDown();
         }
         this.parser.setGameParametersChosen(gameParameters);
         if(canLoadGame()) {
@@ -58,12 +59,11 @@ public abstract class Game {
                 this.gamePlay = this.parser.parseScenario();
             } catch (Exception ex) {
                 ex.printStackTrace();
-                gameShutDown();
+                shutDown();
             }
         }
         else {
-            System.out.println("Cannot load game. Something is missing in the JSON file.");
-            gameShutDown();
+            throw new MissingParsingKeysException("Cannot load game. Something is missing in the JSON file.");
         }
     }
 
@@ -74,7 +74,7 @@ public abstract class Game {
         return false;
     }
 
-    public void gameShutDown() {
+    public static void shutDown() {
         System.out.println("Le jeu est terminé.");
         System.exit(0);
     }

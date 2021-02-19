@@ -1,5 +1,7 @@
 package ressources.scenario;
 
+import exceptions.MissingEventsException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +49,12 @@ public abstract class GamePlay {
         }
     }
 
+
     public void addEventsToSeason(Season season, List<Event> events) {
         this.eventsBySeason.put(season, events);
     }
+
+    abstract public void setFirstSeason() throws MissingEventsException;
 
     abstract public boolean canPlayEvents();
 
@@ -60,6 +65,7 @@ public abstract class GamePlay {
     public void nextYear() {
         this.year += 1;
     }
+
     public void nextSeason() {
         this.currentSeason = Season.getNextSeason(this.currentSeason);
     }

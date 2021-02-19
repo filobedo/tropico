@@ -1,18 +1,30 @@
 package ressources.scenario;
 
+import exceptions.MissingEventsException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class ScenarioGamePlay extends GamePlay {
+
     public ScenarioGamePlay(String name, String story, Season currentSeason) {
         super(name, story, currentSeason);
     }
 
+    @Override
     public boolean canPlayEvents() {
         if(doScenarioHaveNoEvents(getNbEventsBySeason())) {
             return false;
+        }
+        if(this.firstSeason == null) {
+            try {
+                setFirstSeason();
+            } catch(Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
         }
         if(doFirstSeasonHaveNoEvent()) {
             return false;
@@ -20,7 +32,20 @@ public class ScenarioGamePlay extends GamePlay {
         if(doAllSeasonsHaveEqualNbEvents()) {
             return true;
         }
-        return willAllEventsBePlayed();
+        return willAllEventsBePlayed(this.firstSeason);
+    }
+
+    @Override
+    public void setFirstSeason() throws MissingEventsException {
+        // Generate the good season that can be the starting season
+        for(Season season : Season.values()) {
+            if(willAllEventsBePlayed(season)) {
+                this.firstSeason = season;
+                this.currentSeason = season;
+                return;
+            }
+        }
+        throw new MissingEventsException("This scenario can't be played because it can not be played fully (all events won't be played)");
     }
 
     public boolean doScenarioHaveNoEvents(Map<Season, Integer> nbEventsBySeason) {
@@ -60,19 +85,15 @@ public class ScenarioGamePlay extends GamePlay {
      * If there is one or more "events" in any seasons, then the scenario won't be fully played
      * @return boolean meaning if all events will be played
      */
-    public boolean willAllEventsBePlayed() {
+    public boolean willAllEventsBePlayed(Season firstSeasonSimulation) {
         Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
-        int currentSeasonNbEvents = nbEventsBySeason.get(this.firstSeason);
-        Season currentSimulatedSeason = this.firstSeason;
-        while(currentSeasonNbEvents != 0) {
-            Integer newNbEvents = nbEventsBySeason.get(currentSimulatedSeason) - 1;
-            nbEventsBySeason.put(currentSimulatedSeason, newNbEvents);
-            currentSimulatedSeason = Season.getNextSeason(currentSimulatedSeason);
-            currentSeasonNbEvents = nbEventsBySeason.get(currentSimulatedSeason);
-        }
+        ScenarioSimulation scenarioSimulation = new ScenarioSimulation(nbEventsBySeason);
+        scenarioSimulation.launch(firstSeasonSimulation);
+        nbEventsBySeason = scenarioSimulation.getNbEventsBySeasonAfterSimulation();
         return doScenarioHaveNoEvents(nbEventsBySeason);
     }
 
+    @Override
     public void nextEvent() {
         List<Event> seasonEvents = this.eventsBySeason.get(this.currentSeason);
         try {
@@ -82,6 +103,7 @@ public class ScenarioGamePlay extends GamePlay {
         }
     }
 
+    @Override
     public void placeRelatedEvents(List<Event> relatedEvents) {
         // Get season where I can place it
         for(Event relatedEventToPlace : relatedEvents) {
@@ -94,15 +116,9 @@ public class ScenarioGamePlay extends GamePlay {
 
     public Season getSeasonWhereRelatedEventWillTakePlace() {
         Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
-        int currentSeasonNbEvents = getNbEventsBySeason().get(this.firstSeason);
-        Season currentSimulatedSeason = this.firstSeason;
-        while(currentSeasonNbEvents != 0) {
-            Integer newNbEvents = nbEventsBySeason.get(currentSimulatedSeason) - 1;
-            nbEventsBySeason.put(currentSimulatedSeason, newNbEvents);
-            currentSimulatedSeason = Season.getNextSeason(currentSimulatedSeason);
-            currentSeasonNbEvents = nbEventsBySeason.get(currentSimulatedSeason);
-        }
-        return currentSimulatedSeason;
+        ScenarioSimulation scenarioSimulation = new ScenarioSimulation(nbEventsBySeason);
+        scenarioSimulation.launch(this.firstSeason);
+        return scenarioSimulation.getSeasonAfterLastSeason();
     }
 
     public int getYearWhereRelatedEventWillTakePlace(int yearMin) {
@@ -121,6 +137,6 @@ public class ScenarioGamePlay extends GamePlay {
         for(Integer nbEvents : nbEventsBySeason.values()) {
             nbTotalEvents += nbEvents;
         }
-        return (int)Math.ceil(nbTotalEvents / Season.values().length);
+        return (int)Math.ceil((double)nbTotalEvents / Season.values().length);
     }
 }

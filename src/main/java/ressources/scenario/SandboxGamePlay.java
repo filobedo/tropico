@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.Random;
 
 public class SandboxGamePlay extends GamePlay {
+
     public SandboxGamePlay(String name, String story, Season currentSeason) {
         super(name, story, currentSeason);
     }
 
+    @Override
     public boolean canPlayEvents() {
+        if(this.firstSeason == null) {
+            setFirstSeason();
+        }
         for(Season season : Season.values()) {
             if(this.eventsBySeason.get(season).size() == 0) {
                 return false;
@@ -17,6 +22,15 @@ public class SandboxGamePlay extends GamePlay {
         return true;
     }
 
+    @Override
+    public void setFirstSeason()  {
+        // Generate random season
+        Season firstSeason = Season.getRandom();
+        this.firstSeason = firstSeason;
+        this.currentSeason = firstSeason;
+    }
+
+    @Override
     public void nextEvent() {
         // Get next random event according to the season
         Random randomGenerator = new Random();
@@ -28,6 +42,7 @@ public class SandboxGamePlay extends GamePlay {
         }
     }
 
+    @Override
     public void placeRelatedEvents(List<Event> relatedEvents) {
         for(Event relatedEventToPlace : relatedEvents) {
             relatedEventToPlace.setIsARelatedEvent();

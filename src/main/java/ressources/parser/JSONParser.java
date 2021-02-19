@@ -1,5 +1,8 @@
 package ressources.parser;
 
+import exceptions.MissingEventsException;
+import exceptions.MissingParsingKeysException;
+import exceptions.MissingParsingObjectException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -11,7 +14,6 @@ import ressources.republic.factions.Population;
 import ressources.game.GameDifficulty;
 import ressources.scenario.*;
 
-import javax.naming.ConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -74,7 +76,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
-    public Population parsePopulation() throws ConfigurationException {
+    public Population parsePopulation() throws MissingParsingKeysException {
         Population population = new Population();
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
         if(canParsePopulation(gameStartParameters, population)) {
@@ -89,7 +91,7 @@ public class JSONParser extends Parser {
             population.factionsSubscribeToBribeEventExceptLoyalists();
             return population;
         }
-        throw new ConfigurationException("Missing JSON key to set faction values");
+        throw new MissingParsingKeysException("Missing JSON key to set faction values");
     }
 
     public boolean canParsePopulation(JSONObject gameStartParameters, Population population) {
@@ -124,7 +126,7 @@ public class JSONParser extends Parser {
     }
 
 
-    public Resources parseResources() throws ConfigurationException {
+    public Resources parseResources() throws MissingParsingKeysException {
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
         if(canParseRepublicResources(gameStartParameters)) {
             int farmRate = gameStartParameters.getInt(ParsingKeys.farmRate);
@@ -137,7 +139,7 @@ public class JSONParser extends Parser {
                 ex.printStackTrace();
             }
         }
-        throw new ConfigurationException("Missing JSON key(s) to set republic resources values (agriculture, industry...)");
+        throw new MissingParsingKeysException("Missing JSON key(s) to set republic resources values (agriculture, industry...)");
     }
 
     public boolean canParseRepublicResources(JSONObject gameStartParameters) {
@@ -151,11 +153,11 @@ public class JSONParser extends Parser {
         return false;
     }
 
-    public GamePlay parseScenario() throws ConfigurationException, ClassNotFoundException {
+    public GamePlay parseScenario() throws MissingEventsException, MissingParsingObjectException, ClassNotFoundException {
         JSONObject scenarioToParse = this.gameData.getJSONObject(ParsingKeys.scenario);
 
         if(scenarioToParse.length() == 0) {
-            throw new ConfigurationException("Missing events.");
+            throw new MissingEventsException("Missing events.");
         }
         else {
             String name = gameData.getString(ParsingKeys.name);
@@ -164,11 +166,7 @@ public class JSONParser extends Parser {
             if(gamePlay == null) { throw new ClassNotFoundException("This game mode doesn't exist"); }
             for(Season season : Season.values()) {
                 JSONArray seasonToParse = scenarioToParse.getJSONArray(season.name());
-                try {
-                    gamePlay.addEventsToSeason(season, parseSeason(seasonToParse));
-                } catch (Exception ex) {
-                    throw ex;
-                }
+                gamePlay.addEventsToSeason(season, parseSeason(seasonToParse));
             }
             return gamePlay;
         }
@@ -184,26 +182,26 @@ public class JSONParser extends Parser {
         return null;
     }
 
-    public List<Event> parseSeason(JSONArray seasonToParse) throws ConfigurationException {
+    public Season getFirstSeason() {
+        if(this.gameData.has(ParsingKeys.firstSeason)) {
+            return Season.valueOf(this.gameData.getString(ParsingKeys.firstSeason).toUpperCase());
+        }
+        return null;
+    }
+
+    public List<Event> parseSeason(JSONArray seasonToParse) throws MissingParsingObjectException {
         
         List<Event> seasonEvents = new ArrayList<>();
         for(int eventCount = 0; eventCount < seasonToParse.length(); eventCount += 1 ) {
             JSONObject event = seasonToParse.getJSONObject(eventCount);
-            try {
-                Event currentEvent = parseEvent(event);
-                seasonEvents.add(currentEvent);
-            }
-            catch (Exception ex) {
-                throw ex;
-            }
+            Event currentEvent = parseEvent(event);
+            seasonEvents.add(currentEvent);
         }
 
         return seasonEvents;
     }
 
-    public Event parseEvent(JSONObject event) throws ConfigurationException {
-        JSONArray choices = event.getJSONArray(ParsingKeys.choices);
-
+    public Event parseEvent(JSONObject event) throws MissingParsingObjectException {
         String name = event.getString(ParsingKeys.name);
         String description = "";
         if(event.has(ParsingKeys.description)) {
@@ -213,12 +211,10 @@ public class JSONParser extends Parser {
         if(hasIrreversibleEffects(event)) {
             currentEvent.setIrreversibleEffects(parseEffects(event.getJSONObject(ParsingKeys.irreversible)));
         }
-        try {
-            List<Choice> eventChoices = parseChoices(choices);
-            currentEvent.setChoices(eventChoices);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        JSONArray choices = event.getJSONArray(ParsingKeys.choices);
+        List<Choice> eventChoices = parseChoices(choices);
+
+        currentEvent.setChoices(eventChoices);
         return currentEvent;
     }
 
@@ -226,10 +222,10 @@ public class JSONParser extends Parser {
         return event.has(ParsingKeys.irreversible);
     }
 
-    public List<Choice> parseChoices(JSONArray choices) throws ConfigurationException {
+    public List<Choice> parseChoices(JSONArray choices) throws MissingParsingObjectException {
         List<Choice> eventChoices = new ArrayList<>();
         if(choices.length() < GameRules.MIN_CHOICE_PER_EVENT || choices.length() > GameRules.MAX_CHOICE_PER_EVENT) {
-            throw new ConfigurationException("There isn't enough choice, or too many choices");
+            throw new MissingParsingObjectException("There isn't enough choice, or too many choices");
         }
         for(int indexChoice = 0; indexChoice < choices.length(); indexChoice += 1 ) {
             JSONObject choice = choices.getJSONObject(indexChoice);
@@ -304,12 +300,5 @@ public class JSONParser extends Parser {
             effectByFactor.put(ParsingKeys.satisfactionRate, satisfactionRateEffect);
         }
         return effectByFactor;
-    }
-
-    public Season getFirstSeason() {
-        if(this.gameData.has(ParsingKeys.firstSeason)) {
-            return Season.valueOf(this.gameData.getString(ParsingKeys.firstSeason).toUpperCase());
-        }
-        return Season.getRandom();
     }
 }
