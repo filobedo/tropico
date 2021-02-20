@@ -69,11 +69,11 @@ public class FactionTest extends TestCase {
         assertEquals(expectedPrice, bribePrice);
     }
 
-    public void test_cannot_get_bribe_price_from_loyalists() {
-        Faction loyalists = new Loyalists(100, 100);
-        int bribePrice = loyalists.getBribePrice();
-        assertEquals(0, bribePrice);
-    }
+//    public void test_cannot_get_bribe_price_from_loyalists() {
+//        Faction loyalists = new Loyalists(100, 100);
+//        int bribePrice = loyalists.getBribePrice();
+//        assertEquals(0, bribePrice);
+//    }
 
     public void test_bribing_a_faction_should_increase_its_satisfaction() {
         int expectedSatisfactionRate = 60;
