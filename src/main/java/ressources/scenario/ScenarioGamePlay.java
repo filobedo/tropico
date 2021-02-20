@@ -76,7 +76,7 @@ public class ScenarioGamePlay extends GamePlay {
     }
 
     public boolean doAllSeasonsHaveEqualNbEvents() {
-        int nbEventsFirstSeason = this.eventsBySeason.get(this.firstSeason).size();
+        int nbEventsFirstSeason = this.eventsBySeason.get(Season.WINTER).size();
         for(Season season : Season.values()) {
             if(nbEventsFirstSeason != this.eventsBySeason.get(season).size()) {
                 return false;

@@ -4,10 +4,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import ressources.parser.ParsingKeys;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class GameParameters {
@@ -132,8 +130,8 @@ public class GameParameters {
     }
 
     public String getScenarioName(File file) {
-        try (InputStream is = new FileInputStream(file)) {
-            JSONTokener token = new JSONTokener(is);
+        try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+            JSONTokener token = new JSONTokener(reader);
             JSONObject scenario = new JSONObject(token);
             return scenario.get(ParsingKeys.name).toString();
         } catch (IOException e){

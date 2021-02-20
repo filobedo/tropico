@@ -69,4 +69,9 @@ public class ScenarioGame extends Game {
         System.out.println("Le scénario est fini. Vous avez gagné la partie.");
         System.out.println("Félicitations !");
     }
+
+    @Override
+    public String toString() {
+        return "scénario";
+    }
 }

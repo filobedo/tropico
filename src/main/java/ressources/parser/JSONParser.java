@@ -14,18 +14,16 @@ import ressources.republic.factions.Population;
 import ressources.game.GameDifficulty;
 import ressources.scenario.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class JSONParser extends Parser {
 
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
-        try (InputStream is = new FileInputStream(file)) {
-            JSONTokener token = new JSONTokener(is);
+        try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+            JSONTokener token = new JSONTokener(reader);
             this.gameData = new JSONObject(token);
         } catch (IOException e){
             throw new NullPointerException("Cannot find resource file " + filePath);
