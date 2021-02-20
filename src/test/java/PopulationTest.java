@@ -1,7 +1,7 @@
 //import junit.framework.TestCase;
-//import ressources.republic.factions.Faction;
-//import ressources.republic.factions.Loyalists;
-//import ressources.republic.factions.Population;
+//import republic.factions.Faction;
+//import republic.factions.Loyalists;
+//import republic.factions.Population;
 //
 //import java.util.Map;
 //

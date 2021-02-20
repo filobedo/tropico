@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>Tropico</artifactId>
+    <artifactId>ElPresidente</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
         <dependency>
@@ -66,6 +66,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>ElPresidente.main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

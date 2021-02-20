@@ -1,6 +1,6 @@
 .DS_Store
 .idea/*
-Tropico.iml
+ElPresidente.iml
 pom.xml
 target/*
 src/main/java/.DS_Store

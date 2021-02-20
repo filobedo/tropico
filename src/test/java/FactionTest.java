@@ -1,7 +1,7 @@
 import junit.framework.TestCase;
 import org.junit.Assert;
-import ressources.republic.factions.*;
-import ressources.listeners.BriberyListener;
+import republic.factions.*;
+import listeners.BriberyListener;
 
 public class FactionTest extends TestCase {
     private Faction liberals;

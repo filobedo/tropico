@@ -1,4 +1,4 @@
-import ressources.game.*;
+import game.*;
 
 public class ElPresidente {
     public static void main(String[] args) {

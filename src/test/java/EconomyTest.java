@@ -1,4 +1,4 @@
-import ressources.republic.economy.Resources;
+import republic.economy.Resources;
 import org.junit.Test;
 import org.junit.Assert;
 

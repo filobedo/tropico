@@ -1,6 +1,6 @@
 import junit.framework.TestCase;
 import org.junit.Assert;
-import ressources.republic.factions.*;
+import republic.factions.*;
 
 public class FactionFactoryTest extends TestCase {
     private FactionFactory factionFactory;
