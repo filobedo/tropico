@@ -47,49 +47,22 @@
   "scenario": {
       "WINTER": [
         {
-          "name": "Catastrophe ! Une météorite est tombée !",
-          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
-          "irreversible": {
-            "population": -15,
-            "farmRate": -2,
-            "industryRate": -5,
-            "money": 150,
-            "factions": [
-              {
-                "name": "Capitalists",
-                "satisfactionRate": 10,
-                "nbSupporters": 5
-              },
-              {
-                "name": "Ecologists",
-                "satisfactionRate": -10
-              }
-            ]
-          },
+          "name": "Catastrophe ! Une tempête de neige !",
+          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
           "choices": [
             {
               "name": "Déblayer",
-              "description": "Vous gagnerez de la thunas",
+              "description": "Vous résoudrez les problèmes de transit.",
               "effects": {
-                "money": 150,
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
+                "money": -200
               }
             },
             {
-              "name": "Laisser",
-              "description": "vous gagnerez de la fertilité",
+              "name": "S'en fiche",
+              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
               "effects": {
-                "farmRate": 15
+                "farmRate": -15,
+                "industryRate": -15
               }
             }
           ]
@@ -135,49 +108,22 @@
           ]
         },
         {
-          "name": "Catastrophe ! Une météorite est tombée !",
-          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
-          "irreversible": {
-            "population": -15,
-            "farmRate": -2,
-            "industryRate": -5,
-            "money": 150,
-            "factions": [
-              {
-                "name": "Capitalists",
-                "satisfactionRate": 10,
-                "nbSupporters": 5
-              },
-              {
-                "name": "Ecologists",
-                "satisfactionRate": -10
-              }
-            ]
-          },
+          "name": "Catastrophe ! Une tempête de neige !",
+          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
           "choices": [
             {
               "name": "Déblayer",
-              "description": "Vous gagnerez de la thunas",
+              "description": "Vous résoudrez les problèmes de transit.",
               "effects": {
-                "money": 150,
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
+                "money": -200
               }
             },
             {
-              "name": "Laisser",
-              "description": "vous gagnerez de la fertilité",
+              "name": "S'en fiche",
+              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
               "effects": {
-                "farmRate": 15
+                "farmRate": -15,
+                "industryRate": -15
               }
             }
           ]
@@ -282,6 +228,30 @@
       ],
       "SUMMER": [
         {
+          "name": "un sécheresse s'est déclaré !",
+          "description": "Notre population crie famine, vous devez faire quelques choses !",
+          "irreversible": {
+            "population": -5,
+            "farmRate": -10
+          },
+          "choices": [
+            {
+              "name": "Vider les réserve d'eau",
+              "description": "Empêchera la diminution de la population",
+              "effects": {
+                "money": -100
+              }
+            },
+            {
+              "name": "Ne rien faire",
+              "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
+              "effects": {
+                "population": -15
+              }
+            }
+          ]
+        },
+        {
           "name": "Une guerre civile démarre en Chine, les Soviétiques envoient leurs alliés",
           "description": "Vous devez prendre une décision",
           "choices": [
@@ -323,43 +293,49 @@
           ]
         },
         {
-          "name": "Catastrophe ! Une tempête de neige !",
-          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+          "name": "Catastrophe ! Une météorite est tombée !",
+          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
+          "irreversible": {
+            "population": -15,
+            "farmRate": -2,
+            "industryRate": -5,
+            "money": 150,
+            "factions": [
+              {
+                "name": "Capitalists",
+                "satisfactionRate": 10,
+                "nbSupporters": 5
+              },
+              {
+                "name": "Ecologists",
+                "satisfactionRate": -10
+              }
+            ]
+          },
           "choices": [
             {
               "name": "Déblayer",
-              "description": "Vous résoudrez les problèmes de transit.",
+              "description": "Vous gagnerez de la thunas",
               "effects": {
-                "money": -200
+                "money": 150,
+                "factions": [
+                  {
+                    "name": "Capitalists",
+                    "satisfactionRate": 10,
+                    "nbSupporters": 5
+                  },
+                  {
+                    "name": "Ecologists",
+                    "satisfactionRate": -10
+                  }
+                ]
               }
             },
             {
-              "name": "S'en fiche",
-              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+              "name": "Laisser",
+              "description": "vous gagnerez de la fertilité",
               "effects": {
-                "farmRate": -15,
-                "industryRate": -15
-              }
-            }
-          ]
-        },
-        {
-          "name": "Catastrophe ! Une tempête de neige !",
-          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
-          "choices": [
-            {
-              "name": "Déblayer",
-              "description": "Vous résoudrez les problèmes de transit.",
-              "effects": {
-                "money": -200
-              }
-            },
-            {
-              "name": "S'en fiche",
-              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
-              "effects": {
-                "farmRate": -15,
-                "industryRate": -15
+                "farmRate": 15
               }
             }
           ]
@@ -467,6 +443,54 @@
                 ],
                 "money": 150,
                 "industryRate": 3
+              }
+            }
+          ]
+        },
+        {
+          "name": "Catastrophe ! Une météorite est tombée !",
+          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
+          "irreversible": {
+            "population": -15,
+            "farmRate": -2,
+            "industryRate": -5,
+            "money": 150,
+            "factions": [
+              {
+                "name": "Capitalists",
+                "satisfactionRate": 10,
+                "nbSupporters": 5
+              },
+              {
+                "name": "Ecologists",
+                "satisfactionRate": -10
+              }
+            ]
+          },
+          "choices": [
+            {
+              "name": "Déblayer",
+              "description": "Vous gagnerez de la thunas",
+              "effects": {
+                "money": 150,
+                "factions": [
+                  {
+                    "name": "Capitalists",
+                    "satisfactionRate": 10,
+                    "nbSupporters": 5
+                  },
+                  {
+                    "name": "Ecologists",
+                    "satisfactionRate": -10
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Laisser",
+              "description": "vous gagnerez de la fertilité",
+              "effects": {
+                "farmRate": 15
               }
             }
           ]

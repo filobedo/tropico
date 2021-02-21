@@ -55,14 +55,19 @@ public class SandboxGamePlay extends GamePlay {
             relatedEventToPlace.setIsARelatedEvent();
             Season seasonTarget = Season.getRandom();
             int yearTarget = randomIndexInSeason(seasonTarget);
-            this.eventsBySeason.get(seasonTarget).add(yearTarget, relatedEventToPlace);
+            if(yearTarget >= this.eventsBySeason.get(seasonTarget).size()) {
+                this.eventsBySeason.get(seasonTarget).add(relatedEventToPlace);
+            }
+            else {
+                this.eventsBySeason.get(seasonTarget).add(yearTarget, relatedEventToPlace);
+            }
         }
     }
 
     public int randomIndexInSeason(Season seasonTarget) {
         Random randomGenerator = new Random();
         int min = 0;
-        int max = this.eventsBySeason.get(seasonTarget).size() - 1;
+        int max = this.eventsBySeason.get(seasonTarget).size();
         return randomGenerator.nextInt(max - min + 1 ) + min;
     }
 }

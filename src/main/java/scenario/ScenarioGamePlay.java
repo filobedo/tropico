@@ -133,7 +133,7 @@ public class ScenarioGamePlay extends GamePlay {
             relatedEventToPlace.setIsARelatedEvent();
             Season seasonTarget = getSeasonWhereRelatedEventWillTakePlace();
             int yearTarget = getYearWhereRelatedEventWillTakePlace(this.year);
-            if(yearTarget > this.eventsBySeason.get(seasonTarget).size()) {
+            if(yearTarget >= this.eventsBySeason.get(seasonTarget).size()) {
                 this.eventsBySeason.get(seasonTarget).add(relatedEventToPlace);
             }
             else {
@@ -183,6 +183,11 @@ public class ScenarioGamePlay extends GamePlay {
         for(Integer nbEvents : nbEventsBySeason.values()) {
             nbTotalEvents += nbEvents;
         }
-        return (int)Math.ceil((double)nbTotalEvents / Season.values().length);
+        if(doAllSeasonsHaveEqualNbEvents()) {
+            return (int)Math.ceil((double)nbTotalEvents / Season.values().length) + 1;
+        }
+        else {
+            return (int)Math.ceil((double)nbTotalEvents / Season.values().length);
+        }
     }
 }
