@@ -146,7 +146,7 @@ public class ScenarioGamePlay extends GamePlay {
     /**
      * Get the season where related event will take place
      * @return  the next season of the basically last season who should have been
-     *          played if the scenario had no related events placed in
+     *          played in the actual scenario
      */
     public Season getSeasonWhereRelatedEventWillTakePlace() {
         ScenarioSimulation scenarioSimulation = new ScenarioSimulation(getNbEventsBySeason());
@@ -174,7 +174,7 @@ public class ScenarioGamePlay extends GamePlay {
     }
 
     /**
-     * Get the maximum year that the scenario can play
+     * Get the maximum year that the scenario can play if we add an event
      * @return max year possible
      */
     public int getMaxYearPossible() {
