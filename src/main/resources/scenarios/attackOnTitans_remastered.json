@@ -1,5 +1,5 @@
 {
-  "name": "Joue celui là | L'attaque des titans :D",
+  "name": "L'attaque des titans",
   "story": "Dans un monde ravagé par des titans mangeurs d’homme depuis plus d’un siècle, les rares survivants de l’Humanité n’ont d’autre choix pour survivre que de se barricader dans une cité-forteresse. Jeune, témoin de la mort de plusieurs de vos concitoyens dévorés par des titans, vous n’avez qu’un rêve : devinir le meilleur président de ce pays et découvrir l’origine des Titans afin de les annihiler jusqu’au dernier…",
   "gameStartParameters": {
     "NORMAL": {
@@ -9,42 +9,34 @@
       "foodUnits": 500,
       "factions": {
         "CAPITALISTS": {
-          "name": "Capitalists",
           "satisfactionRate": 60,
           "nbSupporters": 10
         },
         "COMMUNISTS": {
-          "name": "Communists",
           "satisfactionRate": 60,
           "nbSupporters": 10
         },
         "LIBERALS": {
-          "name": "Liberals",
           "satisfactionRate": 60,
           "nbSupporters": 10
         },
         "RELIGIOUS": {
-          "name": "Religious",
           "satisfactionRate": 60,
           "nbSupporters": 10
         },
         "MILITARISTS": {
-          "name": "Militarists",
           "satisfactionRate": 50,
           "nbSupporters": 10
         },
         "ECOLOGISTS": {
-          "name": "Ecologists",
           "satisfactionRate": 60,
           "nbSupporters": 10
         },
         "LOYALISTS": {
-          "name": "Loyalists",
           "satisfactionRate": 100,
           "nbSupporters": 10
         },
         "NATIONALISTS": {
-          "name": "Nationalists",
           "satisfactionRate": 60,
           "nbSupporters": 10
         }
@@ -185,11 +177,23 @@
       {
         "name": "S'aventurer en dehors des murs",
         "description": "Le bataillon d'exploration vous propose de s'aventurer hors des murs afin d'en savoir d'avantage sur les titans",
+        "irreversible": {
+          "population": -5,
+          "money": -10,
+          "factions": [
+            {
+              "name": "Militarists",
+              "satisfactionRate": 10,
+              "nbSupporters": 5
+            }
+          ]
+        },
         "choices": [
           {
             "name": "Accepter",
             "description": "J'accepte avec hargne",
             "effects": {
+              "population": -5,
               "factions": [
                 {
                   "name": "Militarists",

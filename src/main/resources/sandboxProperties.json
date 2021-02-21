@@ -9,42 +9,34 @@
       "foodUnits": 1000,
       "factions": {
         "CAPITALISTS": {
-          "name": "Capitalists",
           "satisfactionRate": 60,
           "nbSupporters": 30
         },
         "COMMUNISTS": {
-          "name": "Communists",
           "satisfactionRate": 40,
           "nbSupporters": 15
         },
         "LIBERALS": {
-          "name": "Liberals",
           "satisfactionRate": 60,
           "nbSupporters": 26
         },
         "RELIGIOUS": {
-          "name": "Religious",
           "satisfactionRate": 50,
           "nbSupporters": 17
         },
         "MILITARISTS": {
-          "name": "Militarists",
           "satisfactionRate": 50,
           "nbSupporters": 28
         },
         "ECOLOGISTS": {
-          "name": "Ecologists",
           "satisfactionRate": 40,
           "nbSupporters": 15
         },
         "LOYALISTS": {
-          "name": "Loyalists",
           "satisfactionRate": 100,
           "nbSupporters": 13
         },
         "NATIONALISTS": {
-          "name": "Nationalists",
           "satisfactionRate": 60,
           "nbSupporters": 16
         }

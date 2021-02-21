@@ -115,10 +115,8 @@ public class JSONParser extends Parser {
     }
 
     private boolean isFactionInfoInJson(JSONObject faction) {
-        if(faction.has(ParsingKeys.name)) {
-            if(faction.has(ParsingKeys.satisfactionRate)) {
-                return faction.has(ParsingKeys.nbSupporters);
-            }
+        if(faction.has(ParsingKeys.satisfactionRate)) {
+            return faction.has(ParsingKeys.nbSupporters);
         }
         return false;
     }
