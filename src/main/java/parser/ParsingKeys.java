@@ -12,7 +12,7 @@ public class ParsingKeys {
     public static final String satisfactionRate = "satisfactionRate";
     public static final String nbSupporters = "nbSupporters";
     public static final String firstSeason = "firstSeason";
-    public static final String scenario = "scenario";
+    public static final String scenario = "gameplay";
     public static final String description = "description";
     public static final String irreversible = "irreversible";
     public static final String population = "population";

@@ -1,4 +1,4 @@
-package scenario;
+package gameplay;
 
 import exceptions.MissingEventsException;
 

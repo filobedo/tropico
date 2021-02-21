@@ -1,4 +1,4 @@
-package scenario;
+package gameplay;
 
 import java.util.Map;
 

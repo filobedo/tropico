@@ -7,8 +7,8 @@ import publisher.EventManager;
 import republic.economy.Resources;
 import republic.factions.Faction;
 import republic.factions.Population;
-import scenario.Effect;
-import scenario.Event;
+import gameplay.Effect;
+import gameplay.Event;
 
 import java.util.Map;
 

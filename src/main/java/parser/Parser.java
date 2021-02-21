@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import game.GameParameters;
 import republic.economy.Resources;
 import republic.factions.Population;
-import scenario.GamePlay;
+import gameplay.GamePlay;
 
 public abstract class Parser {
     protected JSONObject gameData;

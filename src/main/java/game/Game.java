@@ -9,10 +9,10 @@ import republic.economy.Resources;
 import republic.factions.Population;
 import parser.Parser;
 import parser.JSONParser;
-import scenario.Choice;
-import scenario.Effect;
-import scenario.Event;
-import scenario.GamePlay;
+import gameplay.Choice;
+import gameplay.Effect;
+import gameplay.Event;
+import gameplay.GamePlay;
 
 public abstract class Game {
     protected Republic republic;

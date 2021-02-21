@@ -12,7 +12,7 @@ import republic.economy.Resources;
 import republic.factions.Faction;
 import republic.factions.Population;
 import game.GameDifficulty;
-import scenario.*;
+import gameplay.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
