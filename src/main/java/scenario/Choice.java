@@ -3,8 +3,8 @@ package scenario;
 import java.util.List;
 
 public class Choice {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private Effect effects;
     private List<Event> relatedEvents;
 

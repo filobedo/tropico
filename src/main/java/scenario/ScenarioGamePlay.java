@@ -100,11 +100,10 @@ public class ScenarioGamePlay extends GamePlay {
      * @return boolean meaning if all events will be played
      */
     public boolean willAllEventsBePlayed(Season firstSeasonSimulation) {
-        Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
-        ScenarioSimulation scenarioSimulation = new ScenarioSimulation(nbEventsBySeason);
+        ScenarioSimulation scenarioSimulation = new ScenarioSimulation(getNbEventsBySeason());
         scenarioSimulation.launch(firstSeasonSimulation);
-        nbEventsBySeason = scenarioSimulation.getNbEventsBySeasonAfterSimulation();
-        return doScenarioHaveNoEvents(nbEventsBySeason);
+        Map<Season, Integer> nbEventsBySeasonAfterSimulation = scenarioSimulation.getNbEventsBySeasonAfterSimulation();
+        return doScenarioHaveNoEvents(nbEventsBySeasonAfterSimulation);
     }
 
 
@@ -148,8 +147,7 @@ public class ScenarioGamePlay extends GamePlay {
      *          played if the scenario had no related events placed in
      */
     public Season getSeasonWhereRelatedEventWillTakePlace() {
-        Map<Season, Integer> nbEventsBySeason = getNbEventsBySeason();
-        ScenarioSimulation scenarioSimulation = new ScenarioSimulation(nbEventsBySeason);
+        ScenarioSimulation scenarioSimulation = new ScenarioSimulation(getNbEventsBySeason());
         scenarioSimulation.launch(this.firstSeason);
         return scenarioSimulation.getSeasonAfterLastSeason();
     }

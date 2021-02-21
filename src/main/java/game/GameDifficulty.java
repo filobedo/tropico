@@ -29,9 +29,4 @@ public enum GameDifficulty {
     public double getDifficultyCoefficient() {
         return difficultyCoefficient;
     }
-
-   /* public String capitalize() {
-        String difficultyMode = this.toString();
-        return difficultyMode.substring(0, 1).toUpperCase() + difficultyMode.substring(1).toLowerCase();
-    }*/
 }

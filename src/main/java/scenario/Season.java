@@ -37,7 +37,6 @@ public enum Season {
 
     public static Season getNextSeason(Season currentSeason) {
         int currentSeasonIndex = Season.valueOf(currentSeason.name()).ordinal();
-        Season nextSeason = Season.values()[(currentSeasonIndex + 1)%4];
-        return nextSeason;
+        return Season.values()[(currentSeasonIndex + 1)%4];
     }
 }

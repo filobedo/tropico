@@ -3,7 +3,7 @@ package scenario;
 import java.util.Map;
 
 public class ScenarioSimulation {
-    private Map<Season, Integer> nbEventsBySeason;
+    private final Map<Season, Integer> nbEventsBySeason;
     private Season seasonAfterLastSeason;
 
     public ScenarioSimulation(Map<Season, Integer> nbEventsBySeason) {
