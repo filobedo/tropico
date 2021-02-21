@@ -1,6 +1,6 @@
 # EL PRESIDENTE
 
-El Presidente is a game inspired by Tropico and Reigns. Your playing a furture dictator newly elected president. You will have to grow your island.
+El Presidente is a game inspired by Tropico and Reigns. Your playing a furture dictator newly elected president. You will have to grow your island through your choices within multiple events.
 
 ## Installation
 
