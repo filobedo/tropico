@@ -42,6 +42,7 @@ public class ScenarioGamePlay extends GamePlay {
     /**
      * If first season is not set in JSON file, then it will be set by determining what season could be the first
      * season to play the scenario fully
+     * If all seasons have an equal number of events, it means all seasons can be the first season to be played
      * @throws MissingEventsException meaning that there is not enough events in the scenario file
      */
     @Override
@@ -51,15 +52,16 @@ public class ScenarioGamePlay extends GamePlay {
             this.firstSeason = randomSeason;
             this.currentSeason = randomSeason;
         }
-        // Generate the good season that can be the starting season
-        for(Season season : Season.values()) {
-            if(willAllEventsBePlayed(season)) {
-                this.firstSeason = season;
-                this.currentSeason = season;
-                return;
+        else {
+            for(Season season : Season.values()) {
+                if(willAllEventsBePlayed(season)) {
+                    this.firstSeason = season;
+                    this.currentSeason = season;
+                    return;
+                }
             }
+            throw new MissingEventsException("This scenario can't be played because it can not be played fully (all events won't be played). Try to add events in events 'poor' seasons");
         }
-        throw new MissingEventsException("This scenario can't be played because it can not be played fully (all events won't be played). Try to add events in events 'poor' seasons");
     }
 
     public boolean doScenarioHaveNoEvents(Map<Season, Integer> nbEventsBySeason) {
