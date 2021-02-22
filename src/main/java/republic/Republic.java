@@ -130,22 +130,31 @@ public class Republic {
         }
     }
 
-    public boolean playerEndYearChoiceImpactsIfPossible(int choice) {
+
+    public void playerEndYearChoiceImpacts(int choice, int nbChoicesDone) {
         if(choice == GameRules.YEAR_END_DO_NOTHING_CHOICE) {
-            return true;
+            if(nbChoicesDone == 0) {
+                System.out.printf("%nVous avez décidé de ne rien faire en cette fin d'année.%n");
+                System.out.printf("%nVotre République doit se porter à merveille !%n");
+            }
+            else if(nbChoicesDone == 1){
+                System.out.printf("%nNous espérons que ce choix n'aura pas été vain.%n");
+            }
+            else {
+                System.out.printf("%nNous espérons que ces choix n'auront pas été vains.%n");
+            }
         }
         if(choice == GameRules.YEAR_END_BRIBE_CHOICE) {
             this.population.displayAvailableFactions();
             int indexFactionToBribe = GamePlayerInput.chooseFactionToBribe(this.population.getNbFactions());
             String factionToBribe = this.population.getFactionNameByIndex(indexFactionToBribe);
-            return bribeIfPossible(factionToBribe);
+            bribeIfPossible(factionToBribe);
         }
         if(choice == GameRules.YEAR_END_BUY_FOOD_CHOICE) {
             int foodUnitPossibleToBuy = this.resources.buyingFoodUnitsPossible();
             int foodUnitsToBuy = GamePlayerInput.chooseFoodUnitsToBuy(foodUnitPossibleToBuy);
-            return buyFoodIfPossible(foodUnitsToBuy);
+            buyFoodIfPossible(foodUnitsToBuy);
         }
-        return false;
     }
 
     public boolean bribeIfPossible(String factionName) {
@@ -167,10 +176,11 @@ public class Republic {
         }
     }
 
-    public boolean buyFoodIfPossible(int foodUnit) {
-        int foodPrice = this.resources.getFoodPrice(foodUnit);
+    public boolean buyFoodIfPossible(int foodUnits) {
+        int foodPrice = this.resources.getFoodPrice(foodUnits);
         if(haveEnoughMoney(foodPrice)) {
-            this.resources.buyFood(foodUnit);
+            this.resources.buyFood(foodUnits);
+            System.out.printf("%nVous avez acheté %d unité(s) de nourriture au prix de %d$.%n", foodUnits, foodPrice);
             return true;
         }
         else {

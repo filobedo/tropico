@@ -1,52 +1,37 @@
-# ElPresidente
+# EL PRESIDENTE
 
-#### Groupe 2 : FLACELIÈRE Frédéric, QUACH William, ZERFAOUI Mehdi
+El Presidente is a game inspired by Tropico and Reigns. Your playing a furture dictator newly elected president. You will have to grow your island through your choices within multiple events.
 
-Fr ou Eng ?
+## Installation
 
-Class EventManager : Concrete publisher, tracked by other objects
+Download project from github.
 
-Interface EventListener : Common observer interface
+Use maven to build the game.
 
-Class BriberyListener : Send notification to Loyalists when bribe
+```bash
+mvn clean install
+```
+You can also build it from your IDE.
+## Usage
 
-Class Republic : 
+```bash
+java -jar target\ElPresidente-1.0-SNAPSHOT.jar
+```
+You can also exucute it from your IDE
 
-## VOIR SUR INTERNET QUE METTRE DANS UN READ ME
+If you have issues with charaters encoding use this command on your prompt (windows):
 
-======================
+```bash
+chcp 65001
+```
 
-### Comment lancer le jeu :
+## Autors
+FLACELIERE Frédéric (@filobedo)
+QUACH William (@williamquach)
+ZERFAOUI Mehdi (@MehdiZ93)
 
-### Conditions de défaites :
+## Notes
 
-Scenario    :   
+This project was developed for the course "Development Tools and Techniques" at ESGI Paris.
 
-- scénario fini 
-- ou score négatif 
-- ou satisfaction globale inférieure à 25% (normal) 50% (hard) et 12,5% facile (c'est selon le coef de difficulté 0.5, 1, 2)
-
-### Bac à sable :   
-
-- score négatif
-- ou satisfaction globale inférieure à 25% (normal) 50% (hard) et 12,5% facile (c'est selon le coef de difficulté 0.5, 1, 2)
-
-
-
-Argent négatif possible lorsque les évènements agissent sur nous.
-Cependant on ne peut évidemment pas payer avec l'argent qu'on ne possèderait pas.
-Par exemple, si on veut verser un pot de vin ou si l'on veut acheter de la nourriture
-
-
-
-### Règles du Score :
-
-- peut être positif ou négatif
-- +2 point par pourcentage de satisfaction obtenu par faction durant le tour
-- -1 point par pourcentage de satisfaction perdu par faction durant le tour
-- +10 points par année survécue en fin de partie
-- +2 points par citoyens en fin de partie
-- +5 points par pourcentage d'industrie et d'agriculture
-- +3 points par dollar dans la caisse en fin de partie
-- ou alors -2 points par dollar de dette en fin de partie
-- +1 point par unité de nourriture en fin de partie
+AL1 Group 2

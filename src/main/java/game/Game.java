@@ -185,7 +185,7 @@ public abstract class Game {
 
         displaySummary();
 
-        handlePlayerYearEndChoices();
+        handlePlayerYearEndChoices(0);
         GamePlayerInput.pressAnyKeyToContinue();
 
         killAndOrFeedCitizen();
@@ -230,12 +230,22 @@ public abstract class Game {
         GamePlayerInput.pressAnyKeyToContinue();
     }
 
-    public void handlePlayerYearEndChoices() {
+    public void handlePlayerYearEndChoices(int nbChoicesDone) {
+        if(nbChoicesDone < 0) {
+            throw new IllegalArgumentException("Number of choices done at year end can't be negative");
+        }
         displayPlayerYearEndChoices();
         int playerYearEndChoice = GamePlayerInput.chooseEndYearOption();
-        if(!this.republic.playerEndYearChoiceImpactsIfPossible(playerYearEndChoice)) {
-            handlePlayerYearEndChoices();
+        this.republic.playerEndYearChoiceImpacts(playerYearEndChoice, nbChoicesDone);
+        GamePlayerInput.pressAnyKeyToContinue();
+        if(canRedoYearEndChoice(playerYearEndChoice)) {
+            nbChoicesDone += 1;
+            handlePlayerYearEndChoices(nbChoicesDone);
         }
+    }
+
+    public boolean canRedoYearEndChoice(int playerYearEndChoice) {
+        return playerYearEndChoice == GameRules.YEAR_END_BRIBE_CHOICE || playerYearEndChoice == GameRules.YEAR_END_BUY_FOOD_CHOICE;
     }
 
     public void displayPlayerYearEndChoices() {
@@ -258,7 +268,7 @@ public abstract class Game {
         setScore(this.score + scoreToAdd);
     }
 
-    public boolean handlePlayerCatchingUp() {
+    public boolean didPlayerSucceedCatchingUp() {
         if(!canCatchUp()) {
             displayPlayerLostAndCannotCatchUp();
             GamePlayerInput.pressAnyKeyToContinue();
