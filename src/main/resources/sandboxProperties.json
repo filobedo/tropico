@@ -43,7 +43,7 @@
       }
     }
   },
-  "scenario": {
+  "gameplay": {
     "WINTER": [
       {
         "name": "Catastrophe ! Une météorite est tombée !",

@@ -44,7 +44,7 @@
     }
   },
   "firstSeason": "WINTER",
-  "scenario": {
+  "gameplay": {
       "WINTER": [
         {
           "name": "Catastrophe ! Une tempête de neige !",

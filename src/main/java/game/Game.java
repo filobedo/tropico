@@ -237,9 +237,9 @@ public abstract class Game {
         displayPlayerYearEndChoices();
         int playerYearEndChoice = GamePlayerInput.chooseEndYearOption();
         this.republic.playerEndYearChoiceImpacts(playerYearEndChoice, nbChoicesDone);
-        GamePlayerInput.pressAnyKeyToContinue();
         if(canRedoYearEndChoice(playerYearEndChoice)) {
             nbChoicesDone += 1;
+            GamePlayerInput.pressAnyKeyToContinue();
             handlePlayerYearEndChoices(nbChoicesDone);
         }
     }

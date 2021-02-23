@@ -38,8 +38,8 @@ public class JSONParser extends Parser {
         if(this.gameData.has(ParsingKeys.name)) {
             if(this.gameData.has(ParsingKeys.story)) {
                 if(this.gameData.has(ParsingKeys.gameStartParameters)) {
-                    if(this.gameData.has(ParsingKeys.scenario)) {
-                        JSONObject scenario = this.gameData.getJSONObject(ParsingKeys.scenario);
+                    if(this.gameData.has(ParsingKeys.gameplay)) {
+                        JSONObject scenario = this.gameData.getJSONObject(ParsingKeys.gameplay);
                         return scenario.length() == 4 && hasAllSeasons(scenario);
                     }
                 }
@@ -150,7 +150,7 @@ public class JSONParser extends Parser {
     }
 
     public GamePlay parseScenario() throws MissingEventsException, MissingParsingObjectException, ClassNotFoundException {
-        JSONObject scenarioToParse = this.gameData.getJSONObject(ParsingKeys.scenario);
+        JSONObject scenarioToParse = this.gameData.getJSONObject(ParsingKeys.gameplay);
 
         if(scenarioToParse.length() == 0) {
             throw new MissingEventsException("Missing events.");

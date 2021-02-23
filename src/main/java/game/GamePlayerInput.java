@@ -95,7 +95,7 @@ public class GamePlayerInput {
         System.out.printf("%nEntrez le nombre d'unité de nourriture que vous voulez acheter :%n");
         try {
             int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1) {
+            if(playerChoice >= 0) {
                 return playerChoice;
             }
             else {
