@@ -6,7 +6,7 @@ El Presidente is a game inspired by Tropico and Reigns. Your playing a furture d
 
 Download project from github.
 
-Use maven to build the game.
+Use Maven to build the game.
 
 ```bash
 mvn clean install
@@ -18,12 +18,6 @@ You can also build it from your IDE.
 java -jar target\ElPresidente-1.0-SNAPSHOT.jar
 ```
 You can also exucute it from your IDE
-
-If you have issues with charaters encoding use this command on your prompt (windows):
-
-```bash
-chcp 65001
-```
 
 ## Autors
 FLACELIERE Frédéric (@filobedo)
