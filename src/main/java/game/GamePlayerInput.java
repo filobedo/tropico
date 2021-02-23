@@ -30,10 +30,10 @@ public class GamePlayerInput {
         }
     }
 
-    public static void displayContinueOrQuit() {
+    public static void displayOptionOrQuit(String firstOption) {
         System.out.printf("%nVoulez-vous continuer de jouer ?%n");
         System.out.println("Entrez votre choix :");
-        System.out.printf("%n1. Continuer");
+        System.out.printf("%n1. %s", firstOption);
         System.out.printf("%n2. Quitter%n");
     }
 
@@ -110,10 +110,7 @@ public class GamePlayerInput {
 
     public static boolean wantsToPlayAgain() {
         Scanner playerInput = new Scanner(System.in);
-        System.out.printf("%nVoulez-vous continuer de jouer ?%n");
-        System.out.println("Entrez votre choix :");
-        System.out.printf("%n1. Rejouer");
-        System.out.printf("%n2. Quitter%n");
+        GamePlayerInput.displayOptionOrQuit("Rejouer");
         try {
             int playerChoice = playerInput.nextInt();
             if(playerChoice == GameRules.END_GAME_CHOICE_START_NEW_GAME) {

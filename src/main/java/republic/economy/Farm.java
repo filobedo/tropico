@@ -1,5 +1,7 @@
 package republic.economy;
 
+import game.GameRules;
+
 public class Farm implements Development {
     int rate = 0;
     int foodUnits = 0;
@@ -41,6 +43,7 @@ public class Farm implements Development {
 
     public String toString() {
         return String.format("\tAgriculture : %d%%%n", this.rate) +
-                String.format("\tNourriture : %d%n", this.foodUnits);
+                String.format("\tNourriture : %d%n", this.foodUnits) +
+                String.format("\tVous pouvez nourrir : %d citoyens%n", this.foodUnits / GameRules.NEEDED_FOOD_PER_CITIZEN);
     }
 }

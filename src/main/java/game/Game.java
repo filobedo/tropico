@@ -35,7 +35,7 @@ public abstract class Game {
         String welcome = "\"Bonjour et bienvenue dans un jeu vidéo à la croisée entre Tropico et Reigns !\"";
         String gameRole = "\"Vous incarnerez un jeune dictateur en herbe sur une île tropicale, fraîchement élu comme Président.";
         String gameGoal = "Vous aurez la lourde tâche de faire prospérer cette nouvelle mini-république.\"";
-        System.out.printf("%n%s%n", welcome);
+        System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%n%s%n", welcome);
         System.out.println("===================");
         System.out.printf("%s%n%s%n", gameRole, gameGoal);
         System.out.println("===================");
@@ -165,12 +165,10 @@ public abstract class Game {
     }
 
     public void askPlayerWantsToKeepPlaying() {
-        if(this.gamePlay.getYear() % 4 == 0 && this.gamePlay.getYear() != 0) {
-            GamePlayerInput.displayContinueOrQuit();
-            if(GamePlayerInput.wantsToQuitGame()) {
-                finalSummary();
-                shutDown();
-            }
+        GamePlayerInput.displayOptionOrQuit("Continuer");
+        if(GamePlayerInput.wantsToQuitGame()) {
+            finalSummary();
+            shutDown();
         }
     }
 

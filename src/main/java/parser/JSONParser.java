@@ -39,8 +39,8 @@ public class JSONParser extends Parser {
             if(this.gameData.has(ParsingKeys.story)) {
                 if(this.gameData.has(ParsingKeys.gameStartParameters)) {
                     if(this.gameData.has(ParsingKeys.gameplay)) {
-                        JSONObject scenario = this.gameData.getJSONObject(ParsingKeys.gameplay);
-                        return scenario.length() == 4 && hasAllSeasons(scenario);
+                        JSONObject gamePlay = this.gameData.getJSONObject(ParsingKeys.gameplay);
+                        return gamePlay.length() == 4 && hasAllSeasons(gamePlay);
                     }
                 }
             }
@@ -48,9 +48,9 @@ public class JSONParser extends Parser {
         return false;
     }
 
-    public boolean hasAllSeasons(JSONObject scenario) {
+    public boolean hasAllSeasons(JSONObject gamePlay) {
         for(Season season : Season.values()) {
-            if(!scenario.has(season.name())) {
+            if(!gamePlay.has(season.name())) {
                return false;
             }
         }
@@ -150,9 +150,9 @@ public class JSONParser extends Parser {
     }
 
     public GamePlay parseScenario() throws MissingEventsException, MissingParsingObjectException, ClassNotFoundException {
-        JSONObject scenarioToParse = this.gameData.getJSONObject(ParsingKeys.gameplay);
+        JSONObject gamePlayToParse = this.gameData.getJSONObject(ParsingKeys.gameplay);
 
-        if(scenarioToParse.length() == 0) {
+        if(gamePlayToParse.length() == 0) {
             throw new MissingEventsException("Missing events.");
         }
         else {
@@ -161,7 +161,7 @@ public class JSONParser extends Parser {
             GamePlay gamePlay = getGamePlay(name, story);
             if(gamePlay == null) { throw new ClassNotFoundException("This game mode doesn't exist"); }
             for(Season season : Season.values()) {
-                JSONArray seasonToParse = scenarioToParse.getJSONArray(season.name());
+                JSONArray seasonToParse = gamePlayToParse.getJSONArray(season.name());
                 gamePlay.addEventsToSeason(season, parseSeason(seasonToParse));
             }
             return gamePlay;

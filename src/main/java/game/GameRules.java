@@ -16,6 +16,11 @@ public class GameRules {
     public static final int BRIBE_INCREASE_SATISFACTION_RATE = 10;
     public static final int BRIBE_PRICE_PER_SUPPORTER = 15;
 
+    public static final int CANCEL = 0;
+    public static final int QUIT = 0;
+    public static final int GAME_MODE_SCENARIO = 1;
+    public static final int GAME_MODE_SANDBOX = 2;
+
     public static final int NB_YEAR_END_OPTIONS = 3;
     public static final int YEAR_END_DO_NOTHING_CHOICE = 1;
     public static final int YEAR_END_BRIBE_CHOICE = 2;

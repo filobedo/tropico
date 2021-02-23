@@ -14,6 +14,9 @@ public class GameParameters {
     private String filePath;
 
     private final String or = "ou";
+    private final String cancel = "Annuler";
+    private final String quit = "Quitter";
+    private final String chooseCancel = String.format("Tapez '0' pour %s", cancel);
     private final String chooseSandboxGame = "Tapez '1' pour le mode bac à sable";
     private final String chooseScenarioGame = "Tapez '2' pour le mode scenario";
 
@@ -28,13 +31,28 @@ public class GameParameters {
     public void askPlayerGameModeAndDifficulty() {
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();
-        String chosenGameMode = getGameModeClass(gameModeIndex);
-        setGameModeClass(chosenGameMode);
-
+        if(wantsToCancel(gameModeIndex)) {
+            askPlayerGameModeAndDifficulty();
+            return;
+        }
+        else {
+            String chosenGameMode = getGameModeClass(gameModeIndex);
+            setGameModeClass(chosenGameMode);
+        }
         displayGameDifficultyInstructions();
         int gameDifficultyIndex = chooseGameDifficulty();
-        GameDifficulty chosenGameDifficulty = GameDifficulty.values()[gameDifficultyIndex - 1];
-        setGameDifficulty(chosenGameDifficulty);
+        if(wantsToCancel(gameDifficultyIndex)) {
+            askPlayerGameModeAndDifficulty();
+            return;
+        }
+        else {
+            GameDifficulty chosenGameDifficulty = GameDifficulty.values()[gameDifficultyIndex - 1];
+            setGameDifficulty(chosenGameDifficulty);
+        }
+    }
+
+    public boolean wantsToCancel(int choice) {
+        return choice == GameRules.CANCEL;
     }
 
     public void setGameDifficulty(GameDifficulty gameDifficulty) {
@@ -54,13 +72,13 @@ public class GameParameters {
     }
 
     public void displayGameModeInstructions() {
-        String instructions = String.format("%nChoisissez votre mode de jeu :%n%s%n%s%n%s", chooseSandboxGame, or, chooseScenarioGame);
+        String instructions = String.format("%nChoisissez votre mode de jeu :%n%s%n%s%n%s%n%s", chooseCancel, chooseSandboxGame, or, chooseScenarioGame);
         System.out.println(instructions);
     }
 
     public int chooseGameMode() {
         Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("%nAttention ! Ce mode de jeu n'existe pas :%n%s%n%s%n%s", chooseSandboxGame, or, chooseScenarioGame);
+        String warning = String.format("%nAttention ! Ce mode de jeu n'existe pas :%n%s%n%s%n%s%n%s", chooseCancel, chooseSandboxGame, or, chooseScenarioGame);
         try {
             int playerChoice = playerInput.nextInt();
             if(isPlayerGameModeChoiceCorrect(playerChoice)) {
@@ -77,7 +95,7 @@ public class GameParameters {
     }
 
     public boolean isPlayerGameModeChoiceCorrect(int choice) {
-        return choice == 1 || choice == 2;
+        return choice == GameRules.CANCEL || choice == GameRules.GAME_MODE_SCENARIO || choice == GameRules.GAME_MODE_SANDBOX;
     }
 
     public String getGameModeClass(int playerGameModeChoice) {
@@ -91,13 +109,13 @@ public class GameParameters {
     }
 
     public void displayGameDifficultyInstructions() {
-        String instructions = String.format("%nChoisissez votre difficulté de jeu :%n%s%n%s%n%s%n%s", chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
+        String instructions = String.format("%nChoisissez votre difficulté de jeu :%n%s%n%s%n%s%n%s%n%s", chooseCancel, chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
         System.out.println(instructions);
     }
 
     public int chooseGameDifficulty() {
         Scanner playerInput = new Scanner(System.in);
-        String warning = String.format("%nAttention ! Cette difficulté n'existe pas :%n%s%n%s%n%s%n%s", chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
+        String warning = String.format("%nAttention ! Cette difficulté n'existe pas :%n%s%n%s%n%s%n%s%n%s", chooseCancel, chooseEasyDifficulty, chooseMediumDifficulty, or, chooseHardDifficulty);
         try {
             int playerChoice = playerInput.nextInt();
             if(isPlayerGameDifficultyChoiceCorrect(playerChoice)) {
@@ -114,17 +132,18 @@ public class GameParameters {
     }
 
     public boolean isPlayerGameDifficultyChoiceCorrect(int choice) {
-        return choice == 1 || choice == 2 || choice == 3;
+        return choice == GameRules.CANCEL || choice == GameDifficulty.EASY.ordinal() + 1 || choice == GameDifficulty.NORMAL.ordinal() + 1 || choice == GameDifficulty.HARD.ordinal() + 1;
     }
 
     public String getScenarioListInstructions(File[] scenarios) {
         int nbScenario = scenarios.length;
-        int countScenario = 1;
+        int countScenario = 0;
         StringBuilder instructions = new StringBuilder(String.format("%nVeuillez choisir parmis ces %d scénarios :%n", nbScenario));
+        instructions.append(String.format("%d. %s%n", countScenario, quit));
         for (File scenario: scenarios) {
+            countScenario += 1;
             String currentScenario = String.format("%d. %s%n",countScenario, getScenarioName(scenario));
             instructions.append(currentScenario);
-            countScenario += 1;
         }
         return instructions.toString();
     }
@@ -145,6 +164,9 @@ public class GameParameters {
         String warning = String.format("%nAttention ! Ce scénario n'existe pas !%s", getScenarioListInstructions(scenarios));
         try {
             int playerChoice = playerInput.nextInt();
+            if(playerChoice == GameRules.QUIT) {
+                Game.shutDown();
+            }
             if(isPlayerScenarioChoiceCorrect(playerChoice, nbScenario)) {
                 return scenarios[playerChoice - 1].getPath();
             }
@@ -159,7 +181,7 @@ public class GameParameters {
     }
 
     public boolean isPlayerScenarioChoiceCorrect(int playerChoice, int nbScenario) {
-        return playerChoice >= 1 && playerChoice <= nbScenario;
+        return playerChoice >= 0 && playerChoice <= nbScenario;
     }
 
     public Game getGameAccordingToChosenGameParameters() throws ClassNotFoundException {
