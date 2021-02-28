@@ -27,7 +27,6 @@ public class GameParameters {
     public final String scenariosResourcePath = "src/main/resources/scenarios";
     public final String sandboxFilePath = "src/main/resources/sandBoxProperties.json";
 
-
     public void askPlayerGameModeAndDifficulty() {
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();

@@ -41,6 +41,11 @@ public abstract class Game {
         System.out.println("===================");
     }
 
+    /**
+     * Load game data from the configuration file
+     * @param gameParameters containing GameDifficulty and configuration file path
+     * @throws MissingParsingKeysException Keys are missing in configuration file
+     */
     public void load(GameParameters gameParameters) throws MissingParsingKeysException {
         try {
             setParserType(gameParameters.getFilePath());
@@ -63,7 +68,7 @@ public abstract class Game {
             }
         }
         else {
-            throw new MissingParsingKeysException("Cannot load game. Something is missing in the JSON file.");
+            throw new MissingParsingKeysException("Cannot load game. Something is missing in the configuration file.");
         }
     }
 
@@ -128,6 +133,10 @@ public abstract class Game {
         return this.gamePlay.getCurrentEvent();
     }
 
+    /**
+     * Handles current season, set next season and event
+     * Launches year end summary when needed
+     */
     public void playGame() {
         System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.gamePlay.getCurrentSeason().capitalize(), getYear() + 1);
         handleCurrentSeason(this.eventCount);
@@ -143,6 +152,11 @@ public abstract class Game {
         this.eventCount += 1;
     }
 
+    /**
+     * Handle the current season / event
+     * Displaying the current event, event effects, player's choice and effects
+     * @param nbEvents event count for displaying
+     */
     public void handleCurrentSeason(int nbEvents) {
         this.gamePlay.displayCurrentEvent(nbEvents);
         this.republic.irreversibleEventEffects(getCurrentEvent());
@@ -151,6 +165,10 @@ public abstract class Game {
         playerChoiceEffects(playerSolutionChoice);
     }
 
+    /**
+     * Handles player's choice effects
+     * @param choice player's choice
+     */
     public void playerChoiceEffects(int choice) {
         Choice playerChoice = getCurrentEvent().getChoiceByPlayerChoice(choice);
         Effect choiceEffects = playerChoice.getEffects();
@@ -164,6 +182,9 @@ public abstract class Game {
         return seasonCount % 4 == 0 && seasonCount != 0;
     }
 
+    /**
+     * Ask every year if player wants to continue playing
+     */
     public void askPlayerWantsToKeepPlaying() {
         GamePlayerInput.displayOptionOrQuit("Continuer");
         if(GamePlayerInput.wantsToQuitGame()) {
@@ -177,6 +198,10 @@ public abstract class Game {
         displaySummary();
     }
 
+    /**
+     * Handles end of year consequences and choices
+     * Including incomes, summary, player year end options and food consequence
+     */
     public void endOfYearConsequencesAndChoices() {
         generateIncomes();
         GamePlayerInput.pressAnyKeyToContinue();
@@ -266,6 +291,11 @@ public abstract class Game {
         setScore(this.score + scoreToAdd);
     }
 
+    /**
+     * Player can catch up if his score is not negative and if there are citizen left
+     * If he can, he can choose one of the year end options
+     * @return
+     */
     public boolean didPlayerSucceedCatchingUp() {
         if(!canCatchUp()) {
             displayPlayerLostAndCannotCatchUp();
