@@ -64,19 +64,26 @@ public class ScenarioGamePlay extends GamePlay {
         }
     }
 
+    /**
+     * @param nbEventsBySeason number of events by season
+     * @return if a season have no event
+     */
     public boolean doScenarioHaveNoEvents(Map<Season, Integer> nbEventsBySeason) {
         for(Integer nbEvents : nbEventsBySeason.values()) {
-            if(nbEvents > 0) {
-                return false;
+            if(nbEvents <= 0) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean doFirstSeasonHaveNoEvent() {
         return this.eventsBySeason.get(this.firstSeason).size() == 0;
     }
 
+    /**
+     * @return if all seasons have an equal number of events
+     */
     public boolean doAllSeasonsHaveEqualNbEvents() {
         int nbEventsFirstSeason = this.eventsBySeason.get(Season.WINTER).size();
         for(Season season : Season.values()) {
@@ -87,6 +94,9 @@ public class ScenarioGamePlay extends GamePlay {
         return true;
     }
 
+    /**
+     * @return number events by season
+     */
     public Map<Season, Integer> getNbEventsBySeason() {
         Map<Season, Integer> nbEventsBySeason = new HashMap<>();
         for(Season season : Season.values()) {

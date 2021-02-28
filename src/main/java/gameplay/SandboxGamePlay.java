@@ -37,9 +37,11 @@ public class SandboxGamePlay extends GamePlay {
         this.currentSeason = firstSeason;
     }
 
+    /**
+     * Set next random event according to the current season
+     */
     @Override
     public void nextEvent() {
-        // Get next random event according to the season
         Random randomGenerator = new Random();
         List<Event> seasonEvents = this.eventsBySeason.get(this.currentSeason);
         int indexRandomEvent = randomGenerator.nextInt(seasonEvents.size());
@@ -49,6 +51,11 @@ public class SandboxGamePlay extends GamePlay {
         }
     }
 
+    /**
+     * Place a list of (related) events in the list of events
+     * Placing is fully random then when these events are played, they are deleted from event list
+     * @param relatedEvents
+     */
     @Override
     public void placeRelatedEvents(List<Event> relatedEvents) {
         for(Event relatedEventToPlace : relatedEvents) {
