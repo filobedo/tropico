@@ -19,8 +19,13 @@ public class Resources {
         this.farm = new Farm(foodUnits, farmRate);
     }
 
-    private Boolean isFarmAndIndustrySumRateCorrect(int newMarker, int otherOneMarker) {
-        return newMarker + otherOneMarker <= 100 && newMarker + otherOneMarker >= 0;
+    /**
+     * @param newRate the updated rate
+     * @param otherOneRate the second rate
+     * @return if the sum of two rates is between 0 and 100%
+     */
+    private Boolean isFarmAndIndustrySumRateCorrect(int newRate, int otherOneRate) {
+        return newRate + otherOneRate <= 100 && newRate + otherOneRate >= 0;
     }
 
     public Industry getIndustry() {
@@ -31,16 +36,33 @@ public class Resources {
         return this.farm;
     }
 
+    /**
+     * Update farm rate by adding an amount of percentage points to it
+     * @param percentagePoint value to add
+     */
     public void updateFarmRate(int percentagePoint) {
         int finalPercentagePointToAdd = getBalancedRate(getFarmRate(), percentagePoint, getIndustryRate());
         this.farm.updateRate(finalPercentagePointToAdd);
     }
 
+    /**
+     * Update industry rate by adding an amount of percentage points to it
+     * @param percentagePoint value to add
+     */
     public void updateIndustryRate(int percentagePoint) {
         int finalPercentagePointToAdd = getBalancedRate(getIndustryRate(), percentagePoint, getFarmRate());
         this.industry.updateRate(finalPercentagePointToAdd);
     }
 
+    /**
+     * Get a balanced rate according to the opposite rate
+     * For example 60 - 30
+     * We cannot add 40 to first rate but only 10
+     * @param rateToUpdate rate to update
+     * @param percentagePointToAdd percentage point to add basically
+     * @param oppositeRate opposite rate of the rate to update
+     * @return balanced rate according to the opposite rate
+     */
     private int getBalancedRate(int rateToUpdate, int percentagePointToAdd, int oppositeRate) {
         int totalNewRate = rateToUpdate + percentagePointToAdd + oppositeRate;
         if(totalNewRate > 100) {
