@@ -17,7 +17,7 @@ public abstract class GamePlay {
 
     public GamePlay(String name, String story, Season firstSeason) {
         this.name = name;
-        this.story = story;
+        this.story = story.replace(".", ".\n").replace(".\n ", ".\n");
         this.firstSeason = firstSeason;
         this.currentSeason = firstSeason;
         setSeasonsInEventsBySeason();
@@ -49,7 +49,6 @@ public abstract class GamePlay {
         }
     }
 
-
     public void addEventsToSeason(Season season, List<Event> events) {
         this.eventsBySeason.put(season, events);
     }
@@ -57,6 +56,32 @@ public abstract class GamePlay {
     abstract public void setFirstSeason() throws MissingEventsException;
 
     abstract public boolean canPlayEvents();
+
+    /**
+     * @return number of events by season
+     */
+    public Map<Season, Integer> getNbEventsBySeason() {
+        Map<Season, Integer> nbEventsBySeason = new HashMap<>();
+        for(Season season : Season.values()) {
+            nbEventsBySeason.put(season, this.eventsBySeason.get(season).size());
+        }
+        return nbEventsBySeason;
+    }
+
+    /**
+     * @param nbEventsBySeason number of events by season
+     * @return if a season have no event
+     */
+    public boolean doASeasonHasNotEvents(Map<Season, Integer> nbEventsBySeason) {
+        for(Integer nbEvents : nbEventsBySeason.values()) {
+            if(nbEvents == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    abstract public void displayContext();
 
     abstract public void nextEvent();
 

@@ -15,13 +15,11 @@ public class SandboxGamePlay extends GamePlay {
      */
     @Override
     public boolean canPlayEvents() {
+        if(doASeasonHasNotEvents(getNbEventsBySeason())) {
+            return false;
+        }
         if(this.firstSeason == null) {
             setFirstSeason();
-        }
-        for(Season season : Season.values()) {
-            if(this.eventsBySeason.get(season).size() == 0) {
-                return false;
-            }
         }
         return true;
     }
@@ -35,6 +33,12 @@ public class SandboxGamePlay extends GamePlay {
         Season firstSeason = Season.getRandom();
         this.firstSeason = firstSeason;
         this.currentSeason = firstSeason;
+    }
+
+    @Override
+    public void displayContext() {
+        System.out.printf("%n%s%n", getName());
+        System.out.printf("%s%n", getStory());
     }
 
     /**
@@ -54,7 +58,7 @@ public class SandboxGamePlay extends GamePlay {
     /**
      * Place a list of (related) events in the list of events
      * Placing is fully random then when these events are played, they are deleted from event list
-     * @param relatedEvents
+     * @param relatedEvents related events due to a player's choice
      */
     @Override
     public void placeRelatedEvents(List<Event> relatedEvents) {

@@ -2,7 +2,6 @@ package gameplay;
 
 import exceptions.MissingEventsException;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,7 +18,7 @@ public class ScenarioGamePlay extends GamePlay {
      */
     @Override
     public boolean canPlayEvents() {
-        if(doScenarioHaveNoEvents(getNbEventsBySeason())) {
+        if(doASeasonHasNotEvents(getNbEventsBySeason())) {
             return false;
         }
         if(this.firstSeason == null) {
@@ -64,19 +63,6 @@ public class ScenarioGamePlay extends GamePlay {
         }
     }
 
-    /**
-     * @param nbEventsBySeason number of events by season
-     * @return if a season have no event
-     */
-    public boolean doScenarioHaveNoEvents(Map<Season, Integer> nbEventsBySeason) {
-        for(Integer nbEvents : nbEventsBySeason.values()) {
-            if(nbEvents <= 0) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean doFirstSeasonHaveNoEvent() {
         return this.eventsBySeason.get(this.firstSeason).size() == 0;
     }
@@ -95,17 +81,6 @@ public class ScenarioGamePlay extends GamePlay {
     }
 
     /**
-     * @return number events by season
-     */
-    public Map<Season, Integer> getNbEventsBySeason() {
-        Map<Season, Integer> nbEventsBySeason = new HashMap<>();
-        for(Season season : Season.values()) {
-            nbEventsBySeason.put(season, this.eventsBySeason.get(season).size());
-        }
-        return nbEventsBySeason;
-    }
-
-    /**
      * Launch a simulation of the current scenario
      * When this simulation is done
      * If there is one or more "events" in any season, then the scenario won't be fully played (one or more event won't be played)
@@ -115,9 +90,14 @@ public class ScenarioGamePlay extends GamePlay {
         ScenarioSimulation scenarioSimulation = new ScenarioSimulation(getNbEventsBySeason());
         scenarioSimulation.launch(firstSeasonSimulation);
         Map<Season, Integer> nbEventsBySeasonAfterSimulation = scenarioSimulation.getNbEventsBySeasonAfterSimulation();
-        return doScenarioHaveNoEvents(nbEventsBySeasonAfterSimulation);
+        return doASeasonHasNotEvents(nbEventsBySeasonAfterSimulation);
     }
 
+    @Override
+    public void displayContext() {
+        System.out.printf("%nNom du scénario : %s%n", getName());
+        System.out.printf("Histoire : %s%n", getStory());
+    }
 
     /**
      * Sets the next event according to the current season and the current year

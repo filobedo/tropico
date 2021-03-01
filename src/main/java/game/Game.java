@@ -103,13 +103,12 @@ public abstract class Game {
     public void launchGame() throws NullPointerException, MissingEventsException {
         if(this.republic.isSet()) {
             if(this.gamePlay.canPlayEvents()) {
-                System.out.printf("%nVous avez lancé une partie en mode \"%s\" ", this.toString());
-                System.out.printf("en difficulté \"%s\".%n", this.gameDifficulty);
-                System.out.printf("%nÊtes-vous prêt à commencer la partie ?%n");
+                GamePlayerInput.displayScaredOrNotScared("Continuer");
+                if(GamePlayerInput.wantsToQuitGame()) {
+                    shutDown();
+                }
                 System.out.printf("%nLancement du jeu...%n");
-                GamePlayerInput.pressAnyKeyToContinue();
-                System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
-                displaySummary();
+                displayPregame();
             }
             else {
                 throw new MissingEventsException("There is not enough events in at least one of the seasons.");
@@ -119,6 +118,19 @@ public abstract class Game {
             System.out.printf("%n%nArrêt du jeu...%n");
             throw new NullPointerException("Republic properties are not set.");
         }
+    }
+
+    public void displayPregame() {
+        GamePlayerInput.pressAnyKeyToContinue();
+        displayGameModeAndDifficulty();
+        this.gamePlay.displayContext();
+        GamePlayerInput.pressAnyKeyToContinue();
+        System.out.printf("%n%n%n%n%n%n%n%n%n%n%n%n%n%n%nVous commencez avec ces paramètres de jeu : %n");
+        displaySummary();
+    }
+
+    public void displayGameModeAndDifficulty() {
+        System.out.printf("%nMode de jeu : %s | En difficulté : %s%n", toString(), this.gameDifficulty.toString());
     }
 
     public boolean isPlayerWinning() {
@@ -294,7 +306,7 @@ public abstract class Game {
     /**
      * Player can catch up if his score is not negative and if there are citizen left
      * If he can, he can choose one of the year end options
-     * @return
+     * @return if player caught up with the game
      */
     public boolean didPlayerSucceedCatchingUp() {
         if(!canCatchUp()) {

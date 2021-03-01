@@ -16,19 +16,22 @@ public class SandboxGame extends Game {
     @Override
     public void launchGame() throws MissingEventsException {
         super.launchGame();
-        System.out.printf("%n%s%n", this.gamePlay.getName());
-        System.out.printf("%s%n",this.gamePlay.getStory());
-        this.gamePlay.nextEvent();
-        while(isPlayerWinning()) {
-            playGame();
-            if(!isPlayerWinning()) {
-                if(!didPlayerSucceedCatchingUp()) {
-                    break;
+        if(gamePlay.canPlayEvents()) {
+            this.gamePlay.nextEvent();
+            while(isPlayerWinning()) {
+                playGame();
+                if(!isPlayerWinning()) {
+                    if(!didPlayerSucceedCatchingUp()) {
+                        break;
+                    }
                 }
             }
+            finalSummary();
+            System.out.printf("%nVotre partie en mode bac à sable est terminée.%n");
         }
-        finalSummary();
-        System.out.printf("%nVotre partie en mode bac à sable est terminée.%n");
+        else {
+            throw new MissingEventsException("At least one season has no event.");
+        }
     }
 
     @Override

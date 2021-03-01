@@ -16,23 +16,25 @@ public class ScenarioGame extends Game {
     @Override
     public void launchGame() throws MissingEventsException {
         super.launchGame();
-        this.gamePlay.canPlayEvents();
-        System.out.printf("%nNom du scénario : %s%n", this.gamePlay.getName());
-        System.out.printf("Histoire : %s%n",this.gamePlay.getStory());
-        this.gamePlay.nextEvent();
-        while(!isScenarioFinished()) {
-            if(isPlayerWinning()) {
-                playGame();
-            }
-            else {
-                System.out.printf("%n%n%nLe scénario n'est pas fini mais vous avez perdu...%n");
-                if(!didPlayerSucceedCatchingUp()) {
-                    break;
+        if(this.gamePlay.canPlayEvents()) {
+            this.gamePlay.nextEvent();
+            while(!isScenarioFinished()) {
+                if(isPlayerWinning()) {
+                    playGame();
+                }
+                else {
+                    System.out.printf("%n%n%nLe scénario n'est pas fini mais vous avez perdu...%n");
+                    if(!didPlayerSucceedCatchingUp()) {
+                        break;
+                    }
                 }
             }
+            finalSummary();
+            handlePlayerEndGame();
         }
-        finalSummary();
-        handlePlayerEndGame();
+        else {
+            throw new MissingEventsException("Scenario cannot played fully.");
+        }
     }
 
     /**

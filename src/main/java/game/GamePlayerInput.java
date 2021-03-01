@@ -30,6 +30,13 @@ public class GamePlayerInput {
         }
     }
 
+    public static void displayScaredOrNotScared(String firstOption) {
+        System.out.printf("%nÊtes-vous prêt à perdre ?%n");
+        System.out.println("Entrez votre choix :");
+        System.out.printf("%n1. %s", firstOption);
+        System.out.printf("%n2. Fuir%n");
+    }
+
     public static void displayOptionOrQuit(String firstOption) {
         System.out.printf("%nVoulez-vous continuer de jouer ?%n");
         System.out.println("Entrez votre choix :");
