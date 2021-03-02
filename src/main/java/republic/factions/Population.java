@@ -39,7 +39,7 @@ public class Population {
         for (Map.Entry<String, Faction> factionsSet : this.factionByName.entrySet()) {
             Faction faction = factionsSet.getValue();
             if (faction.getClass() != Loyalists.class) {
-                faction.events.subscribe("bribe", new BriberyListener(loyalists));
+                faction.events.subscribe("bribed", new BriberyListener(loyalists));
             }
         }
     }

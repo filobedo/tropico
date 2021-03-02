@@ -18,7 +18,7 @@ public abstract class Faction {
         this.nbSupporters = nbSupporters;
         this.satisfactionRate = satisfactionRate;
         if(this.getClass() != Loyalists.class) {
-            this.events = new EventManager("bribe");
+            this.events = new EventManager("bribed");
         }
         else {
             this.events = null;
@@ -93,7 +93,7 @@ public abstract class Faction {
 
     public void bribe() {
         updateSatisfactionRate(GameRules.BRIBE_INCREASE_SATISFACTION_RATE);
-        events.notify("bribe", this);
+        events.notify("bribed", this);
     }
 
     @Override

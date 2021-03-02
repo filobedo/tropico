@@ -78,14 +78,14 @@ public class FactionTest extends TestCase {
     public void test_bribing_a_faction_should_increase_its_satisfaction() {
         int expectedSatisfactionRate = 60;
         Faction theEcologists = new Ecologists(20, 50);
-        theEcologists.events.subscribe("bribe", new BriberyListener(liberals));
+        theEcologists.events.subscribe("bribed", new BriberyListener(liberals));
         theEcologists.bribe();
         assertEquals(expectedSatisfactionRate, theEcologists.getSatisfactionRate());
     }
 
     public void test_bribing_a_faction_should_decrease_loyalists_satisfaction() {
         Faction theEcologists = new Ecologists(20, 50);
-        theEcologists.events.subscribe("bribe", new BriberyListener(liberals));
+        theEcologists.events.subscribe("bribed", new BriberyListener(liberals));
         theEcologists.bribe();
         assertEquals(70, liberals.getSatisfactionRate());
     }
