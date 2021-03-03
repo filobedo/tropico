@@ -6,7 +6,6 @@ import exceptions.MissingParsingObjectException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import game.GameParameters;
 import game.GameRules;
 import republic.economy.Resources;
 import republic.factions.Faction;
@@ -19,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class JSONParser extends Parser {
+    protected JSONObject gameData;
 
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
@@ -28,10 +28,6 @@ public class JSONParser extends Parser {
         } catch (IOException e){
             throw new NullPointerException("Cannot find resource file " + filePath);
         }
-    }
-
-    public void setGameParametersChosen(GameParameters gameParametersChosen) {
-        this.gameParametersChosen = gameParametersChosen;
     }
 
     public boolean canParseFile() {
@@ -48,7 +44,8 @@ public class JSONParser extends Parser {
         return false;
     }
 
-    public boolean hasAllSeasons(JSONObject gamePlay) {
+    protected boolean hasAllSeasons(Object gp) {
+        JSONObject gamePlay = (JSONObject) gp;
         for(Season season : Season.values()) {
             if(!gamePlay.has(season.name())) {
                return false;
@@ -92,7 +89,8 @@ public class JSONParser extends Parser {
         throw new MissingParsingKeysException("Missing JSON key to set faction values");
     }
 
-    public boolean canParsePopulation(JSONObject gameStartParameters, Population population) {
+    protected boolean canParsePopulation(Object gameStartParams, Population population) {
+        JSONObject gameStartParameters = (JSONObject) gameStartParams;
         if(gameStartParameters.has(ParsingKeys.factions)) {
             JSONObject factions = gameStartParameters.getJSONObject(ParsingKeys.factions);
             return areFactionsInfoInJson(population.getFactionByName().keySet(), factions);
@@ -100,7 +98,8 @@ public class JSONParser extends Parser {
         return false;
     }
 
-    private boolean areFactionsInfoInJson(Set<String> factionNames, JSONObject factions) {
+    protected boolean areFactionsInfoInJson(Set<String> factionNames, Object factionsInfo) {
+        JSONObject factions = (JSONObject) factionsInfo;
         for(String factionName : factionNames) {
             String upperFactionName = factionName.toUpperCase();
             if(factions.has(upperFactionName)) {
@@ -114,7 +113,8 @@ public class JSONParser extends Parser {
         return true;
     }
 
-    private boolean isFactionInfoInJson(JSONObject faction) {
+    protected boolean isFactionInfoInJson(Object currentFaction) {
+        JSONObject faction = (JSONObject) currentFaction;
         if(faction.has(ParsingKeys.satisfactionRate)) {
             return faction.has(ParsingKeys.nbSupporters);
         }
@@ -138,7 +138,8 @@ public class JSONParser extends Parser {
         throw new MissingParsingKeysException("Missing JSON key(s) to set republic resources values (agriculture, industry...)");
     }
 
-    public boolean canParseRepublicResources(JSONObject gameStartParameters) {
+    public boolean canParseRepublicResources(Object gameStartParams) {
+        JSONObject gameStartParameters = (JSONObject) gameStartParams;
         if(gameStartParameters.has(ParsingKeys.farmRate)) {
             if(gameStartParameters.has(ParsingKeys.industryRate)) {
                 if(gameStartParameters.has(ParsingKeys.money)) {
@@ -149,7 +150,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
-    public GamePlay parseScenario() throws MissingEventsException, MissingParsingObjectException, ClassNotFoundException {
+    public GamePlay parseGamePlay() throws MissingEventsException, MissingParsingObjectException, ClassNotFoundException {
         JSONObject gamePlayToParse = this.gameData.getJSONObject(ParsingKeys.gameplay);
 
         if(gamePlayToParse.length() == 0) {
@@ -168,7 +169,7 @@ public class JSONParser extends Parser {
         }
     }
 
-    public GamePlay getGamePlay(String name, String story) {
+    protected GamePlay getGamePlay(String name, String story) {
         if(this.gameParametersChosen.isGameModeScenario()) {
             return new ScenarioGamePlay(name, story, getFirstSeason());
         }
@@ -178,18 +179,18 @@ public class JSONParser extends Parser {
         return null;
     }
 
-    public Season getFirstSeason() {
+    protected Season getFirstSeason() {
         if(this.gameData.has(ParsingKeys.firstSeason)) {
             return Season.valueOf(this.gameData.getString(ParsingKeys.firstSeason).toUpperCase());
         }
         return null;
     }
 
-    public List<Event> parseSeason(JSONArray seasonToParse) throws MissingParsingObjectException {
-        
+    protected List<Event> parseSeason(Object seasonToParse) throws MissingParsingObjectException {
+        JSONArray season = (JSONArray) seasonToParse;
         List<Event> seasonEvents = new ArrayList<>();
-        for(int eventCount = 0; eventCount < seasonToParse.length(); eventCount += 1 ) {
-            JSONObject event = seasonToParse.getJSONObject(eventCount);
+        for(int eventCount = 0; eventCount < season.length(); eventCount += 1 ) {
+            JSONObject event = season.getJSONObject(eventCount);
             Event currentEvent = parseEvent(event);
             seasonEvents.add(currentEvent);
         }
@@ -197,7 +198,8 @@ public class JSONParser extends Parser {
         return seasonEvents;
     }
 
-    public Event parseEvent(JSONObject event) throws MissingParsingObjectException {
+    protected Event parseEvent(Object eventToParse) throws MissingParsingObjectException {
+        JSONObject event = (JSONObject) eventToParse;
         String name = event.getString(ParsingKeys.name);
         String description = "";
         if(event.has(ParsingKeys.description)) {
@@ -214,11 +216,12 @@ public class JSONParser extends Parser {
         return currentEvent;
     }
 
-    public boolean hasIrreversibleEffects(JSONObject event) {
-        return event.has(ParsingKeys.irreversible);
+    protected boolean hasIrreversibleEffects(Object event) {
+        return ((JSONObject)event).has(ParsingKeys.irreversible);
     }
 
-    public List<Choice> parseChoices(JSONArray choices) throws MissingParsingObjectException {
+    protected List<Choice> parseChoices(Object choicesToParse) throws MissingParsingObjectException {
+        JSONArray choices = (JSONArray) choicesToParse;
         List<Choice> eventChoices = new ArrayList<>();
         if(choices.length() < GameRules.MIN_CHOICE_PER_EVENT || choices.length() > GameRules.MAX_CHOICE_PER_EVENT) {
             throw new MissingParsingObjectException("There isn't enough choice, or too many choices");
@@ -240,7 +243,8 @@ public class JSONParser extends Parser {
         return eventChoices;
     }
 
-    public Effect parseEffects(JSONObject effects) {
+    protected Effect parseEffects(Object effectsToParse) {
+        JSONObject effects = (JSONObject) effectsToParse;
         Map<String, Map<String, Integer>> factionEffects = new HashMap<>();
         if(effects.has(ParsingKeys.factions)) {
             factionEffects = parseFactionEffects(effects.getJSONArray(ParsingKeys.factions));
@@ -249,7 +253,8 @@ public class JSONParser extends Parser {
         return new Effect(factionEffects, factorEffects);
     }
 
-    public Map<String, Map<String, Integer>> parseFactionEffects(JSONArray factionEffects) {
+    protected Map<String, Map<String, Integer>> parseFactionEffects(Object factionEffectsToParse) {
+        JSONArray factionEffects = (JSONArray) factionEffectsToParse;
         Map<String, Map<String, Integer>> effectsByFaction = new HashMap<>();
         for(int indexFactionEffect = 0; indexFactionEffect < factionEffects.length(); indexFactionEffect += 1 ) {
             JSONObject faction = factionEffects.getJSONObject(indexFactionEffect);
@@ -269,7 +274,8 @@ public class JSONParser extends Parser {
         return effectsByFaction;
     }
 
-    public Map<String, Integer> parseFactorEffects(JSONObject effects) {
+    protected Map<String, Integer> parseFactorEffects(Object effectsToParse) {
+        JSONObject effects = (JSONObject) effectsToParse;
         Map<String, Integer> effectByFactor = new HashMap<>();
         if(effects.has(ParsingKeys.industryRate)) {
             int industryEffect = (int)Math.round(effects.getInt(ParsingKeys.industryRate) * this.difficultyCoefficient);

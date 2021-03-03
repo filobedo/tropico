@@ -61,7 +61,7 @@ public abstract class Game {
                 Resources resources = this.parser.parseResources();
                 this.republic = new Republic(population, resources);
                 this.republic.events = this.events;
-                this.gamePlay = this.parser.parseScenario();
+                this.gamePlay = this.parser.parseGamePlay();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 shutDown();
