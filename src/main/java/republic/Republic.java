@@ -1,5 +1,6 @@
 package republic;
 
+import game.needs.GameInputOptions;
 import game.needs.GameRules;
 import game.needs.GamePlayerInput;
 import parser.ParsingKeys;
@@ -132,7 +133,7 @@ public class Republic {
 
 
     public void playerEndYearChoiceImpacts(int choice, int nbChoicesDone) {
-        if(choice == GameRules.YEAR_END_DO_NOTHING_CHOICE) {
+        if(choice == GameInputOptions.YEAR_END_DO_NOTHING_CHOICE) {
             if(nbChoicesDone == 0) {
                 System.out.printf("%nVous avez décidé de ne rien faire en cette fin d'année.%n");
                 System.out.printf("%nVotre République doit se porter à merveille !%n");
@@ -144,13 +145,13 @@ public class Republic {
                 System.out.printf("%nNous espérons que ces choix n'auront pas été vains.%n");
             }
         }
-        if(choice == GameRules.YEAR_END_BRIBE_CHOICE) {
+        if(choice == GameInputOptions.YEAR_END_BRIBE_CHOICE) {
             this.population.displayAvailableFactions();
             int indexFactionToBribe = GamePlayerInput.chooseFactionToBribe(this.population.getNbFactions());
             String factionToBribe = this.population.getFactionNameByIndex(indexFactionToBribe);
             bribeIfPossible(factionToBribe);
         }
-        if(choice == GameRules.YEAR_END_BUY_FOOD_CHOICE) {
+        if(choice == GameInputOptions.YEAR_END_BUY_FOOD_CHOICE) {
             int foodUnitPossibleToBuy = this.resources.buyingFoodUnitsPossible();
             int foodUnitsToBuy = GamePlayerInput.chooseFoodUnitsToBuy(foodUnitPossibleToBuy);
             buyFoodIfPossible(foodUnitsToBuy);

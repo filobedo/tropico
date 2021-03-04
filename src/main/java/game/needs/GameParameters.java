@@ -55,7 +55,7 @@ public class GameParameters {
     }
 
     public boolean wantsToCancel(int choice) {
-        return choice == GameRules.CANCEL;
+        return choice == GameInputOptions.CANCEL;
     }
 
     public void setGameDifficulty(GameDifficulty gameDifficulty) {
@@ -98,7 +98,7 @@ public class GameParameters {
     }
 
     public boolean isPlayerGameModeChoiceCorrect(int choice) {
-        return choice == GameRules.CANCEL || choice == GameRules.GAME_MODE_SCENARIO || choice == GameRules.GAME_MODE_SANDBOX;
+        return choice == GameInputOptions.CANCEL || choice == GameInputOptions.GAME_MODE_SCENARIO || choice == GameInputOptions.GAME_MODE_SANDBOX;
     }
 
     public String getGameModeClass(int playerGameModeChoice) {
@@ -135,7 +135,7 @@ public class GameParameters {
     }
 
     public boolean isPlayerGameDifficultyChoiceCorrect(int choice) {
-        return choice == GameRules.CANCEL || choice == GameDifficulty.EASY.ordinal() + 1 || choice == GameDifficulty.NORMAL.ordinal() + 1 || choice == GameDifficulty.HARD.ordinal() + 1;
+        return choice == GameInputOptions.CANCEL || choice == GameDifficulty.EASY.ordinal() + 1 || choice == GameDifficulty.NORMAL.ordinal() + 1 || choice == GameDifficulty.HARD.ordinal() + 1;
     }
 
     public String getScenarioListInstructions(File[] scenarios) {
@@ -167,7 +167,7 @@ public class GameParameters {
         String warning = String.format("%nAttention ! Ce scénario n'existe pas !%s", getScenarioListInstructions(scenarios));
         try {
             int playerChoice = playerInput.nextInt();
-            if(playerChoice == GameRules.QUIT) {
+            if(playerChoice == GameInputOptions.QUIT) {
                 Game.shutDown();
             }
             if(isPlayerScenarioChoiceCorrect(playerChoice, nbScenario)) {

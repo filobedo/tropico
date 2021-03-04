@@ -1,10 +1,7 @@
 package game;
 import exceptions.MissingEventsException;
 import exceptions.MissingParsingKeysException;
-import game.needs.GameDifficulty;
-import game.needs.GameParameters;
-import game.needs.GamePlayerInput;
-import game.needs.GameRules;
+import game.needs.*;
 import listeners.SatisfactionDecreasedListener;
 import listeners.SatisfactionIncreasedListener;
 import publisher.EventManager;
@@ -284,7 +281,7 @@ public abstract class Game {
     }
 
     public boolean canRedoYearEndChoice(int playerYearEndChoice) {
-        return playerYearEndChoice == GameRules.YEAR_END_BRIBE_CHOICE || playerYearEndChoice == GameRules.YEAR_END_BUY_FOOD_CHOICE;
+        return playerYearEndChoice == GameInputOptions.YEAR_END_BRIBE_CHOICE || playerYearEndChoice == GameInputOptions.YEAR_END_BUY_FOOD_CHOICE;
     }
 
     public void displayPlayerYearEndChoices() {

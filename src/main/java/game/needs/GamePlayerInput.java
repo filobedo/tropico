@@ -66,7 +66,7 @@ public class GamePlayerInput {
         Scanner playerInput = new Scanner(System.in);
         try {
             int playerChoice = playerInput.nextInt();
-            if(playerChoice >= 1 && playerChoice <= GameRules.NB_YEAR_END_OPTIONS) {
+            if(playerChoice >= 1 && playerChoice <= GameInputOptions.NB_YEAR_END_OPTIONS) {
                 return playerChoice;
             }
             else {
@@ -120,10 +120,10 @@ public class GamePlayerInput {
         GamePlayerInput.displayOptionOrQuit("Rejouer");
         try {
             int playerChoice = playerInput.nextInt();
-            if(playerChoice == GameRules.END_GAME_CHOICE_START_NEW_GAME) {
+            if(playerChoice == GameInputOptions.END_GAME_CHOICE_START_NEW_GAME) {
                 return true;
             }
-            if(playerChoice == GameRules.END_GAME_CHOICE_STOP_PLAYING) {
+            if(playerChoice == GameInputOptions.END_GAME_CHOICE_STOP_PLAYING) {
                 return false;
             }
             else {
