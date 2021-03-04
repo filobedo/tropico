@@ -2,6 +2,8 @@ package game;
 import exceptions.MissingEventsException;
 import exceptions.MissingParsingKeysException;
 import game.needs.*;
+import game.saving.SaveGame;
+import game.saving.SaveGameInJSON;
 import listeners.SatisfactionDecreasedListener;
 import listeners.SatisfactionIncreasedListener;
 import publisher.EventManager;
@@ -16,6 +18,7 @@ import gameplay.Event;
 import gameplay.GamePlay;
 
 public abstract class Game {
+    protected String playerName;
     protected Republic republic;
     protected GamePlay gamePlay;
     protected final GameDifficulty gameDifficulty;
@@ -108,6 +111,7 @@ public abstract class Game {
                 if(GamePlayerInput.wantsToQuitGame()) {
                     shutDown();
                 }
+                this.playerName = GamePlayerInput.askPlayerName();
                 System.out.printf("%nLancement du jeu...%n");
                 displayPregame();
             }
@@ -199,11 +203,26 @@ public abstract class Game {
      * Ask every year if player wants to continue playing
      */
     public void askPlayerWantsToKeepPlaying() {
-        GamePlayerInput.displayOptionOrQuit("Continuer");
-        if(GamePlayerInput.wantsToQuitGame()) {
+        GamePlayerInput.displayContinueOrSaveAndOrQuit();
+        int playerChoice = GamePlayerInput.makeContinueOrSaveAndOrQuitChoice();
+        if(playerChoice == GameInputOptions.END_YEAR_QUIT) {
             finalSummary();
             shutDown();
         }
+        else if(playerChoice == GameInputOptions.END_YEAR_SAVE_AND_QUIT) {
+            finalSummary();
+            saveGame();
+            shutDown();
+        }
+        else {
+            System.out.printf("%n%nContinuons !%n");
+        }
+
+    }
+
+    public void saveGame() {
+        SaveGame saver = new SaveGameInJSON();
+        saver.saveGame(this.republic, this.playerName);
     }
 
     public void handleEndOfYear() {
@@ -309,11 +328,11 @@ public abstract class Game {
      * If he can, he can choose one of the year end options
      * @return if player caught up with the game
      */
-    public boolean didPlayerSucceedCatchingUp() {
+    public boolean didPlayerFailedCatchingUp() {
         if(!canCatchUp()) {
             displayPlayerLostAndCannotCatchUp();
             GamePlayerInput.pressAnyKeyToContinue();
-            return false;
+            return true;
         }
         else {
             displayPlayerLostButCanCatchUp();
@@ -322,10 +341,10 @@ public abstract class Game {
             if(!isPlayerWinning()) {
                 System.out.printf("%n%nDommage, malgré ce dernier effort, vous avez perdu la partie...%n");
                 GamePlayerInput.pressAnyKeyToContinue();
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean canCatchUp() {

@@ -13,6 +13,24 @@ public class GamePlayerInput {
         } catch(Exception ignored) {}
     }
 
+    public static String askPlayerName() {
+        Scanner playerInput = new Scanner(System.in);
+        System.out.printf("%n%nEntrez votre pseudo ou votre prénom : %n");
+        try {
+            String playerChoice = playerInput.nextLine();
+            if(playerChoice.length() > 1) {
+                return playerChoice;
+            }
+            else {
+                System.out.println(incorrectInputWarning);
+                return askPlayerName();
+            }
+        } catch (Exception ex) {
+            System.out.println(incorrectInputWarning);
+            return askPlayerName();
+        }
+    }
+
     public static int getPlayerEventSolutionChoice(int nbChoice) {
         Scanner playerInput = new Scanner(System.in);
         try {
@@ -60,6 +78,35 @@ public class GamePlayerInput {
             System.out.println(incorrectInputWarning);
             return wantsToQuitGame();
         }
+    }
+
+    public static void displayContinueOrSaveAndOrQuit() {
+        System.out.printf("%nVoulez-vous continuer de jouer ?%n");
+        System.out.println("Entrez votre choix :");
+        System.out.printf("%n1. Continuer");
+        System.out.printf("%n2. Sauvegarder et Quitter");
+        System.out.printf("%n3. Quitter%n");
+    }
+
+    public static int makeContinueOrSaveAndOrQuitChoice() {
+        Scanner playerInput = new Scanner(System.in);
+        try {
+            int playerChoice = playerInput.nextInt();
+            if(isEndYearContinueOrSaveAndOrQuitChoiceCorrect(playerChoice)) {
+                return playerChoice;
+            }
+            System.out.println(incorrectInputWarning);
+            return makeContinueOrSaveAndOrQuitChoice();
+        } catch (Exception ex) {
+            System.out.println(incorrectInputWarning);
+            return makeContinueOrSaveAndOrQuitChoice();
+        }
+    }
+
+    public static boolean isEndYearContinueOrSaveAndOrQuitChoiceCorrect(int playerChoice) {
+        return playerChoice == GameInputOptions.END_YEAR_CONTINUE
+                || playerChoice == GameInputOptions.END_YEAR_SAVE_AND_QUIT
+                || playerChoice == GameInputOptions.END_YEAR_QUIT;
     }
 
     public static int chooseEndYearOption() {

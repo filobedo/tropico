@@ -8,39 +8,48 @@ import republic.factions.Population;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 
-public abstract class SaveGameInJSON extends SaveGame{
+public class SaveGameInJSON extends SaveGame {
+
+    public SaveGameInJSON() {
+    }
 
     @Override
     public void saveGame(Republic republic, String playerName) {
         JSONObject gameStartParameters = getGameStartParameters(republic);
-        String path = this.getClass().getClassLoader().getResource("/saves/playerGameSave_" + playerName + ".json").getPath();
+        URL url = this.getClass().getClassLoader().getResource("");
+        String path = Objects.requireNonNull(url).getPath() + "/sandbox/saves/player_" + playerName + ".json";
 
-        try(FileWriter fileWriter = new FileWriter(path)){
+        try (FileWriter fileWriter = new FileWriter(path)) {
             fileWriter.write(gameStartParameters.toString());
             fileWriter.flush();
 
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
+
     }
 
     public JSONObject getGameStartParameters(Republic republic) {
         JSONObject gameStartParameters = new JSONObject();
+        JSONObject backUp = new JSONObject();
         JSONObject savedGameStartParameters = new JSONObject();
 
         // Add resources
-        savedGameStartParameters.put(ParsingKeys.farmRate, getFarmRate(republic.getResources()));
-        savedGameStartParameters.put(ParsingKeys.foodUnits, getFoodUnits(republic.getResources()));
-        savedGameStartParameters.put(ParsingKeys.industryRate, getIndustryRate(republic.getResources()));
-        savedGameStartParameters.put(ParsingKeys.money, getMoney(republic.getResources()));
+        backUp.put(ParsingKeys.farmRate, getFarmRate(republic.getResources()));
+        backUp.put(ParsingKeys.foodUnits, getFoodUnits(republic.getResources()));
+        backUp.put(ParsingKeys.industryRate, getIndustryRate(republic.getResources()));
+        backUp.put(ParsingKeys.money, getMoney(republic.getResources()));
 
         // Add factions
         JSONObject factions = getPopulation(republic.getPopulation());
-        savedGameStartParameters.put(ParsingKeys.factions, factions);
+        backUp.put(ParsingKeys.factions, factions);
 
-        gameStartParameters.put(ParsingKeys.gameStartParameters, ParsingKeys.savedGameStartParameters);
+        savedGameStartParameters.put(ParsingKeys.saved, backUp);
+        gameStartParameters.put(ParsingKeys.gameStartParameters, savedGameStartParameters);
 
         return gameStartParameters;
     }
