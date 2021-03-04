@@ -22,7 +22,7 @@ public class SandboxGame extends Game {
             while(isPlayerWinning()) {
                 playGame();
                 if(!isPlayerWinning()) {
-                    if(!didPlayerSucceedCatchingUp()) {
+                    if(didPlayerFailedCatchingUp()) {
                         break;
                     }
                 }

@@ -25,7 +25,7 @@ public class ScenarioGame extends Game {
                 }
                 else {
                     System.out.printf("%n%n%nLe scénario n'est pas fini mais vous avez perdu...%n");
-                    if(!didPlayerSucceedCatchingUp()) {
+                    if(didPlayerFailedCatchingUp()) {
                         break;
                     }
                 }
