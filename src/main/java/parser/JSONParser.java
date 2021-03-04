@@ -20,6 +20,7 @@ import java.util.*;
 public class JSONParser extends Parser {
     protected JSONObject gameData;
 
+    @Override
     public void openFile(String filePath) throws NullPointerException {
         File file = new File(filePath);
         try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
@@ -30,6 +31,7 @@ public class JSONParser extends Parser {
         }
     }
 
+    @Override
     public boolean canParseFile() {
         if(this.gameData.has(ParsingKeys.name)) {
             if(this.gameData.has(ParsingKeys.story)) {
@@ -44,6 +46,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
+    @Override
     protected boolean hasAllSeasons(Object gp) {
         JSONObject gamePlay = (JSONObject) gp;
         for(Season season : Season.values()) {
@@ -54,6 +57,7 @@ public class JSONParser extends Parser {
         return true;
     }
 
+    @Override
     public boolean isGameStartParameterDifficultyInJson() {
         this.difficultyCoefficient = this.gameParametersChosen.getGameDifficulty().getDifficultyCoefficient();
         GameDifficulty chosenGameDifficulty = this.gameParametersChosen.getGameDifficulty();
@@ -71,6 +75,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
+    @Override
     public Population parsePopulation() throws MissingParsingKeysException {
         Population population = new Population();
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
@@ -89,6 +94,7 @@ public class JSONParser extends Parser {
         throw new MissingParsingKeysException("Missing JSON key to set faction values");
     }
 
+    @Override
     protected boolean canParsePopulation(Object gameStartParams, Population population) {
         JSONObject gameStartParameters = (JSONObject) gameStartParams;
         if(gameStartParameters.has(ParsingKeys.factions)) {
@@ -98,6 +104,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
+    @Override
     protected boolean areFactionsInfoInJson(Set<String> factionNames, Object factionsInfo) {
         JSONObject factions = (JSONObject) factionsInfo;
         for(String factionName : factionNames) {
@@ -113,6 +120,7 @@ public class JSONParser extends Parser {
         return true;
     }
 
+    @Override
     protected boolean isFactionInfoInJson(Object currentFaction) {
         JSONObject faction = (JSONObject) currentFaction;
         if(faction.has(ParsingKeys.satisfactionRate)) {
@@ -121,6 +129,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
+    @Override
     public Resources parseResources() throws MissingParsingKeysException {
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
         if(canParseRepublicResources(gameStartParameters)) {
@@ -137,6 +146,7 @@ public class JSONParser extends Parser {
         throw new MissingParsingKeysException("Missing JSON key(s) to set republic resources values (agriculture, industry...)");
     }
 
+    @Override
     public boolean canParseRepublicResources(Object gameStartParams) {
         JSONObject gameStartParameters = (JSONObject) gameStartParams;
         if(gameStartParameters.has(ParsingKeys.farmRate)) {
@@ -149,6 +159,7 @@ public class JSONParser extends Parser {
         return false;
     }
 
+    @Override
     public GamePlay parseGamePlay() throws MissingEventsException, MissingParsingObjectException, ClassNotFoundException {
         JSONObject gamePlayToParse = this.gameData.getJSONObject(ParsingKeys.gameplay);
 
@@ -168,6 +179,7 @@ public class JSONParser extends Parser {
         }
     }
 
+    @Override
     protected GamePlay getGamePlay(String name, String story) {
         if(this.gameParametersChosen.isGameModeScenario()) {
             return new ScenarioGamePlay(name, story, getFirstSeason());
@@ -178,6 +190,7 @@ public class JSONParser extends Parser {
         return null;
     }
 
+    @Override
     protected Season getFirstSeason() {
         if(this.gameData.has(ParsingKeys.firstSeason)) {
             return Season.valueOf(this.gameData.getString(ParsingKeys.firstSeason).toUpperCase());
@@ -185,6 +198,7 @@ public class JSONParser extends Parser {
         return null;
     }
 
+    @Override
     protected List<Event> parseSeason(Object seasonToParse) throws MissingParsingObjectException {
         JSONArray season = (JSONArray) seasonToParse;
         List<Event> seasonEvents = new ArrayList<>();
@@ -197,6 +211,7 @@ public class JSONParser extends Parser {
         return seasonEvents;
     }
 
+    @Override
     protected Event parseEvent(Object eventToParse) throws MissingParsingObjectException {
         JSONObject event = (JSONObject) eventToParse;
         String name = event.getString(ParsingKeys.name);
@@ -215,10 +230,12 @@ public class JSONParser extends Parser {
         return currentEvent;
     }
 
+    @Override
     protected boolean hasIrreversibleEffects(Object event) {
         return ((JSONObject)event).has(ParsingKeys.irreversible);
     }
 
+    @Override
     protected List<Choice> parseChoices(Object choicesToParse) throws MissingParsingObjectException {
         JSONArray choices = (JSONArray) choicesToParse;
         List<Choice> eventChoices = new ArrayList<>();
@@ -242,6 +259,7 @@ public class JSONParser extends Parser {
         return eventChoices;
     }
 
+    @Override
     protected Effect parseEffects(Object effectsToParse) {
         JSONObject effects = (JSONObject) effectsToParse;
         Map<String, Map<String, Integer>> factionEffects = new HashMap<>();
@@ -252,6 +270,7 @@ public class JSONParser extends Parser {
         return new Effect(factionEffects, factorEffects);
     }
 
+    @Override
     protected Map<String, Map<String, Integer>> parseFactionEffects(Object factionEffectsToParse) {
         JSONArray factionEffects = (JSONArray) factionEffectsToParse;
         Map<String, Map<String, Integer>> effectsByFaction = new HashMap<>();
@@ -273,6 +292,7 @@ public class JSONParser extends Parser {
         return effectsByFaction;
     }
 
+    @Override
     protected Map<String, Integer> parseFactorEffects(Object effectsToParse) {
         JSONObject effects = (JSONObject) effectsToParse;
         Map<String, Integer> effectByFactor = new HashMap<>();

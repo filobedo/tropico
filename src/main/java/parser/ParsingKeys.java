@@ -4,6 +4,7 @@ public class ParsingKeys {
     public static final String name = "name";
     public static final String story = "story";
     public static final String gameStartParameters = "gameStartParameters";
+    public static final String savedGameStartParameters = "savedGameStartParameters";
     public static final String farmRate = "farmRate";
     public static final String industryRate = "industryRate";
     public static final String money = "money";
