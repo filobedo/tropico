@@ -1,4 +1,6 @@
 import game.*;
+import game.needs.GameParameters;
+import game.needs.GamePlayerInput;
 
 public class ElPresidente {
     public static void main(String[] args) {

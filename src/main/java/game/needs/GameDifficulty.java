@@ -1,4 +1,4 @@
-package game;
+package game.needs;
 
 public enum GameDifficulty {
     EASY(0.5) {

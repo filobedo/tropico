@@ -4,7 +4,7 @@ import exceptions.MissingEventsException;
 import exceptions.MissingParsingKeysException;
 import exceptions.MissingParsingObjectException;
 import gameplay.*;
-import game.GameParameters;
+import game.needs.GameParameters;
 import republic.economy.Resources;
 import republic.factions.Population;
 

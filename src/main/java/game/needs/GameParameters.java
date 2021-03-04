@@ -1,5 +1,8 @@
-package game;
+package game.needs;
 
+import game.Game;
+import game.SandboxGame;
+import game.ScenarioGame;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import parser.ParsingKeys;

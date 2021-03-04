@@ -1,6 +1,7 @@
 package game;
 
 import exceptions.MissingEventsException;
+import game.needs.GameDifficulty;
 
 public class SandboxGame extends Game {
 

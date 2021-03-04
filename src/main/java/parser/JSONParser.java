@@ -6,11 +6,11 @@ import exceptions.MissingParsingObjectException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import game.GameRules;
+import game.needs.GameRules;
 import republic.economy.Resources;
 import republic.factions.Faction;
 import republic.factions.Population;
-import game.GameDifficulty;
+import game.needs.GameDifficulty;
 import gameplay.*;
 
 import java.io.*;

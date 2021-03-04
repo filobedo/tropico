@@ -1,6 +1,6 @@
 package republic.factions;
 
-import game.GameRules;
+import game.needs.GameRules;
 import publisher.EventManager;
 
 public abstract class Faction {

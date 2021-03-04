@@ -1,4 +1,4 @@
-package game;
+package game.needs;
 
 public class GameRules {
     public static final int MINIMUM_GLOBAL_SATISFACTION_RATE = 25;

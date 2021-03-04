@@ -1,6 +1,10 @@
 package game;
 import exceptions.MissingEventsException;
 import exceptions.MissingParsingKeysException;
+import game.needs.GameDifficulty;
+import game.needs.GameParameters;
+import game.needs.GamePlayerInput;
+import game.needs.GameRules;
 import listeners.SatisfactionDecreasedListener;
 import listeners.SatisfactionIncreasedListener;
 import publisher.EventManager;

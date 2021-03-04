@@ -1,7 +1,7 @@
 package listeners;
 
 import republic.factions.Faction;
-import game.GameRules;
+import game.needs.GameRules;
 
 public class BriberyListener implements EventListener {
     private final Faction faction;

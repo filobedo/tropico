@@ -1,6 +1,6 @@
 package republic.economy;
 
-import game.GameRules;
+import game.needs.GameRules;
 
 public class Farm implements Development {
     int rate = 0;

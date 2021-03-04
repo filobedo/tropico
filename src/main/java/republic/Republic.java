@@ -1,7 +1,7 @@
 package republic;
 
-import game.GameRules;
-import game.GamePlayerInput;
+import game.needs.GameRules;
+import game.needs.GamePlayerInput;
 import parser.ParsingKeys;
 import publisher.EventManager;
 import republic.economy.Resources;

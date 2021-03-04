@@ -1,7 +1,7 @@
 package listeners;
 
 import game.Game;
-import game.GameRules;
+import game.needs.GameRules;
 
 public class SatisfactionIncreasedListener implements EventListener {
     private final Game game;
