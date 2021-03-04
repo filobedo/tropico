@@ -36,7 +36,7 @@ public class GameRules {
     public static final int END_SCORE_POINTS_PER_DOLLAR_POSITIVE = 3;
     public static final int END_SCORE_POINTS_PER_DOLLAR_NEGATIVE = -2;
     public static final int END_SCORE_POINTS_PER_FARM_RATE = 5;
-    public static final int END_SCORE_POINTS_PER_FOOD_UNITS = 1;
+    public static final double END_SCORE_POINTS_PER_FOOD_UNITS = 0.5;
 
     public static final int END_GAME_CHOICE_START_NEW_GAME= 1;
     public static final int END_GAME_CHOICE_STOP_PLAYING= 2;

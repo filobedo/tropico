@@ -49,4 +49,4 @@ public abstract class Parser {
     protected abstract Map<String, Map<String, Integer>> parseFactionEffects(Object factionEffectsToParse);
     protected abstract Map<String, Integer> parseFactorEffects(Object effectsToParse);
 
-    }
+}

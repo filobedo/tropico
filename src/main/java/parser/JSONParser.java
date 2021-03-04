@@ -121,7 +121,6 @@ public class JSONParser extends Parser {
         return false;
     }
 
-
     public Resources parseResources() throws MissingParsingKeysException {
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
         if(canParseRepublicResources(gameStartParameters)) {

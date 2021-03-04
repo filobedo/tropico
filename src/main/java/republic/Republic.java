@@ -223,7 +223,7 @@ public class Republic {
         return this.resources.getFarmRate() * GameRules.END_SCORE_POINTS_PER_FARM_RATE;
     }
 
-    public int getFoodScore() {
+    public double getFoodScore() {
         return this.resources.getFoodUnits() * GameRules.END_SCORE_POINTS_PER_FOOD_UNITS;
     }
 }
