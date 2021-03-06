@@ -25,6 +25,7 @@ public abstract class Game {
     protected int eventCount = 1;
     public EventManager events;
     private Parser parser;
+    private GameSaver gameSaver;
     private String filePath;
 
     public Game(GameDifficulty gameDifficulty, String playerName) {
@@ -86,38 +87,20 @@ public abstract class Game {
      */
     public void load(GameParameters gameParameters) throws MissingParsingKeysException {
         this.filePath = gameParameters.getFilePath();
-        setParserType(filePath);
+        setParserAndGameSaver(this.filePath, gameParameters);
         openFile(gameParameters.getFilePath());
-        this.parser.setGameParametersChosen(gameParameters);
+
         if(canLoadGame()) {
-            try {
-                this.gamePlay = this.parser.parseGamePlay();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                shutDown();
-            }
+            setGamePlay();
             if(doesPlayerHasGameSave()) {
                 if(GamePlayerInput.doesPlayerWantsToUseGameSave()) {
-                    openFile(getSavePath());
-                    this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
-                    this.gamePlay.setYear(this.parser.getSavedYear());
-                    this.eventCount = this.parser.getSavedEventCount();
-                    this.score = this.parser.getSavedScore();
-                    // Set year and currentSeason
+                    setSavedGameStartParameters();
                 }
                 else {
-                    // todo delete save file
+                    deleteSavedFile(getSavePath()); // todo faut-il vraiment
                 }
             }
-            try {
-                Population population = this.parser.parsePopulation();
-                Resources resources = this.parser.parseResources();
-                this.republic = new Republic(population, resources);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                shutDown();
-            }
-            this.republic.events = this.events;
+            setRepublic();
         }
         else {
             throw new MissingParsingKeysException("Cannot load game. Something is missing in the configuration file.");
@@ -140,6 +123,15 @@ public abstract class Game {
         return false;
     }
 
+    public void setGamePlay() {
+        try {
+            this.gamePlay = this.parser.parseGamePlay();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            shutDown();
+        }
+    }
+
     public boolean doesPlayerHasGameSave() {
         String savePath = this.getSavePath();
         File file = new File(savePath);
@@ -150,17 +142,42 @@ public abstract class Game {
         return this.parser.doesChosenDifficultyHasSavedGame(file, this.gameDifficulty);
     }
 
+    public void setSavedGameStartParameters() {
+        openFile(getSavePath());
+        this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
+        this.gamePlay.setYear(this.parser.getSavedYear());
+        this.eventCount = this.parser.getSavedEventCount();
+        this.score = this.parser.getSavedScore();
+    }
+
+    public void deleteSavedFile(String filePath) {
+        this.gameSaver.deleteFile(filePath);
+    }
+
     public static void shutDown() {
         System.out.println("Le jeu est terminé.");
         System.exit(0);
     }
 
-    public void setParserType(String filePath) {
+    public void setParserAndGameSaver(String filePath, GameParameters gameParameters) {
         if(filePath.toLowerCase().endsWith(".json")) {
             this.parser = new JSONParser();
+            this.parser.setGameParametersChosen(gameParameters);
+            this.gameSaver = new JSONGameSaver(this);
         }
     }
 
+    public void setRepublic() {
+        try {
+            Population population = this.parser.parsePopulation();
+            Resources resources = this.parser.parseResources();
+            this.republic = new Republic(population, resources);
+            this.republic.events = this.events;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            shutDown();
+        }
+    }
     /**
      * Launches the game if game conditions are set (republic and events)
      * @throws NullPointerException Republic is not fully set
@@ -268,7 +285,7 @@ public abstract class Game {
         GamePlayerInput.displayContinueOrSaveAndOrQuit();
         int playerChoice = GamePlayerInput.makeContinueOrSaveAndOrQuitChoice();
         if(playerChoice == GameInputOptions.END_YEAR_QUIT) {
-            // todo delete save file
+            deleteSavedFile(getSavePath());
             addEndGameScore();
             finalSummary();
             shutDown();
@@ -285,8 +302,7 @@ public abstract class Game {
     }
 
     public void saveGame() {
-        GameSaver saver = new JSONGameSaver(this);
-        saver.saveGame();
+        gameSaver.saveGame();
     }
 
     public abstract String getSavePath();

@@ -45,4 +45,5 @@ public abstract class GameSaver {
         return resources.getMoney();
     }
 
+    public abstract void deleteFile(String path);
 }

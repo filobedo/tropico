@@ -33,6 +33,7 @@ public class SandboxGame extends Game {
             addEndGameScore();
             finalSummary();
             System.out.printf("%nVotre partie en mode bac à sable est terminée.%n");
+            deleteSavedFile(getSavePath()); // TODO faut-il vraiment ?
         }
         else {
             throw new MissingEventsException("At least one season has no event.");

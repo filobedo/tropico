@@ -36,6 +36,7 @@ public class ScenarioGame extends Game {
             addEndGameScore();
             finalSummary();
             handlePlayerEndGame();
+            deleteSavedFile(getSavePath()); // TODO faut-il vraiment ?
         }
         else {
             throw new MissingEventsException("Scenario cannot played fully.");
