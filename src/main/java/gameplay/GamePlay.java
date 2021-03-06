@@ -39,10 +39,6 @@ public abstract class GamePlay {
         return this.year;
     }
 
-    public Season getFirstSeason() {
-        return this.firstSeason;
-    }
-
     public Season getCurrentSeason() {
         return this.currentSeason;
     }

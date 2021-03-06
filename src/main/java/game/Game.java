@@ -44,6 +44,10 @@ public abstract class Game {
         return this.playerName;
     }
 
+    public int getYear() {
+        return gamePlay.getYear();
+    }
+
     public int getEventCount() {
         return this.eventCount;
     }
@@ -59,6 +63,10 @@ public abstract class Game {
 
     public GameDifficulty getGameDifficulty() {
         return this.gameDifficulty;
+    }
+
+    public double getScore() {
+        return this.score;
     }
 
     public static void displayIntroduction() {
@@ -88,13 +96,12 @@ public abstract class Game {
                 ex.printStackTrace();
                 shutDown();
             }
-
-            if(doesPlayerHasGameSave()) {
-                // Load gameStartParameters
+            if(doesPlayerHasGameSave() && GamePlayerInput.doesPlayerWantsToUseGameSave()) {
                 openFile(getSavePath());
                 this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
                 this.gamePlay.setYear(this.parser.getSavedYear());
                 this.eventCount = this.parser.getSavedEventCount();
+                this.score = this.parser.getSavedScore();
                 // Set year and currentSeason
             }
             try {
@@ -132,7 +139,6 @@ public abstract class Game {
         String savePath = this.getSavePath();
         File file = new File(savePath);
         return file.exists();
-
     }
 
     public static void shutDown() {
@@ -144,10 +150,6 @@ public abstract class Game {
         if(filePath.toLowerCase().endsWith(".json")) {
             this.parser = new JSONParser();
         }
-    }
-
-    public int getYear() {
-        return gamePlay.getYear();
     }
 
     /**
@@ -414,15 +416,14 @@ public abstract class Game {
     }
 
     public double getEndGameScore() {
-        double endGameScore = this.score;
-        endGameScore += getYear() * GameRules.END_SCORE_POINTS_PER_YEAR;
-        endGameScore += this.republic.getPopulationScore();
-        endGameScore += this.republic.getIndustryRateScore();
-        endGameScore += this.republic.getMoneyScore();
-        endGameScore += this.republic.getFarmRateScore();
-        endGameScore += this.republic.getFoodScore();
+        addScore(getYear() * GameRules.END_SCORE_POINTS_PER_YEAR);
+        addScore(this.republic.getPopulationScore());
+        addScore(this.republic.getIndustryRateScore());
+        addScore(this.republic.getMoneyScore());
+        addScore(this.republic.getFarmRateScore());
+        addScore(this.republic.getFoodScore());
 
-        return endGameScore;
+        return this.score;
     }
 
     public void displayPlayerLostAndCannotCatchUp() {

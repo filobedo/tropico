@@ -21,6 +21,10 @@ public abstract class GameSaver {
         return this.gameToSave.getEventCount() + 1;
     }
 
+    public double getScore() {
+        return this.gameToSave.getScore();
+    }
+
     public String getCurrentSeasonName() {
         return this.gameToSave.getCurrentSeason().name();
     }

@@ -7,6 +7,9 @@ public class GameInputOptions {
     public static final int GAME_MODE_SCENARIO = 1;
     public static final int GAME_MODE_SANDBOX = 2;
 
+    public static final int YES = 1;
+    public static final int NO = 2;
+
     public static final int END_YEAR_CONTINUE= 1;
     public static final int END_YEAR_SAVE_AND_QUIT= 2;
     public static final int END_YEAR_QUIT= 3;

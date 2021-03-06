@@ -30,6 +30,7 @@ public abstract class Parser {
     public abstract int getSavedYear();
     public abstract String getSavedCurrentSeason();
     public abstract int getSavedEventCount();
+    public abstract double getSavedScore();
 
     public abstract Population parsePopulation() throws MissingParsingKeysException;
     protected abstract boolean canParsePopulation(Object gameStartParams, Population population);

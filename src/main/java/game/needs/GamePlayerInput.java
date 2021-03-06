@@ -13,6 +13,29 @@ public class GamePlayerInput {
         } catch(Exception ignored) {}
     }
 
+    public static boolean doesPlayerWantsToUseGameSave() {
+        System.out.printf("%n%nVoulez-vous reprendre votre dernière sauvegarde ?%n");
+        System.out.printf("%n1. Oui");
+        System.out.printf("%n2. Non%n");
+        Scanner playerInput = new Scanner(System.in);
+        try {
+            int playerChoice = playerInput.nextInt();
+            if(playerChoice == GameInputOptions.YES) {
+                return true;
+            }
+            else if(playerChoice == GameInputOptions.NO) {
+                return false;
+            }
+            else {
+                System.out.println(incorrectInputWarning);
+                return doesPlayerWantsToUseGameSave();
+            }
+        } catch (Exception ex) {
+            System.out.println(incorrectInputWarning);
+            return doesPlayerWantsToUseGameSave();
+        }
+    }
+
     public static int getPlayerEventSolutionChoice(int nbChoice) {
         Scanner playerInput = new Scanner(System.in);
         try {

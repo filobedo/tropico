@@ -25,6 +25,7 @@ public class JSONGameSaver extends GameSaver {
         save.put(ParsingKeys.year, getYear());
         save.put(ParsingKeys.eventCount, getEventCount());
         save.put(ParsingKeys.currentSeason, getCurrentSeasonName());
+        save.put(ParsingKeys.score, getScore());
 
         // Save game start parameters
         JSONObject gameStartParameters = getGameStartParameters();

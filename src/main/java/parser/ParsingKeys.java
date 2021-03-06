@@ -8,7 +8,7 @@ public class ParsingKeys {
     public static final String currentSeason = "currentSeason";
     public static final String eventCount = "eventCount";
     public static final String gameStartParameters = "gameStartParameters";
-    public static final String saved = "saved";
+    public static final String score = "score";
     public static final String farmRate = "farmRate";
     public static final String industryRate = "industryRate";
     public static final String money = "money";

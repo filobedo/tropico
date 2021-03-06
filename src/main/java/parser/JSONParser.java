@@ -100,6 +100,14 @@ public class JSONParser extends Parser {
     }
 
     @Override
+    public double getSavedScore() {
+        if(gameData.has(ParsingKeys.score)) {
+            return gameData.getDouble(ParsingKeys.score);
+        }
+        return 0;
+    }
+
+    @Override
     public Population parsePopulation() throws MissingParsingKeysException {
         Population population = new Population();
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);
