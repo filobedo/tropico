@@ -47,6 +47,14 @@ public abstract class GamePlay {
         return this.currentSeason;
     }
 
+    public void setCurrentSeason(String currentSeason) {
+        this.currentSeason = Season.valueOf(currentSeason);
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
     public void setSeasonsInEventsBySeason() {
         for(Season season : Season.values()) {
             this.eventsBySeason.put(season, null);

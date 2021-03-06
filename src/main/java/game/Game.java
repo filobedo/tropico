@@ -25,10 +25,10 @@ public abstract class Game {
     protected int eventCount = 1;
     public EventManager events;
     private Parser parser;
-    private GameSaver gameSaver;
     private String filePath;
 
-    public Game(GameDifficulty gameDifficulty) {
+    public Game(GameDifficulty gameDifficulty, String playerName) {
+        this.playerName = playerName;
         this.gameDifficulty = gameDifficulty;
         this.score = GameRules.INITIAL_SCORE * (1 / gameDifficulty.getDifficultyCoefficient());
         this.events = new EventManager("satisfaction_increased", "satisfaction_decreased");
@@ -44,9 +44,10 @@ public abstract class Game {
         return this.playerName;
     }
 
-    public Season getFirstSeason() {
-        return this.gamePlay.getFirstSeason();
+    public int getEventCount() {
+        return this.eventCount;
     }
+
     public Season getCurrentSeason() {
         return this.gamePlay.getCurrentSeason();
     }
@@ -76,30 +77,47 @@ public abstract class Game {
      * @throws MissingParsingKeysException Keys are missing in configuration file
      */
     public void load(GameParameters gameParameters) throws MissingParsingKeysException {
-        try {
-            this.filePath = gameParameters.getFilePath();
-            setParserType(this.filePath);
-
-            this.parser.openFile(this.filePath);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            shutDown();
-        }
+        this.filePath = gameParameters.getFilePath();
+        setParserType(filePath);
+        openFile(gameParameters.getFilePath());
         this.parser.setGameParametersChosen(gameParameters);
         if(canLoadGame()) {
             try {
-                Population population = this.parser.parsePopulation();
-                Resources resources = this.parser.parseResources();
-                this.republic = new Republic(population, resources);
-                this.republic.events = this.events;
                 this.gamePlay = this.parser.parseGamePlay();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 shutDown();
             }
+
+            if(doesPlayerHasGameSave()) {
+                // Load gameStartParameters
+                openFile(getSavePath());
+                this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
+                this.gamePlay.setYear(this.parser.getSavedYear());
+                this.eventCount = this.parser.getSavedEventCount();
+                // Set year and currentSeason
+            }
+            try {
+                Population population = this.parser.parsePopulation();
+                Resources resources = this.parser.parseResources();
+                this.republic = new Republic(population, resources);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                shutDown();
+            }
+            this.republic.events = this.events;
         }
         else {
             throw new MissingParsingKeysException("Cannot load game. Something is missing in the configuration file.");
+        }
+    }
+
+    public void openFile(String filePath) {
+        try {
+            this.parser.openFile(filePath);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            shutDown();
         }
     }
 
@@ -108,6 +126,13 @@ public abstract class Game {
             return parser.isGameStartParameterDifficultyInJson();
         }
         return false;
+    }
+
+    public boolean doesPlayerHasGameSave() {
+        String savePath = this.getSavePath();
+        File file = new File(savePath);
+        return file.exists();
+
     }
 
     public static void shutDown() {
@@ -138,7 +163,6 @@ public abstract class Game {
                 if(GamePlayerInput.wantsToQuitGame()) {
                     shutDown();
                 }
-                this.playerName = GamePlayerInput.askPlayerName();
                 System.out.printf("%nLancement du jeu...%n");
                 displayPregame();
             }

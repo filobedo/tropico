@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class SandboxGame extends Game {
 
-    public SandboxGame(GameDifficulty gameDifficulty) {
-        super(gameDifficulty);
+    public SandboxGame(GameDifficulty gameDifficulty, String playerName) {
+        super(gameDifficulty, playerName);
     }
 
     /**

@@ -76,6 +76,30 @@ public class JSONParser extends Parser {
     }
 
     @Override
+    public int getSavedYear() {
+        if(gameData.has(ParsingKeys.year)) {
+            return gameData.getInt(ParsingKeys.year);
+        }
+        return 0;
+    }
+
+    @Override
+    public String getSavedCurrentSeason() {
+        if(gameData.has(ParsingKeys.currentSeason)) {
+            return gameData.getString(ParsingKeys.currentSeason);
+        }
+        return "";
+    }
+
+    @Override
+    public int getSavedEventCount() {
+        if(gameData.has(ParsingKeys.eventCount)) {
+            return gameData.getInt(ParsingKeys.eventCount);
+        }
+        return 0;
+    }
+
+    @Override
     public Population parsePopulation() throws MissingParsingKeysException {
         Population population = new Population();
         JSONObject gameStartParameters = this.gameData.getJSONObject(ParsingKeys.gameStartParameters).getJSONObject(this.gameStartParameterDifficulty);

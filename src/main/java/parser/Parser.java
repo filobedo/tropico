@@ -27,6 +27,10 @@ public abstract class Parser {
     protected abstract boolean hasAllSeasons(Object gamePlay);
     public abstract boolean isGameStartParameterDifficultyInJson();
 
+    public abstract int getSavedYear();
+    public abstract String getSavedCurrentSeason();
+    public abstract int getSavedEventCount();
+
     public abstract Population parsePopulation() throws MissingParsingKeysException;
     protected abstract boolean canParsePopulation(Object gameStartParams, Population population);
     protected abstract boolean areFactionsInfoInJson(Set<String> factionNames, Object factions);

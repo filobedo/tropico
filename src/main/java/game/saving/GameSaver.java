@@ -17,8 +17,8 @@ public abstract class GameSaver {
         return this.gameToSave.getYear();
     }
 
-    public String getFirstSeasonName() {
-        return this.gameToSave.getFirstSeason().name();
+    public int getEventCount() {
+        return this.gameToSave.getEventCount() + 1;
     }
 
     public String getCurrentSeasonName() {

@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class ScenarioGame extends Game {
 
-    public ScenarioGame(GameDifficulty gameDifficulty) {
-        super(gameDifficulty);
+    public ScenarioGame(GameDifficulty gameDifficulty, String playerName) {
+        super(gameDifficulty, playerName);
     }
 
     /**

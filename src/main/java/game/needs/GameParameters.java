@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class GameParameters {
+    private String playerName;
     private GameDifficulty gameDifficulty;
     private String gameModeClass;
     private String filePath;
@@ -33,6 +34,8 @@ public class GameParameters {
     public final String sandboxFilePath = this.resourcesPath + "/sandbox/sandBoxProperties.json";
 
     public void askPlayerGameModeAndDifficulty() {
+        this.playerName = askPlayerName();
+
         displayGameModeInstructions();
         int gameModeIndex = chooseGameMode();
         if(wantsToCancel(gameModeIndex)) {
@@ -52,6 +55,25 @@ public class GameParameters {
         else {
             GameDifficulty chosenGameDifficulty = GameDifficulty.values()[gameDifficultyIndex - 1];
             setGameDifficulty(chosenGameDifficulty);
+        }
+    }
+
+    public static String askPlayerName() {
+        Scanner playerInput = new Scanner(System.in);
+        String warning = "Attention vous devez entrer des caractères alphanumériques !";
+        System.out.printf("%n%nEntrez votre pseudo ou votre prénom : %n");
+        try {
+            String playerChoice = playerInput.nextLine();
+            if(playerChoice.length() > 1) {
+                return playerChoice;
+            }
+            else {
+                System.out.println(warning);
+                return askPlayerName();
+            }
+        } catch (Exception ex) {
+            System.out.println(warning);
+            return askPlayerName();
         }
     }
 
@@ -192,14 +214,14 @@ public class GameParameters {
     public Game getGameAccordingToChosenGameParameters() throws ClassNotFoundException {
         if(isGameModeSandbox()) {
             setFilePath(sandboxFilePath);
-            return new SandboxGame(this.gameDifficulty);
+            return new SandboxGame(this.gameDifficulty, this.playerName);
         }
         else if(isGameModeScenario()) {
             File[] scenarioList = getScenarioList();
             displayScenarioListInstructions(scenarioList);
 
             setFilePath(chooseScenario(scenarioList));
-            return new ScenarioGame(this.gameDifficulty);
+            return new ScenarioGame(this.gameDifficulty, this.playerName);
         }
         else {
             throw new ClassNotFoundException("Game mode not found.");

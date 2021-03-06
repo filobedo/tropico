@@ -13,24 +13,6 @@ public class GamePlayerInput {
         } catch(Exception ignored) {}
     }
 
-    public static String askPlayerName() {
-        Scanner playerInput = new Scanner(System.in);
-        System.out.printf("%n%nEntrez votre pseudo ou votre prénom : %n");
-        try {
-            String playerChoice = playerInput.nextLine();
-            if(playerChoice.length() > 1) {
-                return playerChoice;
-            }
-            else {
-                System.out.println(incorrectInputWarning);
-                return askPlayerName();
-            }
-        } catch (Exception ex) {
-            System.out.println(incorrectInputWarning);
-            return askPlayerName();
-        }
-    }
-
     public static int getPlayerEventSolutionChoice(int nbChoice) {
         Scanner playerInput = new Scanner(System.in);
         try {
