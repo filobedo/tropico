@@ -30,6 +30,7 @@ public class SandboxGame extends Game {
                     }
                 }
             }
+            addEndGameScore();
             finalSummary();
             System.out.printf("%nVotre partie en mode bac à sable est terminée.%n");
         }
@@ -42,7 +43,7 @@ public class SandboxGame extends Game {
     public String getSavePath() {
         URL resourceUrl = this.getClass().getClassLoader().getResource("");
         String resourcePath = Objects.requireNonNull(resourceUrl).getPath();
-        return String.format("%s/sandbox/saves/player_%s.json", resourcePath, getPlayerName());
+        return String.format("%s/sandbox/saves/player_%s/%s.json", resourcePath, getPlayerName(), getGameDifficulty().name());
     }
 
     @Override

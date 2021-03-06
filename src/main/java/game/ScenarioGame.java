@@ -33,6 +33,7 @@ public class ScenarioGame extends Game {
                     }
                 }
             }
+            addEndGameScore();
             finalSummary();
             handlePlayerEndGame();
         }
@@ -80,7 +81,7 @@ public class ScenarioGame extends Game {
     public String getSavePath() {
         URL resourceUrl = this.getClass().getClassLoader().getResource("");
         String resourcePath = Objects.requireNonNull(resourceUrl).getPath();
-        return String.format("%s/scenarios/saves/player_%s/%s", resourcePath, getPlayerName(), getFileName());
+        return String.format("%s/scenarios/saves/player_%s/%s/%s", resourcePath, getPlayerName(), getGameDifficulty().name(), getFileName());
     }
 
     @Override

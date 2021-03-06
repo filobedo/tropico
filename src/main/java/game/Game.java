@@ -96,13 +96,18 @@ public abstract class Game {
                 ex.printStackTrace();
                 shutDown();
             }
-            if(doesPlayerHasGameSave() && GamePlayerInput.doesPlayerWantsToUseGameSave()) {
-                openFile(getSavePath());
-                this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
-                this.gamePlay.setYear(this.parser.getSavedYear());
-                this.eventCount = this.parser.getSavedEventCount();
-                this.score = this.parser.getSavedScore();
-                // Set year and currentSeason
+            if(doesPlayerHasGameSave()) {
+                if(GamePlayerInput.doesPlayerWantsToUseGameSave()) {
+                    openFile(getSavePath());
+                    this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
+                    this.gamePlay.setYear(this.parser.getSavedYear());
+                    this.eventCount = this.parser.getSavedEventCount();
+                    this.score = this.parser.getSavedScore();
+                    // Set year and currentSeason
+                }
+                else {
+                    // todo delete save file
+                }
             }
             try {
                 Population population = this.parser.parsePopulation();
@@ -138,7 +143,11 @@ public abstract class Game {
     public boolean doesPlayerHasGameSave() {
         String savePath = this.getSavePath();
         File file = new File(savePath);
-        return file.exists();
+        return file.exists() && doesFileContainsChosenDifficulty(file);
+    }
+
+    public boolean doesFileContainsChosenDifficulty(File file) {
+        return this.parser.doesChosenDifficultyHasSavedGame(file, this.gameDifficulty);
     }
 
     public static void shutDown() {
@@ -259,6 +268,8 @@ public abstract class Game {
         GamePlayerInput.displayContinueOrSaveAndOrQuit();
         int playerChoice = GamePlayerInput.makeContinueOrSaveAndOrQuitChoice();
         if(playerChoice == GameInputOptions.END_YEAR_QUIT) {
+            // todo delete save file
+            addEndGameScore();
             finalSummary();
             shutDown();
         }
@@ -412,10 +423,10 @@ public abstract class Game {
         System.out.printf("%n==========================%n");
         System.out.printf("%n- Voici votre bilan final : -%n");
         displaySummary();
-        System.out.printf("%n- Voici votre score final : %.2f -%n", getEndGameScore());
+        System.out.printf("%n- Voici votre score final : %.2f -%n", getScore());
     }
 
-    public double getEndGameScore() {
+    public double addEndGameScore() {
         addScore(getYear() * GameRules.END_SCORE_POINTS_PER_YEAR);
         addScore(this.republic.getPopulationScore());
         addScore(this.republic.getIndustryRateScore());

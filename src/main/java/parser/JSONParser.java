@@ -76,6 +76,23 @@ public class JSONParser extends Parser {
     }
 
     @Override
+    public boolean doesChosenDifficultyHasSavedGame(File file, GameDifficulty gameDifficulty) {
+        JSONObject savedGame;
+        try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+            JSONTokener token = new JSONTokener(reader);
+            savedGame = new JSONObject(token);
+        } catch (IOException e){
+            throw new NullPointerException("Cannot find resource file " + file.getPath());
+        }
+
+        if(savedGame.getJSONObject(ParsingKeys.gameStartParameters).has(gameDifficulty.name())) {
+            this.gameStartParameterDifficulty = gameDifficulty.name();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public int getSavedYear() {
         if(gameData.has(ParsingKeys.year)) {
             return gameData.getInt(ParsingKeys.year);

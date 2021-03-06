@@ -3,11 +3,13 @@ package parser;
 import exceptions.MissingEventsException;
 import exceptions.MissingParsingKeysException;
 import exceptions.MissingParsingObjectException;
+import game.needs.GameDifficulty;
 import gameplay.*;
 import game.needs.GameParameters;
 import republic.economy.Resources;
 import republic.factions.Population;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +28,7 @@ public abstract class Parser {
     public abstract boolean canParseFile();
     protected abstract boolean hasAllSeasons(Object gamePlay);
     public abstract boolean isGameStartParameterDifficultyInJson();
+    public abstract boolean doesChosenDifficultyHasSavedGame(File file, GameDifficulty gameDifficulty);
 
     public abstract int getSavedYear();
     public abstract String getSavedCurrentSeason();
