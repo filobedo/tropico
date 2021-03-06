@@ -1,57 +1,65 @@
 package game.saving;
 
+import game.Game;
 import org.json.JSONObject;
 import parser.ParsingKeys;
 import republic.Republic;
 import republic.factions.Faction;
 import republic.factions.Population;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
-import java.util.Objects;
 
-public class SaveGameInJSON extends SaveGame {
+public class JSONGameSaver extends GameSaver {
 
-    public SaveGameInJSON() {
+    public JSONGameSaver(Game gameToSave) {
+        super(gameToSave);
     }
 
     @Override
-    public void saveGame(Republic republic, String playerName) {
-        JSONObject gameStartParameters = getGameStartParameters(republic);
-        URL url = this.getClass().getClassLoader().getResource("");
-        String path = Objects.requireNonNull(url).getPath() + "/sandbox/saves/player_" + playerName + ".json";
+    public void saveGame() {
+        // Save year and season
+        JSONObject save  = new JSONObject();
+        save.put(ParsingKeys.year, getYear());
+        save.put(ParsingKeys.firstSeason, getFirstSeasonName());
+        save.put(ParsingKeys.currentSeason, getCurrentSeasonName());
 
-        try (FileWriter fileWriter = new FileWriter(path)) {
-            fileWriter.write(gameStartParameters.toString());
+        // Save game start parameters
+        JSONObject gameStartParameters = getGameStartParameters();
+        save.put(ParsingKeys.gameStartParameters, gameStartParameters);
+
+        File saveFile = new File(this.gameToSave.getSavePath());
+        saveFile.getParentFile().mkdirs();
+
+        try (FileWriter fileWriter = new FileWriter(saveFile)) {
+            fileWriter.write(save.toString());
             fileWriter.flush();
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
-    public JSONObject getGameStartParameters(Republic republic) {
-        JSONObject gameStartParameters = new JSONObject();
-        JSONObject backUp = new JSONObject();
+    public JSONObject getGameStartParameters() {
+        Republic republic = this.gameToSave.getRepublic();
         JSONObject savedGameStartParameters = new JSONObject();
+        JSONObject backUp = new JSONObject();
 
-        // Add resources
+        // Save resources
         backUp.put(ParsingKeys.farmRate, getFarmRate(republic.getResources()));
         backUp.put(ParsingKeys.foodUnits, getFoodUnits(republic.getResources()));
         backUp.put(ParsingKeys.industryRate, getIndustryRate(republic.getResources()));
         backUp.put(ParsingKeys.money, getMoney(republic.getResources()));
 
-        // Add factions
+        // Save factions
         JSONObject factions = getPopulation(republic.getPopulation());
         backUp.put(ParsingKeys.factions, factions);
 
-        savedGameStartParameters.put(ParsingKeys.saved, backUp);
-        gameStartParameters.put(ParsingKeys.gameStartParameters, savedGameStartParameters);
+        savedGameStartParameters.put(this.gameToSave.getGameDifficulty().name(), backUp);
 
-        return gameStartParameters;
+        return savedGameStartParameters;
     }
 
     public JSONObject getPopulation(Population population) {

@@ -29,7 +29,7 @@ public class GameParameters {
     private final String chooseHardDifficulty = "Tapez '3' pour le mode dur";
 
     public final String resourcesPath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath();
-    public final String scenariosResourcePath = this.resourcesPath + "/scenarios";
+    public final String scenariosResourcePath = this.resourcesPath + "/scenarios/";
     public final String sandboxFilePath = this.resourcesPath + "/sandbox/sandBoxProperties.json";
 
     public void askPlayerGameModeAndDifficulty() {
@@ -140,14 +140,15 @@ public class GameParameters {
     }
 
     public String getScenarioListInstructions(File[] scenarios) {
-        int nbScenario = scenarios.length;
         int countScenario = 0;
-        StringBuilder instructions = new StringBuilder(String.format("%nVeuillez choisir parmis ces %d scénarios :%n", nbScenario));
+        StringBuilder instructions = new StringBuilder(String.format("%nVeuillez choisir parmis ces %d scénarios :%n", scenarios.length));
         instructions.append(String.format("%d. %s%n", countScenario, quit));
         for (File scenario: scenarios) {
-            countScenario += 1;
-            String currentScenario = String.format("%d. %s%n",countScenario, getScenarioName(scenario));
-            instructions.append(currentScenario);
+            if(scenario.isFile()) {
+                countScenario += 1;
+                String currentScenario = String.format("%d. %s%n",countScenario, getScenarioName(scenario));
+                instructions.append(currentScenario);
+            }
         }
         return instructions.toString();
     }

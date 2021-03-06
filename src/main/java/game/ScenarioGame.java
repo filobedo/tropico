@@ -3,6 +3,9 @@ package game;
 import exceptions.MissingEventsException;
 import game.needs.GameDifficulty;
 
+import java.net.URL;
+import java.util.Objects;
+
 public class ScenarioGame extends Game {
 
     public ScenarioGame(GameDifficulty gameDifficulty) {
@@ -71,6 +74,13 @@ public class ScenarioGame extends Game {
     public void displayPlayerWon() {
         System.out.println("Le scénario est fini. Vous avez gagné la partie.");
         System.out.println("Félicitations !");
+    }
+
+    @Override
+    public String getSavePath() {
+        URL resourceUrl = this.getClass().getClassLoader().getResource("");
+        String resourcePath = Objects.requireNonNull(resourceUrl).getPath();
+        return String.format("%s/scenarios/saves/player_%s/%s", resourcePath, getPlayerName(), getFileName());
     }
 
     @Override

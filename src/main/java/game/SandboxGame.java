@@ -3,6 +3,9 @@ package game;
 import exceptions.MissingEventsException;
 import game.needs.GameDifficulty;
 
+import java.net.URL;
+import java.util.Objects;
+
 public class SandboxGame extends Game {
 
     public SandboxGame(GameDifficulty gameDifficulty) {
@@ -33,6 +36,13 @@ public class SandboxGame extends Game {
         else {
             throw new MissingEventsException("At least one season has no event.");
         }
+    }
+
+    @Override
+    public String getSavePath() {
+        URL resourceUrl = this.getClass().getClassLoader().getResource("");
+        String resourcePath = Objects.requireNonNull(resourceUrl).getPath();
+        return String.format("%s/sandbox/saves/player_%s.json", resourcePath, getPlayerName());
     }
 
     @Override

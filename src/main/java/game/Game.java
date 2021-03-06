@@ -2,8 +2,9 @@ package game;
 import exceptions.MissingEventsException;
 import exceptions.MissingParsingKeysException;
 import game.needs.*;
-import game.saving.SaveGame;
-import game.saving.SaveGameInJSON;
+import game.saving.GameSaver;
+import game.saving.JSONGameSaver;
+import gameplay.*;
 import listeners.SatisfactionDecreasedListener;
 import listeners.SatisfactionIncreasedListener;
 import publisher.EventManager;
@@ -12,10 +13,8 @@ import republic.economy.Resources;
 import republic.factions.Population;
 import parser.Parser;
 import parser.JSONParser;
-import gameplay.Choice;
-import gameplay.Effect;
-import gameplay.Event;
-import gameplay.GamePlay;
+
+import java.io.File;
 
 public abstract class Game {
     protected String playerName;
@@ -26,6 +25,8 @@ public abstract class Game {
     protected int eventCount = 1;
     public EventManager events;
     private Parser parser;
+    private GameSaver gameSaver;
+    private String filePath;
 
     public Game(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
@@ -33,6 +34,30 @@ public abstract class Game {
         this.events = new EventManager("satisfaction_increased", "satisfaction_decreased");
         this.events.subscribe("satisfaction_decreased", new SatisfactionDecreasedListener(this));
         this.events.subscribe("satisfaction_increased", new SatisfactionIncreasedListener(this));
+    }
+
+    public Republic getRepublic() {
+        return this.republic;
+    }
+
+    public String getPlayerName() {
+        return this.playerName;
+    }
+
+    public Season getFirstSeason() {
+        return this.gamePlay.getFirstSeason();
+    }
+    public Season getCurrentSeason() {
+        return this.gamePlay.getCurrentSeason();
+    }
+
+    public String getFileName() {
+        File file = new File(this.filePath);
+        return file.getName();
+    }
+
+    public GameDifficulty getGameDifficulty() {
+        return this.gameDifficulty;
     }
 
     public static void displayIntroduction() {
@@ -52,8 +77,10 @@ public abstract class Game {
      */
     public void load(GameParameters gameParameters) throws MissingParsingKeysException {
         try {
-            setParserType(gameParameters.getFilePath());
-            this.parser.openFile(gameParameters.getFilePath());
+            this.filePath = gameParameters.getFilePath();
+            setParserType(this.filePath);
+
+            this.parser.openFile(this.filePath);
         } catch (Exception ex) {
             ex.printStackTrace();
             shutDown();
@@ -221,9 +248,11 @@ public abstract class Game {
     }
 
     public void saveGame() {
-        SaveGame saver = new SaveGameInJSON();
-        saver.saveGame(this.republic, this.playerName);
+        GameSaver saver = new JSONGameSaver(this);
+        saver.saveGame();
     }
+
+    public abstract String getSavePath();
 
     public void handleEndOfYear() {
         endOfYearConsequencesAndChoices();
