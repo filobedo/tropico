@@ -2,7 +2,6 @@ package game;
 
 import game.needs.GameDifficulty;
 
-import java.net.URL;
 import java.util.Objects;
 
 public class SandboxGame extends Game {
@@ -43,9 +42,8 @@ public class SandboxGame extends Game {
 
     @Override
     public String getSavePath() {
-        URL resourceUrl = this.getClass().getClassLoader().getResource("");
-        String resourcePath = Objects.requireNonNull(resourceUrl).getPath();
-        return String.format("%s/sandbox/saves/player_%s/%s.json", resourcePath, getPlayerName(), getGameDifficulty().name());
+        String resourcePath = Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("sandbox")).toString();
+        return String.format("%s/saves/player_%s/%s.json", resourcePath, getPlayerName(), getGameDifficulty().name());
     }
 
     @Override

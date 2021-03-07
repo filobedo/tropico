@@ -15,7 +15,7 @@ You can also build it from your IDE.
 ## Usage
 
 ```bash
-java -jar target\ElPresidente-1.0-SNAPSHOT.jar
+java -jar target\ElPresidente-1.0.jar
 ```
 You can also exucute it from your IDE
 

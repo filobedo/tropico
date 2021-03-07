@@ -8,9 +8,9 @@ import org.json.JSONTokener;
 import parser.ParsingKeys;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameParameters {
     private String playerName;
@@ -29,9 +29,9 @@ public class GameParameters {
     private final String chooseMediumDifficulty = "Tapez '2' pour le mode normal";
     private final String chooseHardDifficulty = "Tapez '3' pour le mode dur";
 
-    public final String resourcesPath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath();
-    public final String scenariosResourcePath = this.resourcesPath + "scenarios/";
-    public final String sandboxFilePath = this.resourcesPath + "sandbox/sandBoxProperties.json";
+//    public final String resourcesPath = Objects.requireNonNull(this.getClass().getClassLoader().getResource("")).getPath();
+    public final String scenariosResourcePath = "scenarios/";
+    public final String sandboxFilePath = "sandbox/sandboxProperties.json";
 
     public void askPlayerGameModeAndDifficulty() {
         this.playerName = askPlayerName();
@@ -233,7 +233,8 @@ public class GameParameters {
     }
 
     public File[] getScenarioList() {
-        File directory = new File(scenariosResourcePath);
+        URL resourceURL = this.getClass().getClassLoader().getResource(this.scenariosResourcePath);
+        File directory = new File(Objects.requireNonNull(resourceURL).getPath());
         return directory.listFiles();
     }
 

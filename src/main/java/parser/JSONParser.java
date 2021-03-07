@@ -22,8 +22,9 @@ public class JSONParser extends Parser {
 
     @Override
     public void openFile(String filePath) throws NullPointerException {
-        File file = new File(filePath);
-        try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        InputStream stream = classLoader.getResourceAsStream(filePath);
+        try (Reader reader = new InputStreamReader(Objects.requireNonNull(stream), StandardCharsets.UTF_8)) {
             JSONTokener token = new JSONTokener(reader);
             this.gameData = new JSONObject(token);
         } catch (IOException e){
