@@ -422,6 +422,104 @@
             }
           }
         ]
+      },
+      {
+        "name": "Rivaille....",
+        "description": "Un valeureux soldat du nom de Rivaille se propose d'aller tuer ces bêtes sauvages...",
+        "choices": [
+          {
+            "name": "Accepter",
+            "description": "Je le laisse aller défendre ma patrie, celle d'El Presidente, dans le risque que Rivaille décède",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 20
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": -30
+                },
+                {
+                  "name": "Nationalists",
+                  "satisfactionRate": 20
+                }
+              ]
+            }
+          },
+          {
+            "name": "Refuser",
+            "description": "J'empèche Rivaille d'aller affronter ces bêtes farouches tout seul",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": -20
+                },
+                {
+                  "name": "Loyalists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Nationalists",
+                  "satisfactionRate": -20
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": 20
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Proposition militaire",
+        "description": "Les militaires proposent de nourrir les chevaux afin qu'ils soient plus performants pour leur prochaine course",
+        "choices": [
+          {
+            "name": "Accepter",
+            "description": "Nourrissons ces braves bêtes !",
+            "effects": {
+              "foodUnits": -10,
+              "factions": [
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -20
+                },
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": 40
+                }
+              ]
+            }
+          },
+          {
+            "name": "Refuser",
+            "description": "Quoi ? Laissez mon agriculture tranquille !",
+            "effects": {
+              "foodUnits": 10,
+              "factions": [
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": 20
+                },
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": -40
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "AUTUMN": [
@@ -470,7 +568,184 @@
             }
           }
         ]
-      }
-    ]
+      },
+      {
+        "name": "Titan cuirassé",
+        "description": "Un mystérieux titan, doté d'une cuirasse imposante a enfoncé le mur Maria",
+        "choices": [
+          {
+            "name": "Bataillon d'exploration",
+            "description": "Appeler le bataillon d'exploration pour tuer les titans",
+            "effects": {
+              "population": -5,
+              "factions": [
+                {
+                  "name": "Loyalists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Religious",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Nationalists",
+                  "satisfactionRate": 20
+                }
+              ]
+            }
+          },
+          {
+            "name": "Brigades spéciales",
+            "description": "Appeler les brigades spéciales pour tuer les titans",
+            "effects": {
+              "population": -20,
+              "factions": [
+                {
+                  "name": "Loyalists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Religious",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": -20
+                }
+              ]
+            }
+          },
+          {
+            "name": "Inshallah",
+            "description": "Laisser les religieux faire leurs prières",
+            "effects": {
+              "population": -50,
+              "factions": [
+                {
+                  "name": "Loyalists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Liberals",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Religious",
+                  "satisfactionRate": 40
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Nationalists",
+                  "satisfactionRate": -10
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Discours guerre totale aux titans",
+        "description": "Willy Teyber, chef du clan Teyber, propose de faire un discours dans le but de déclarer la guerre totale aux titans. Y assisterez vous ?",
+        "choices": [
+          {
+            "name": "Accepter",
+            "description": "Avec évidence",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Loyalists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Liberals",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Religious",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Nationalists",
+                  "satisfactionRate": 10
+                },
+                {
+                  "name": "Communists",
+                  "satisfactionRate": 10
+                }
+              ]
+            },
+            "relatedEvents": [
+              {
+                "name": "Titan intelligent attaque",
+                "description": "Un titan ennemi intelligent fait surface en plein discours et détruit tout sur son passage",
+                "choices": [
+                  {
+                    "name": "Oh shit",
+                    "description": "Courir à toute vitesse",
+                    "effects": {
+                      "population": -5
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Refuser",
+            "description": "J'ai autre chose à faire",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Loyalists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Liberals",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Religious",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Militarists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Nationalists",
+                  "satisfactionRate": -10
+                },
+                {
+                  "name": "Communists",
+                  "satisfactionRate": -10
+                }
+              ]
+            }
+          }
+        ]
+      }]
   }
 }

@@ -24,6 +24,10 @@ public abstract class Parser {
         this.gameParametersChosen = gameParametersChosen;
     }
 
+    public void setGameStartParameterDifficulty(String gameStartParameterDifficulty) {
+        this.gameStartParameterDifficulty = gameStartParameterDifficulty;
+    }
+
     public abstract void openFile(String filePath) throws NullPointerException;
     public abstract boolean canParseFile();
     protected abstract boolean hasAllSeasons(Object gamePlay);

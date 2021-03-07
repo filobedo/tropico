@@ -27,6 +27,7 @@ public abstract class Game {
     private Parser parser;
     private GameSaver gameSaver;
     private String filePath;
+    private boolean isASavedGame = false;
 
     public Game(GameDifficulty gameDifficulty, String playerName) {
         this.playerName = playerName;
@@ -92,13 +93,9 @@ public abstract class Game {
 
         if(canLoadGame()) {
             setGamePlay();
-            if(doesPlayerHasGameSave()) {
-                if(GamePlayerInput.doesPlayerWantsToUseGameSave()) {
-                    setSavedGameStartParameters();
-                }
-                else {
-                    deleteSavedFile(getSavePath()); // todo faut-il vraiment
-                }
+            if(doesPlayerHasGameSave() && GamePlayerInput.doesPlayerWantsToUseGameSave()) {
+                setSavedGameStartParameters();
+                this.isASavedGame = true;
             }
             setRepublic();
         }
@@ -144,6 +141,7 @@ public abstract class Game {
 
     public void setSavedGameStartParameters() {
         openFile(getSavePath());
+        this.parser.setGameStartParameterDifficulty(this.gameDifficulty.name());// setGameDifficulty in JSONParser;
         this.gamePlay.setCurrentSeason(this.parser.getSavedCurrentSeason());
         this.gamePlay.setYear(this.parser.getSavedYear());
         this.eventCount = this.parser.getSavedEventCount();
@@ -285,7 +283,9 @@ public abstract class Game {
         GamePlayerInput.displayContinueOrSaveAndOrQuit();
         int playerChoice = GamePlayerInput.makeContinueOrSaveAndOrQuitChoice();
         if(playerChoice == GameInputOptions.END_YEAR_QUIT) {
-            deleteSavedFile(getSavePath());
+            if(this.isASavedGame) {
+                deleteSavedFile(getSavePath());
+            }
             addEndGameScore();
             finalSummary();
             shutDown();
@@ -442,15 +442,13 @@ public abstract class Game {
         System.out.printf("%n- Voici votre score final : %.2f -%n", getScore());
     }
 
-    public double addEndGameScore() {
+    public void addEndGameScore() {
         addScore(getYear() * GameRules.END_SCORE_POINTS_PER_YEAR);
         addScore(this.republic.getPopulationScore());
         addScore(this.republic.getIndustryRateScore());
         addScore(this.republic.getMoneyScore());
         addScore(this.republic.getFarmRateScore());
         addScore(this.republic.getFoodScore());
-
-        return this.score;
     }
 
     public void displayPlayerLostAndCannotCatchUp() {

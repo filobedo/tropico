@@ -85,11 +85,7 @@ public class JSONParser extends Parser {
             throw new NullPointerException("Cannot find resource file " + file.getPath());
         }
 
-        if(savedGame.getJSONObject(ParsingKeys.gameStartParameters).has(gameDifficulty.name())) {
-            this.gameStartParameterDifficulty = gameDifficulty.name();
-            return true;
-        }
-        return false;
+        return savedGame.getJSONObject(ParsingKeys.gameStartParameters).has(gameDifficulty.name());
     }
 
     @Override
