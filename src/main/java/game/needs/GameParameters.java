@@ -8,9 +8,13 @@ import org.json.JSONTokener;
 import parser.ParsingKeys;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class GameParameters {
     private String playerName;
@@ -50,7 +54,6 @@ public class GameParameters {
         int gameDifficultyIndex = chooseGameDifficulty();
         if(wantsToCancel(gameDifficultyIndex)) {
             askPlayerGameModeAndDifficulty();
-            return;
         }
         else {
             GameDifficulty chosenGameDifficulty = GameDifficulty.values()[gameDifficultyIndex - 1];
@@ -161,9 +164,9 @@ public class GameParameters {
         return choice == GameInputOptions.CANCEL || choice == GameDifficulty.EASY.ordinal() + 1 || choice == GameDifficulty.NORMAL.ordinal() + 1 || choice == GameDifficulty.HARD.ordinal() + 1;
     }
 
-    public String getScenarioListInstructions(File[] scenarios) {
+    public String getScenarioListInstructions(List<File> scenarios) {
         int countScenario = 0;
-        StringBuilder instructions = new StringBuilder(String.format("%nVeuillez choisir parmis ces %d scénarios :%n", scenarios.length));
+        StringBuilder instructions = new StringBuilder(String.format("%nVeuillez choisir parmis ces %d scénarios :%n", scenarios.size()));
         instructions.append(String.format("%d. %s%n", countScenario, quit));
         for (File scenario: scenarios) {
             if(scenario.isFile()) {
@@ -185,8 +188,8 @@ public class GameParameters {
         }
     }
 
-    public String chooseScenario(File[] scenarios) {
-        int nbScenario = scenarios.length;
+    public String chooseScenario(List<File> scenarios) {
+        int nbScenario = scenarios.size();
         Scanner playerInput = new Scanner(System.in);
         String warning = String.format("%nAttention ! Ce scénario n'existe pas !%s", getScenarioListInstructions(scenarios));
         try {
@@ -195,7 +198,7 @@ public class GameParameters {
                 Game.shutDown();
             }
             if(isPlayerScenarioChoiceCorrect(playerChoice, nbScenario)) {
-                return scenarios[playerChoice - 1].getPath();
+                return scenarios.get(playerChoice - 1).getPath();
             }
             else {
                 System.out.println(warning);
@@ -211,13 +214,13 @@ public class GameParameters {
         return playerChoice >= 0 && playerChoice <= nbScenario;
     }
 
-    public Game getGameAccordingToChosenGameParameters() throws ClassNotFoundException {
+    public Game getGameAccordingToChosenGameParameters() throws ClassNotFoundException, IOException, URISyntaxException {
         if(isGameModeSandbox()) {
             setFilePath(sandboxFilePath);
             return new SandboxGame(this.gameDifficulty, this.playerName);
         }
         else if(isGameModeScenario()) {
-            File[] scenarioList = getScenarioList();
+            List<File> scenarioList = getScenarioList();
             displayScenarioListInstructions(scenarioList);
 
             setFilePath(chooseScenario(scenarioList));
@@ -232,13 +235,43 @@ public class GameParameters {
         this.filePath = filePath;
     }
 
-    public File[] getScenarioList() {
-        URL resourceURL = this.getClass().getClassLoader().getResource(this.scenariosResourcePath);
-        File directory = new File(Objects.requireNonNull(resourceURL).getPath());
-        return directory.listFiles();
+    public List<File> getScenarioList() throws IOException, URISyntaxException {
+        String path = this.scenariosResourcePath;
+        final File jarFile = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+        List<File> scenarios = new ArrayList<>();
+
+        // Run with JAR file
+        if(jarFile.isFile()) {
+            final JarFile jar = new JarFile(jarFile);
+            final Enumeration<JarEntry> jarEntries = jar.entries(); //gives ALL entries in jar
+
+            while(jarEntries.hasMoreElements()) {
+                final String name = jarEntries.nextElement().getName();
+                if(name.startsWith(path) && !name.endsWith(path)) {
+                    URI fullPath = this.getClass().getResource("/" + name).toURI();
+                    scenarios.add(new File(fullPath.toString()));
+                }
+            }
+            jar.close();
+        }
+
+        // Run with IDE
+        else {
+            final URL url = this.getClass().getResource("/" + path);
+            if (url != null) {
+                try {
+                    final File scenarioFiles = new File(url.toURI());
+                    Collections.addAll(scenarios, Objects.requireNonNull(scenarioFiles.listFiles()));
+                } catch (URISyntaxException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return scenarios;
     }
 
-    public void displayScenarioListInstructions(File[] scenarios) {
+    public void displayScenarioListInstructions(List<File> scenarios) {
         System.out.print(getScenarioListInstructions(scenarios));
     }
 

@@ -186,10 +186,7 @@ public abstract class Game {
         if(this.republic.isSet()) {
             if(this.gamePlay.canPlayEvents()) {
                 GamePlayerInput.displayScaredOrNotScared("Continuer");
-                if(GamePlayerInput.wantsToQuitGame()) {
-                    shutDown();
-                }
-
+                if(GamePlayerInput.wantsToQuitGame()) { shutDown(); }
                 System.out.printf("%nLancement du jeu...%n");
                 displayPregame();
                 play();
