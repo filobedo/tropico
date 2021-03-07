@@ -1,7 +1,5 @@
 .DS_Store
 .idea/*
-ElPresidente.iml
-pom.xml
 target/*
 src/main/java/.DS_Store
 src/.DS_Store
