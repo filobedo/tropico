@@ -7,14 +7,14 @@ public class GamePlayerInput {
 
     public static void pressAnyKeyToContinue()
     {
-        System.out.printf("%n%nAppuyez sur la touche 'Entrer' pour continuer...%n");
+        System.out.printf("%n%n- Appuyez sur la touche 'Entrer' pour continuer... - %n");
         try {
             System.in.read();
         } catch(Exception ignored) {}
     }
 
     public static boolean doesPlayerWantsToUseGameSave() {
-        System.out.printf("%n%nVoulez-vous reprendre votre dernière sauvegarde ?%n");
+        System.out.printf("%n%nVoulez-vous reprendre la dernière partie que vous avez sauvegardé ?%n");
         System.out.printf("%n1. Oui");
         System.out.printf("%n2. Non%n");
         Scanner playerInput = new Scanner(System.in);

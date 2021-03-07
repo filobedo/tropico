@@ -45,456 +45,456 @@
   },
   "firstSeason": "WINTER",
   "gameplay": {
-      "WINTER": [
-        {
-          "name": "Catastrophe ! Une tempête de neige !",
-          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
-          "choices": [
-            {
-              "name": "Déblayer",
-              "description": "Vous résoudrez les problèmes de transit.",
-              "effects": {
-                "money": -200
-              }
-            },
-            {
-              "name": "S'en fiche",
-              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
-              "effects": {
-                "farmRate": -15,
-                "industryRate": -15
-              }
+    "WINTER": [
+      {
+        "name": "Catastrophe ! Une tempête de neige !",
+        "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+        "choices": [
+          {
+            "name": "Déblayer",
+            "description": "Vous résoudrez les problèmes de transit.",
+            "effects": {
+              "money": -200
             }
-          ]
-        },
-        {
-          "name": "Les communistes vous battent et emprisonnent vos militaires",
-          "description": "Vous devez prendre une décision",
-          "choices": [
-            {
-              "name": "Je stoppe toutes les opérations",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Je maintiens toutes les opérations militaires",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": -10,
-                    "nbSupporters": -5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": 10
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Catastrophe ! Une tempête de neige !",
-          "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
-          "choices": [
-            {
-              "name": "Déblayer",
-              "description": "Vous résoudrez les problèmes de transit.",
-              "effects": {
-                "money": -200
-              }
-            },
-            {
-              "name": "S'en fiche",
-              "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
-              "effects": {
-                "farmRate": -15,
-                "industryRate": -15
-              }
-            }
-          ]
-        }
-      ],
-      "SPRING": [
-        {
-          "name": "un sécheresse s'est déclaré !",
-          "description": "Notre population crie famine, vous devez faire quelques choses !",
-          "irreversible": {
-            "population": -5,
-            "farmRate": -10
           },
-          "choices": [
-            {
-              "name": "Vider les réserve d'eau",
-              "description": "Empêchera la diminution de la population",
-              "effects": {
-                "money": -100
-              }
-            },
-            {
-              "name": "Ne rien faire",
-              "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
-              "effects": {
-                "population": -15
-              }
+          {
+            "name": "S'en fiche",
+            "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+            "effects": {
+              "farmRate": -15,
+              "industryRate": -15
             }
-          ]
-        },
-        {
-          "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",
-          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
-          "choices": [
-            {
-              "name": "Je gagne cet affrontement en envoyant une armée",
-              "description": "Vous résoudrez les problèmes de transit.",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ],
-                "money": 150,
-                "industryRate": 3
-              }
-            }
-          ]
-        },
-        {
-          "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
-          "description": "Vous devez prendre une décision",
-          "choices": [
-            {
-              "name": "Je fais un discours où je les menace d'une riposte",
-              "description": "Vous résoudrez les problèmes de transit.",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
-              },
-              "relatedEvents": [
+          }
+        ]
+      },
+      {
+        "name": "Les communistes vous battent et emprisonnent vos militaires",
+        "description": "Vous devez prendre une décision",
+        "choices": [
+          {
+            "name": "Je stoppe toutes les opérations",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
                 {
-                  "name": "ZZZZCatastrophe ! Une tempête de neige !",
-                  "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
-                  "choices": [
-                    {
-                      "name": "Déblayer",
-                      "description": "Vous résoudrez les problèmes de transit.",
-                      "effects": {
-                        "money": -200
-                      }
-                    },
-                    {
-                      "name": "S'en fiche",
-                      "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
-                      "effects": {
-                        "farmRate": -15,
-                        "industryRate": -15
-                      }
-                    }
-                  ]
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
                 }
               ]
             }
-          ]
-        }
-      ],
-      "SUMMER": [
-        {
-          "name": "un sécheresse s'est déclaré !",
-          "description": "Notre population crie famine, vous devez faire quelques choses !",
-          "irreversible": {
-            "population": -5,
-            "farmRate": -10
           },
-          "choices": [
-            {
-              "name": "Vider les réserve d'eau",
-              "description": "Empêchera la diminution de la population",
-              "effects": {
-                "money": -100
-              }
-            },
-            {
-              "name": "Ne rien faire",
-              "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
-              "effects": {
-                "population": -15
-              }
+          {
+            "name": "Je maintiens toutes les opérations militaires",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": -10,
+                  "nbSupporters": -5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": 10
+                }
+              ]
             }
-          ]
+          }
+        ]
+      },
+      {
+        "name": "Catastrophe ! Une tempête de neige !",
+        "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+        "choices": [
+          {
+            "name": "Déblayer",
+            "description": "Vous résoudrez les problèmes de transit.",
+            "effects": {
+              "money": -200
+            }
+          },
+          {
+            "name": "S'en fiche",
+            "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+            "effects": {
+              "farmRate": -15,
+              "industryRate": -15
+            }
+          }
+        ]
+      }
+    ],
+    "SPRING": [
+      {
+        "name": "un sécheresse s'est déclaré !",
+        "description": "Notre population crie famine, vous devez faire quelques choses !",
+        "irreversible": {
+          "population": -5,
+          "farmRate": -10
         },
-        {
-          "name": "Une guerre civile démarre en Chine, les Soviétiques envoient leurs alliés",
-          "description": "Vous devez prendre une décision",
-          "choices": [
-            {
-              "name": "J'envoie les miens aussi",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ],
-                "money": -50
-              }
+        "choices": [
+          {
+            "name": "Vider les réserve d'eau",
+            "description": "Empêchera la diminution de la population",
+            "effects": {
+              "money": -100
+            }
+          },
+          {
+            "name": "Ne rien faire",
+            "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
+            "effects": {
+              "population": -15
+            }
+          }
+        ]
+      },
+      {
+        "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",
+        "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
+        "choices": [
+          {
+            "name": "Je gagne cet affrontement en envoyant une armée",
+            "description": "Vous résoudrez les problèmes de transit.",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": 150,
+              "industryRate": 3
+            }
+          }
+        ]
+      },
+      {
+        "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
+        "description": "Vous devez prendre une décision",
+        "choices": [
+          {
+            "name": "Je fais un discours où je les menace d'une riposte",
+            "description": "Vous résoudrez les problèmes de transit.",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ]
             },
-            {
-              "name": "J'attends que les choses se passent",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
+            "relatedEvents": [
+              {
+                "name": "ZZZZCatastrophe ! Une tempête de neige !",
+                "description": "les routes sont devenues impraticables, les ressources ont du mal à être acheminées. Que devons-nous faire ?",
+                "choices": [
                   {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
+                    "name": "Déblayer",
+                    "description": "Vous résoudrez les problèmes de transit.",
+                    "effects": {
+                      "money": -200
+                    }
                   },
                   {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
+                    "name": "S'en fiche",
+                    "description": "Ne pas toucher à la neige ! Laisser les routes pleine de neige.",
+                    "effects": {
+                      "farmRate": -15,
+                      "industryRate": -15
+                    }
                   }
                 ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Catastrophe ! Une météorite est tombée !",
-          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
-          "irreversible": {
-            "population": -15,
-            "farmRate": -2,
-            "industryRate": -5,
-            "money": 150,
-            "factions": [
-              {
-                "name": "Capitalists",
-                "satisfactionRate": 10,
-                "nbSupporters": 5
-              },
-              {
-                "name": "Ecologists",
-                "satisfactionRate": -10
               }
             ]
+          }
+        ]
+      }
+    ],
+    "SUMMER": [
+      {
+        "name": "un sécheresse s'est déclaré !",
+        "description": "Notre population crie famine, vous devez faire quelques choses !",
+        "irreversible": {
+          "population": -5,
+          "farmRate": -10
+        },
+        "choices": [
+          {
+            "name": "Vider les réserve d'eau",
+            "description": "Empêchera la diminution de la population",
+            "effects": {
+              "money": -100
+            }
           },
-          "choices": [
+          {
+            "name": "Ne rien faire",
+            "description": "Notre population va souffrir mais pour la bonne cause. Gardons pour nous la nourriture",
+            "effects": {
+              "population": -15
+            }
+          }
+        ]
+      },
+      {
+        "name": "Une guerre civile démarre en Chine, les Soviétiques envoient leurs alliés",
+        "description": "Vous devez prendre une décision",
+        "choices": [
+          {
+            "name": "J'envoie les miens aussi",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": -50
+            }
+          },
+          {
+            "name": "J'attends que les choses se passent",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Catastrophe ! Une météorite est tombée !",
+        "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
+        "irreversible": {
+          "population": -15,
+          "farmRate": -2,
+          "industryRate": -5,
+          "money": 150,
+          "factions": [
             {
-              "name": "Déblayer",
-              "description": "Vous gagnerez de la thunas",
-              "effects": {
-                "money": 150,
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
-              }
+              "name": "Capitalists",
+              "satisfactionRate": 10,
+              "nbSupporters": 5
             },
             {
-              "name": "Laisser",
-              "description": "vous gagnerez de la fertilité",
-              "effects": {
-                "farmRate": 15
-              }
-            }
-          ]
-        }
-      ],
-      "AUTUMN": [
-        {
-          "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
-          "description": "Vous devez prendre une décision",
-          "choices": [
-            {
-              "name": "Je fais un discours où je les menace d'une riposte",
-              "description": "Vous résoudrez les problèmes de transit.",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
-              }
+              "name": "Ecologists",
+              "satisfactionRate": -10
             }
           ]
         },
-        {
-          "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",
-          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
-          "choices": [
+        "choices": [
+          {
+            "name": "Déblayer",
+            "description": "Vous gagnerez de la thunas",
+            "effects": {
+              "money": 150,
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ]
+            }
+          },
+          {
+            "name": "Laisser",
+            "description": "vous gagnerez de la fertilité",
+            "effects": {
+              "farmRate": 15
+            }
+          }
+        ]
+      }
+    ],
+    "AUTUMN": [
+      {
+        "name": "Les Soviétiques envoient des sous marins nucléaires vers votre pays",
+        "description": "Vous devez prendre une décision",
+        "choices": [
+          {
+            "name": "Je fais un discours où je les menace d'une riposte",
+            "description": "Vous résoudrez les problèmes de transit.",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Les Soviétiques avancent leurs sous-marins vers notre île !",
+        "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
+        "choices": [
+          {
+            "name": "Je gagne cet affrontement en envoyant une armée",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": 150,
+              "industryRate": 3
+            }
+          },
+          {
+            "name": "Je gagne cet affrontement en envoyant une armée",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": 150,
+              "industryRate": 3
+            }
+          },
+          {
+            "name": "Je gagne cet affrontement en envoyant une armée",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": 150,
+              "industryRate": 3
+            }
+          },
+          {
+            "name": "Je gagne cet affrontement en envoyant une armée",
+            "description": "Blalallballblalbal",
+            "effects": {
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ],
+              "money": 150,
+              "industryRate": 3
+            }
+          }
+        ]
+      },
+      {
+        "name": "Catastrophe ! Une météorite est tombée !",
+        "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
+        "irreversible": {
+          "population": -15,
+          "farmRate": -2,
+          "industryRate": -5,
+          "money": 150,
+          "factions": [
             {
-              "name": "Je gagne cet affrontement en envoyant une armée",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ],
-                "money": 150,
-                "industryRate": 3
-              }
+              "name": "Capitalists",
+              "satisfactionRate": 10,
+              "nbSupporters": 5
             },
             {
-              "name": "Je gagne cet affrontement en envoyant une armée",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ],
-                "money": 150,
-                "industryRate": 3
-              }
-            },
-            {
-              "name": "Je gagne cet affrontement en envoyant une armée",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ],
-                "money": 150,
-                "industryRate": 3
-              }
-            },
-            {
-              "name": "Je gagne cet affrontement en envoyant une armée",
-              "description": "Blalallballblalbal",
-              "effects": {
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ],
-                "money": 150,
-                "industryRate": 3
-              }
+              "name": "Ecologists",
+              "satisfactionRate": -10
             }
           ]
         },
-        {
-          "name": "Catastrophe ! Une météorite est tombée !",
-          "description": "Une météorite a ravagé notre île, il faut choisir une solution si vous voulez réduire son effects !",
-          "irreversible": {
-            "population": -15,
-            "farmRate": -2,
-            "industryRate": -5,
-            "money": 150,
-            "factions": [
-              {
-                "name": "Capitalists",
-                "satisfactionRate": 10,
-                "nbSupporters": 5
-              },
-              {
-                "name": "Ecologists",
-                "satisfactionRate": -10
-              }
-            ]
-          },
-          "choices": [
-            {
-              "name": "Déblayer",
-              "description": "Vous gagnerez de la thunas",
-              "effects": {
-                "money": 150,
-                "factions": [
-                  {
-                    "name": "Capitalists",
-                    "satisfactionRate": 10,
-                    "nbSupporters": 5
-                  },
-                  {
-                    "name": "Ecologists",
-                    "satisfactionRate": -10
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Laisser",
-              "description": "vous gagnerez de la fertilité",
-              "effects": {
-                "farmRate": 15
-              }
+        "choices": [
+          {
+            "name": "Déblayer",
+            "description": "Vous gagnerez de la thunas",
+            "effects": {
+              "money": 150,
+              "factions": [
+                {
+                  "name": "Capitalists",
+                  "satisfactionRate": 10,
+                  "nbSupporters": 5
+                },
+                {
+                  "name": "Ecologists",
+                  "satisfactionRate": -10
+                }
+              ]
             }
-          ]
-        }
-      ]
+          },
+          {
+            "name": "Laisser",
+            "description": "vous gagnerez de la fertilité",
+            "effects": {
+              "farmRate": 15
+            }
+          }
+        ]
+      }
+    ]
   }
 }

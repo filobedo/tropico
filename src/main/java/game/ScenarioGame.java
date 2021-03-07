@@ -1,6 +1,5 @@
 package game;
 
-import exceptions.MissingEventsException;
 import game.needs.GameDifficulty;
 
 import java.net.URL;
@@ -18,29 +17,23 @@ public class ScenarioGame extends Game {
      * The player keeps playing
      */
     @Override
-    public void launchGame() throws MissingEventsException {
-        super.launchGame();
-        if(this.gamePlay.canPlayEvents()) {
-            this.gamePlay.nextEvent();
-            while(!isScenarioFinished()) {
-                if(isPlayerWinning()) {
-                    playGame();
-                }
-                else {
-                    System.out.printf("%n%n%nLe scénario n'est pas fini mais vous avez perdu...%n");
-                    if(didPlayerFailedCatchingUp()) {
-                        break;
-                    }
+    public void playsGame() {
+        while(keepsPlaying()) {
+            if(isPlayerWinning()) {
+                playCurrentGameTurn();
+            }
+            else {
+                System.out.printf("%n%n%nLe scénario n'est pas fini mais vous avez perdu...%n");
+                if(didPlayerFailedCatchingUp()) {
+                    break;
                 }
             }
-            addEndGameScore();
-            finalSummary();
-            handlePlayerEndGame();
-            deleteSavedFile(getSavePath()); // TODO faut-il vraiment ?
         }
-        else {
-            throw new MissingEventsException("Scenario cannot played fully.");
-        }
+    }
+
+    @Override
+    public boolean keepsPlaying() {
+        return !isScenarioFinished();
     }
 
     /**
@@ -48,6 +41,7 @@ public class ScenarioGame extends Game {
      * This function will display if he won, he lost, he finished the scenario etc...
      * Then display that the party is finished
      */
+    @Override
     public void handlePlayerEndGame() {
         if(isScenarioFinished()) {
             if(isPlayerWinning()) {
@@ -59,7 +53,7 @@ public class ScenarioGame extends Game {
             System.out.printf("%nVous avez fini le scénario : %s%n", gamePlay.getName());
         }
         else {
-            System.out.printf("%nVotre partie en scénario est terminée.%n");
+            displayGameIsFinished();
         }
     }
 

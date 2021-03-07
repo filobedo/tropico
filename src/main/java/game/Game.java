@@ -189,8 +189,10 @@ public abstract class Game {
                 if(GamePlayerInput.wantsToQuitGame()) {
                     shutDown();
                 }
+
                 System.out.printf("%nLancement du jeu...%n");
                 displayPregame();
+                play();
             }
             else {
                 throw new MissingEventsException("There is not enough events in at least one of the seasons.");
@@ -215,6 +217,21 @@ public abstract class Game {
         System.out.printf("%nMode de jeu : %s | En difficulté : %s%n", toString(), this.gameDifficulty.toString());
     }
 
+    public void play() {
+        this.gamePlay.nextEvent();
+        playsGame();
+        addEndGameScore();
+        finalSummary();
+        handlePlayerEndGame();
+        if(this.isASavedGame) { deleteSavedFile(getSavePath()); }
+    }
+
+    public abstract boolean keepsPlaying();
+
+    public abstract void playsGame();
+
+    public abstract void handlePlayerEndGame();
+
     public boolean isPlayerWinning() {
         return isScorePositive() && this.republic.isGlobalSatisfactionRateOkay(this.gameDifficulty.getDifficultyCoefficient());
     }
@@ -222,16 +239,12 @@ public abstract class Game {
     public boolean isScorePositive() {
         return this.score >= 0;
     }
-
-    public Event getCurrentEvent() {
-        return this.gamePlay.getCurrentEvent();
-    }
-
+    
     /**
      * Handles current season, set next season and event
      * Launches year end summary when needed
      */
-    public void playGame() {
+    public void playCurrentGameTurn() {
         System.out.printf("%n%n-- Nous sommes en %s de la %de année --%n", this.gamePlay.getCurrentSeason().capitalize(), getYear() + 1);
         handleCurrentSeason(this.eventCount);
 
@@ -257,6 +270,10 @@ public abstract class Game {
 
         int playerSolutionChoice = GamePlayerInput.getPlayerEventSolutionChoice(getCurrentEvent().getNbChoices());
         playerChoiceEffects(playerSolutionChoice);
+    }
+
+    public Event getCurrentEvent() {
+        return this.gamePlay.getCurrentEvent();
     }
 
     /**
@@ -429,9 +446,12 @@ public abstract class Game {
         return false;
     }
 
+    /**
+     * You cannot get score to positive value by bribing faction
+     * You cannot get global satisfaction rising because no population
+     * @return if player can catch up the game
+     */
     public boolean canCatchUp() {
-        // You cannot get score to positive value by bribing faction
-        // You cannot get global satisfaction rising because no population
         return isScorePositive() && this.republic.isThereAnyPopulation();
     }
 
@@ -459,5 +479,9 @@ public abstract class Game {
         System.out.println("Un dernier bilan vous sera affiché.");
         System.out.println("Cependant, peut-être que vous pouvez encore sauver votre république.");
         System.out.println("Essayez d'améliorer la satisfaction globale de votre république...");
+    }
+
+    public void displayGameIsFinished() {
+        System.out.printf("%nVotre partie en mode %s est terminée.%n", toString());
     }
 }
